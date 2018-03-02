@@ -2,6 +2,10 @@
 
 Letting your voices and opinions count
 
+[![Coverage Status](https://coveralls.io/repos/github/Merdoth/Bill-Voting-System/badge.svg?branch=staging)](https://coveralls.io/github/Merdoth/Bill-Voting-System?branch=staging)
+[![Maintainability](https://api.codeclimate.com/v1/badges/d254b661f553f2d21dd3/maintainability)](https://codeclimate.com/github/Merdoth/Bill-Voting-System/maintainability)
+[![Build Status](https://travis-ci.org/Merdoth/Bill-Voting-System.svg?branch=staging)](https://travis-ci.org/Merdoth/Bill-Voting-System)
+
 # Introduction
 
 This is s simple application that grants users the opportunity to vote for or against bills that are to be passed into law by the legislative arm of government. This application gives voice to the citizenry and participation in legislation.

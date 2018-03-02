@@ -1,0 +1,42 @@
+{
+  "name": "bill-voting-system",
+  "version": "1.0.0",
+  "description": "This application is giving voice to the voiceless and opinion to the opinionless",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.17.1",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "body-parser": "^1.18.2",
+    "colors": "^1.1.2",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.2",
+    "express-validator": "^5.0.2",
+    "mongoose": "^5.0.7",
+    "morgan": "^1.9.0",
+    "webpack": "^3.10.0",
+    "webpack-dev-middleware": "^3.0.0",
+    "webpack-hot-middleware": "^2.21.1",
+    "wepack": "0.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "coverage-report": "cat ./coverage/lcov.info | coveralls",
+    "start": "NODE_ENV=production babel-node ./server.prod.js",
+    "start:dev": "nodemon --exec babel-node ./server/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Merdoth/Bill-Voting-System.git"
+  },
+  "author": "Chimereucheya Okereke",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Merdoth/Bill-Voting-System/issues"
+  },
+  "homepage": "https://github.com/Merdoth/Bill-Voting-System#readme"
+}
