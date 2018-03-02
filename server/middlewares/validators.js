@@ -39,18 +39,30 @@ exports.validateSignUp = (req, res, next) => {
 };
 
 exports.validateSignIn = (req, res, next) => {
-  // req.check('email', 'email address cannot be empty').notEmpty();
-  // req.check('email', 'Please enter a valid email').isEmail();
-  // req.check('password', 'Password cannot be empty').notEmpty();
-  // req.check('password', 'Password must be at least of 8 character')
-  //   .isLength(6, 50);
-  // const errors = req.validationErrors();
-  // if (errors) {
-  //   const message = errors[0].msg;
-  //   res.status(400).send({ message });
-  // } else {
-  next();
-  // }
+  req.check('email', 'email address cannot be empty').notEmpty();
+  req.check('password', 'Password cannot be empty').notEmpty();
+  req.check('password', 'Password must be at least of 8 character')
+    .isLength(6, 50);
+  const errors = req.validationErrors();
+  if (errors) {
+    const message = errors[0].msg;
+    res.status(400).send({ message });
+  } else {
+    next();
+  }
+};
+exports.validateAdmin = (req, res, next) => {
+  req.check('userName', 'Username cannot be empty').notEmpty();
+  req.check('password', 'Password cannot be empty').notEmpty();
+  req.check('password', 'Password must be at least of 8 character')
+    .isLength(6, 50);
+  const errors = req.validationErrors();
+  if (errors) {
+    const message = errors[0].msg;
+    res.status(400).send({ message });
+  } else {
+    next();
+  }
 };
 
 exports.validateProfile = (req, res, next) => {
