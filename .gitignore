@@ -1,0 +1,10 @@
+node_modules/*
+.DS_Store
+.env
+.coveralls.yml
+.package-lock.json
+.nyc_output
+coverage
+dist
+e2ereports/*
+*.log
