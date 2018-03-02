@@ -5,14 +5,14 @@ import convertCase from '../utils/convertCase';
 import generateToken from '../utils/GenerateToken';
 
 /**
-   * signup a new user
+   * @description sign up a new user
+   * 
    * @param {Object} req user request object
-   * @param {Object} res servers response object
+   * @param {Object} res server response object
    * 
    * @return {undefined}
    */
 exports.signUp = (req, res) => {
-  console.log(req.body)
   User.findOne({
     email: req.body.email,
   })
@@ -72,3 +72,43 @@ exports.signUp = (req, res) => {
     });
 };
 
+/**
+   * @description sign in a registered user
+   * 
+   * @param {Object} req user request object
+   * @param {Object} res server response object
+   * 
+   * @return {undefined}
+   */
+exports.signIn = (req, res) => {
+  User.findOne({
+    email: req.body.email
+  })
+    .exec((error, response) => {
+      if (error) {
+        return res.status(500).send({
+          success: false,
+          message: 'internal server error'
+        });
+      }
+      if (!response) {
+        return res.status(404).send({
+          success: false,
+          message: 'User does not exist'
+        });
+      }
+      // compare users hash passwords
+      if (!bcrypt.compareSync(req.body.password, response.password)) {
+        return res.status(422).send({
+          success: false,
+          message: 'Incorrect password'
+        });
+      }
+      return res.status(200).send({
+        message: 'Welcome!!',
+        success: true,
+        username: response.username,
+        token: generateToken(response)
+      });
+    });
+};

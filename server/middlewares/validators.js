@@ -22,12 +22,12 @@ exports.validateToken = (req, res, next) => {
 
 
 exports.validateSignUp = (req, res, next) => {
-  req.check('email', 'email address cannot be empty').notEmpty();
+  req.check('email', 'Email cannot be empty').notEmpty();
   req.check('email', 'Please enter a valid email').isEmail();
   req.check('userName', 'Username cannot be empty').notEmpty();
   req.check('fullName', 'Fullname cannot be empty').notEmpty();
   req.check('password', 'Password cannot be empty').notEmpty();
-  req.check('password', 'Password must be a mininum of 6 character')
+  req.check('password', 'Password must be at least of 8 character')
     .isLength(6, 50);
   const errors = req.validationErrors();
   if (errors) {
@@ -38,8 +38,23 @@ exports.validateSignUp = (req, res, next) => {
   }
 };
 
+exports.validateSignIn = (req, res, next) => {
+  // req.check('email', 'email address cannot be empty').notEmpty();
+  // req.check('email', 'Please enter a valid email').isEmail();
+  // req.check('password', 'Password cannot be empty').notEmpty();
+  // req.check('password', 'Password must be at least of 8 character')
+  //   .isLength(6, 50);
+  // const errors = req.validationErrors();
+  // if (errors) {
+  //   const message = errors[0].msg;
+  //   res.status(400).send({ message });
+  // } else {
+  next();
+  // }
+};
+
 exports.validateProfile = (req, res, next) => {
-  req.check('userName', 'username address cannot be empty').notEmpty();
+  req.check('userName', 'Username cannot be empty').notEmpty();
   req.check('fullName', 'Fullname cannot be empty').notEmpty();
   const errors = req.validationErrors();
   if (errors) {
