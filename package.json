@@ -27,7 +27,12 @@
     "webpack-hot-middleware": "^2.21.1",
     "wepack": "0.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0"
+  },
   "scripts": {
     "coverage-report": "cat ./coverage/lcov.info | coveralls",
     "start": "NODE_ENV=production babel-node ./server.prod.js",
