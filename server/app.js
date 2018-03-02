@@ -9,6 +9,7 @@ import webpackMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
+import routes from './routes';
 
 dotenv.config();
 
@@ -34,6 +35,13 @@ if (process.env.NODE_ENV !== 'production') {
 } else {
   mongoose.connect(configDB.url_production);
 }
+// Log requests to the console.
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(expressValidator());
+
+app.use(routes);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html')); 
