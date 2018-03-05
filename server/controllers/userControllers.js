@@ -112,3 +112,55 @@ exports.signIn = (req, res) => {
       });
     });
 };
+
+/**
+ * @description allows user update profile
+ * 
+ * @param {object} req - response object
+ * @param {object} res - request object
+ *
+ * @return {object} - success or failure message
+ */
+exports.updateUserProfile = (req, res) => {
+  User.findOne({
+    email: req.body.email,
+  })
+    .exec()
+    .then((userFound) => {
+      if (userFound.email !== req.decoded.email) {
+        res.status(409).send({
+          message: 'The email address is already in use by another account.',
+          success: false
+        });
+      } else {
+        const { fullName, userName, email } = req.body;
+        User.findByIdAndUpdate(
+          { _id: req.decoded.id },
+          {
+            $set: {
+              fullName,
+              userName,
+              email,
+            },
+          },
+          { new: true },
+        )
+          .exec((error, user) => {
+            if (user) {
+              return res.status(200).send({
+                user: {
+                  fullName,
+                  userName,
+                  email,
+                },
+                message: 'Profile Update successful',
+              });
+            }
+            return res.status(404).send({ message: 'User not Found' });
+          })
+      }
+    }).catch((error) => {
+      res.status(500)
+        .send({ message: 'Internal server error', error });
+    });
+};
