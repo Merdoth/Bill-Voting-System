@@ -5,6 +5,7 @@ const SALT_WORK_FACTOR = 10;
 const userSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   userName: { type: String, required: true, unique: true },
+  permission: { type: Number, required: true },
   password: { type: String, required: true },
   email: {
     type: String,
@@ -13,9 +14,14 @@ const userSchema = new mongoose.Schema({
   },
   hash: { type: String },
   expiry: { type: Date },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-});
+},
+  {
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    }
+  }
+);
 
 // generating a hash
 userSchema.pre('save', function (next) {

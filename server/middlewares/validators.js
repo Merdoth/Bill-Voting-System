@@ -66,8 +66,10 @@ exports.validateAdmin = (req, res, next) => {
 };
 
 exports.validateProfile = (req, res, next) => {
-  req.check('userName', 'Username cannot be empty').notEmpty();
   req.check('fullName', 'Fullname cannot be empty').notEmpty();
+  req.check('userName', 'Username cannot be empty').notEmpty();
+  req.check('email', 'Email cannot be empty').notEmpty();
+  req.check('email', 'Please enter a valid email').isEmail();
   const errors = req.validationErrors();
   if (errors) {
     const message = errors[0].msg;
@@ -76,4 +78,3 @@ exports.validateProfile = (req, res, next) => {
     next();
   }
 };
-
