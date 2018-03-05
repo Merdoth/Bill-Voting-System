@@ -100,3 +100,69 @@ exports.adminSignIn = (req, res) => {
       });
     });
 };
+
+/**
+   * @description allows admins create new bills
+   * 
+   * @param {Object} req user request object
+   * @param {Object} res server response object
+   * 
+   * @return {undefined}
+   */
+exports.createBill = (req, res) => {
+  const userId = req.decoded.id;
+  const {
+    title, description, billProgress, voteStatus
+  }
+    = req.body;
+  Admin.findOne({
+    _id: userId
+  })
+    .exec()
+    .then((adminFound) => {
+      if (!adminFound) {
+        return res.status(400).send({
+          success: false,
+          message: 'Sorry you dont the permission to perform the requested operation'
+        });
+      }
+      Bill.findOne({
+        title: req.body.title.trim().toLowerCase()
+      })
+        .exec()
+        .then((billFound) => {
+          if (billFound) {
+            res.status(409).send({
+              message: 'bill already exists!',
+              success: false
+            });
+          } else {
+            const billDetails = {
+              title, description, billProgress, voteStatus
+            }
+            const newBill = new Bill(billDetails);
+            newBill.save((error, newBill) => {
+              if (error) {
+                return res.status(500).send({
+                  success: false,
+                  message: error
+                });
+              }
+              return res.status(201).send({
+                success: true,
+                message: 'bill successfully created',
+                newBill
+              });
+            });
+          }
+        })
+        .catch((error) => {
+          res.status(500)
+            .send({ message: 'Internal server error', error });
+        });
+    })
+    .catch((error) => {
+      res.status(500)
+        .send({ message: 'Internal server error', error });
+    });
+};

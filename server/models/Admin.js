@@ -5,6 +5,7 @@ const SALT_WORK_FACTOR = 10;
 const adminSchema = new mongoose.Schema({
   userName: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  permission: { type: Number, required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

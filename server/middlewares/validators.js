@@ -38,6 +38,26 @@ exports.validateSignUp = (req, res, next) => {
   }
 };
 
+exports.validateBillInput = (req, res, next) => {
+  req.check('title', 'Title cannot be empty').notEmpty();
+  req.check('title', 'Title must be at least of 8 character long')
+    .isLength(8, 50);
+  req.check('description', 'Description cannot be empty').notEmpty();
+  req.check('description', 'Description must be at least of 8 character long')
+    .isLength(8, 50);
+  req.check('billProgress', 'Bill Progress cannot be empty').notEmpty();
+  req.check('billProgress', 'Bill Progress must be at least of 8 character long')
+    .isLength(8, 50);
+  const errors = req.validationErrors();
+  if (errors) {
+    const message = errors[0].msg;
+    res.status(400).send({ message });
+  } else {
+    next();
+  }
+};
+
+
 exports.validateSignIn = (req, res, next) => {
   req.check('email', 'email address cannot be empty').notEmpty();
   req.check('password', 'Password cannot be empty').notEmpty();
