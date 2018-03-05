@@ -11,6 +11,11 @@ dotenv.config();
  * @return {string} Token
  */
 export default (user) => {
-  const Token = jwt.sign({ token: { user } }, process.env.SECRET);
+  const Token = jwt.sign({
+    token: {
+      id: user._id,
+      userName: user.userName,
+    }
+  }, process.env.SECRET);
   return Token;
 };
