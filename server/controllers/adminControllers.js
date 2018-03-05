@@ -166,3 +166,69 @@ exports.createBill = (req, res) => {
         .send({ message: 'Internal server error', error });
     });
 };
+
+/**
+   * @description allows admins edit bills
+   * 
+   * @param {Object} req user request object
+   * @param {Object} res server response object
+   * 
+   * @return {undefined}
+   */
+exports.editBill = (req, res) => {
+  const userId = req.decoded.id;
+  Admin.findOne({
+    _id: userId
+  })
+    .exec()
+    .then((adminFound) => {
+      if (!adminFound) {
+        return res.status(400).send({
+          success: false,
+          message: 'Sorry you dont the permission to perform the requested operation'
+        });
+      }
+      Bill.findOne({
+        title: req.body.title.trim().toLowerCase()
+      })
+        .exec()
+        .then((billFound) => {
+          if (billFound) {
+            res.status(409).send({
+              message: 'bill already exists!',
+              success: false
+            });
+          } else {
+            Bill.findByIdAndUpdate(
+              { _id: req.params.billId },
+              {
+                $set: {
+                  title: req.body.title,
+                  description: req.body.description,
+                  billProgress: req.body.billProgress,
+                },
+              },
+              { new: true },
+            )
+              .exec((error, editedBill) => {
+                if (editedBill) {
+                  return res.status(200)
+                    .send({
+                      message: 'Bill has been successfully updated!',
+                      editedBill,
+                    });
+                }
+              });
+          }
+        })
+        .catch((error) => {
+          res.status(500)
+            .send({ message: 'Internal server error', error });
+        });
+    })
+    .catch((error) => {
+      res.status(500)
+        .send({ message: 'Internal server error', error });
+    });
+};
+
