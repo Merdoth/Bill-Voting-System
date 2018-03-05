@@ -232,3 +232,45 @@ exports.editBill = (req, res) => {
     });
 };
 
+/**
+   * @description allows admins delete bills
+   * 
+   * @param {Object} req user request object
+   * @param {Object} res server response object
+   *
+   * @return {undefined}
+   */
+exports.deleteBill = (req, res) => {
+  const userId = req.decoded.id;
+  const { billId } = req.params;
+  Admin.findOne({
+    _id: userId
+  })
+    .exec()
+    .then((adminFound) => {
+      if (!adminFound) {
+        return res.status(400).send({
+          success: false,
+          message: 'Sorry you dont the permission to perform the requested operation'
+        });
+      }
+      Bill.findByIdAndRemove(billId, (err) => {
+        if (err) {
+          return res.status(500).send({
+            success: false,
+            message: 'Internal server error',
+          });
+        }
+        // return response
+        return res.status(200).send({
+          success: true,
+          message: 'Bill successfully deleted!'
+        });
+      });
+    })
+    .catch((error) => {
+      res.status(500)
+        .send({ message: 'Internal server error', error });
+    });
+};
+
