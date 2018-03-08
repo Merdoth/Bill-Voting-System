@@ -30,6 +30,7 @@ const billSchema = new mongoose.Schema({
       updatedAt: 'updated_at'
     }
   });
+billSchema.index({ title: 'text', description: 'text' });
 const Bill = mongoose.model('Bill', billSchema);
 
 export default Bill;

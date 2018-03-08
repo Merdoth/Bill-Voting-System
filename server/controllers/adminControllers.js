@@ -1,8 +1,11 @@
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import Admin from '../models/Admin';
+import Bill from '../models/Bill'
+import User from '../models/User';
 import convertCase from '../utils/convertCase';
 import generateToken from '../utils/GenerateToken';
+import validators from '../middlewares/validators';
 
 /**
    * @description sign up an admin
@@ -13,7 +16,7 @@ import generateToken from '../utils/GenerateToken';
    * @return {undefined}
    */
 exports.adminSignUp = (req, res) => {
-  if(req.body.userName !== 'admin') {
+  if (req.body.userName !== 'admin') {
     return res.status(400).send({
       message: 'Username can only be \'Admin\'',
       success: false
@@ -30,35 +33,38 @@ exports.adminSignUp = (req, res) => {
           success: false
         });
       } else {
-              const {
-                 userName, password
-              }
-                = req.body;
-                const admin = new Admin({
-                userName: userName.trim().toLowerCase(),
-                password: password.trim(),
-              });
-              admin.save((error, newAdminUser) => {
-                if (error) {
-                  return res.status(500).send({
-                    success: false,
-                    message: error
-                  });
-                }
-                return res.status(201).send({
-                  success: true,
-                  token: generateToken(newAdminUser),
-                  message: 'admin successfully created',
-                  userName: newAdminUser.userName,
-                });
-              });
-            }
-          })
-          .catch((error) => {
+        const {
+          userName, password
+        }
+          = req.body;
+        const admin = new Admin({
+          userName: userName.trim().toLowerCase(),
+          permission: 1,
+          password: password.trim(),
+        });
+        admin.save((error, newAdminUser) => {
+          if (error) {
+            return res.status(500).send({
+              success: false,
+              message: 'Internal server Error',
+              error: error.message
+            });
+          }
+          return res.status(201).send({
+            success: true,
+            token: generateToken(newAdminUser),
+            message: 'admin successfully created',
+            userName: newAdminUser.userName,
+          });
+        });
+      }
+    })
+    .catch((error) => {
       res.status(500)
         .send({ message: 'Internal server error', error });
     });
 };
+
 
 /**
    * @description sign in an admin
@@ -85,7 +91,6 @@ exports.adminSignIn = (req, res) => {
           message: 'User does not exist'
         });
       }
-      // compare users hash passwords
       if (!bcrypt.compareSync(req.body.password, response.password)) {
         return res.status(422).send({
           success: false,
@@ -115,8 +120,11 @@ exports.createBill = (req, res) => {
     title, description, billProgress, voteStatus
   }
     = req.body;
-  Admin.findOne({
-    _id: userId
+  User.findOne({
+    $or: [
+      { _id: userId },
+      { permission: 2 }
+    ]
   })
     .exec()
     .then((adminFound) => {
@@ -132,7 +140,7 @@ exports.createBill = (req, res) => {
         .exec()
         .then((billFound) => {
           if (billFound) {
-            res.status(409).send({
+            return res.status(409).send({
               message: 'bill already exists!',
               success: false
             });
@@ -145,7 +153,8 @@ exports.createBill = (req, res) => {
               if (error) {
                 return res.status(500).send({
                   success: false,
-                  message: error
+                  message: 'Internal server Error',
+                  error: error.message
                 });
               }
               return res.status(201).send({
@@ -166,7 +175,6 @@ exports.createBill = (req, res) => {
         .send({ message: 'Internal server error', error });
     });
 };
-
 /**
    * @description allows admins edit bills
    * 
@@ -177,8 +185,11 @@ exports.createBill = (req, res) => {
    */
 exports.editBill = (req, res) => {
   const userId = req.decoded.id;
-  Admin.findOne({
-    _id: userId
+  User.findOne({
+    $or: [
+      { _id: userId },
+      { permission: 2 }
+    ]
   })
     .exec()
     .then((adminFound) => {
@@ -231,7 +242,6 @@ exports.editBill = (req, res) => {
         .send({ message: 'Internal server error', error });
     });
 };
-
 /**
    * @description allows admins delete bills
    * 
@@ -243,8 +253,11 @@ exports.editBill = (req, res) => {
 exports.deleteBill = (req, res) => {
   const userId = req.decoded.id;
   const { billId } = req.params;
-  Admin.findOne({
-    _id: userId
+  User.findOne({
+    $or: [
+      { _id: userId },
+      { permission: 2 }
+    ]
   })
     .exec()
     .then((adminFound) => {
@@ -261,7 +274,6 @@ exports.deleteBill = (req, res) => {
             message: 'Internal server error',
           });
         }
-        // return response
         return res.status(200).send({
           success: true,
           message: 'Bill successfully deleted!'
@@ -273,4 +285,3 @@ exports.deleteBill = (req, res) => {
         .send({ message: 'Internal server error', error });
     });
 };
-
