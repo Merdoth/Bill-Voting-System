@@ -16,6 +16,7 @@ router.post('/api/v1/bill/downvotes/:billId', validators.validateToken, userCont
 router.post('/api/v1/bill/:billId/opinions', validators.validateToken, userController.addOpinion);
 router.post('/api/v1/bills/search', validators.validateToken, userController.searchBills);
 router.put('/api/v1/user/updateprofile', validators.validateToken, validators.validateProfile, userController.updateUserProfile);
+router.get('/api/v1/user/votedbills', validators.validateToken, userController.fetchUserVotedBill);
 router.get('/api/v1/bill/:billId/opinions', validators.validateToken, userController.fetchOpinion);
 
 

@@ -585,6 +585,49 @@ exports.fetchOpinion = (req, res) => {
 };
 
 /**
+   * @description allows a user to fetch all bills voted 
+   *
+   * @param { Object } req - Request object
+   * @param { Object } res - Response object
+   *
+   * @returns { undefined }
+   */
+exports.fetchUserVotedBill = (req, res) => {
+  const userId = req.decoded.id;
+  var options = {
+    populate: 'votedBill',
+    page: 1 || Number(req.query.page),
+    limit: 6 || Number(req.query.limit)
+  };
+  Vote.paginate({
+    votedBy: userId
+  }, options)
+    .then((userVotes) => {
+      if (!userVotes) {
+        return res.status(404).send({
+          success: false,
+          message: 'You did not vote any bill please try to vote some!'
+        });
+      }
+      const pageInfo = {
+        pages: userVotes.pages,
+        page: userVotes.page,
+        total: userVotes.total,
+      };
+      res.status(200).send({
+        userVotes: userVotes.docs,
+        pageInfo,
+        message: 'User voted bill was fetched successfully!'
+      });
+    }).catch((error) => {
+      res.status(500).send({
+        message: 'Internal server Error',
+        error: error.message
+      });
+    });
+};
+
+/**
    * @description allows a user to search for bills
    *
    * @param { Object } req - Request object
