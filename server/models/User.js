@@ -1,12 +1,14 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import mongoosePaginate from 'mongoose-paginate';
+
 
 const SALT_WORK_FACTOR = 10;
 const userSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   userName: { type: String, required: true, unique: true },
   permission: { type: Number, required: true },
-  password: { type: String, required: true },
+  password: { type: String, required: true, select: false },
   email: {
     type: String,
     required: true,
@@ -43,7 +45,7 @@ userSchema.methods.comparePassword = (candidatePassword, cb) => {
     cb(null, isMatch);
   });
 };
-
+userSchema.plugin(mongoosePaginate);
 const User = mongoose.model('User', userSchema);
 
 export default User;

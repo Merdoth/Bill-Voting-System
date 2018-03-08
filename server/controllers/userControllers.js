@@ -1,8 +1,10 @@
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import User from '../models/User';
+import Vote from '../models/Vote';
 import convertCase from '../utils/convertCase';
 import generateToken from '../utils/GenerateToken';
+import validators from '../middlewares/validators';
 
 /**
    * @description sign up a new user
@@ -13,6 +15,10 @@ import generateToken from '../utils/GenerateToken';
    * @return {undefined}
    */
 exports.signUp = (req, res) => {
+  const { errors, isValid } = validators.validateSignUpInput(req.body);
+  if (!isValid) {
+    return res.status(400).send({ error: errors });
+  }
   User.findOne({
     email: req.body.email,
   })
@@ -40,22 +46,24 @@ exports.signUp = (req, res) => {
               }
                 = req.body;
               const user = new User({
-                fullName: convertCase(fullName),
-                userName: convertCase(userName),
-                email: email.toLowerCase(),
-                password,
+                fullName: convertCase(fullName.trim()),
+                userName: convertCase(userName.trim()),
+                permission: 3,
+                email: email.trim().toLowerCase(),
+                password: password.trim(),
               });
               user.save((error, newUser) => {
                 if (error) {
                   return res.status(500).send({
                     success: false,
-                    message: error
+                    message: 'Internal server error'
                   });
                 }
                 return res.status(201).send({
                   success: true,
                   token: generateToken(newUser),
                   message: 'User successfully created',
+                  fullName: newUser.fullName,
                   userName: newUser.userName,
                 });
               });
@@ -81,37 +89,43 @@ exports.signUp = (req, res) => {
    * @return {undefined}
    */
 exports.signIn = (req, res) => {
+  console.log(req.body)
+  const { errors, isValid } = validators.validateSignInInput(req.body);
+  if (!isValid) {
+    return res.status(400).send({ error: errors });
+  }
   User.findOne({
-    email: req.body.email
+    email: req.body.email.trim().toLowerCase()
   })
-    .exec((error, response) => {
-      if (error) {
-        return res.status(500).send({
-          success: false,
-          message: 'internal server error'
-        });
-      }
-      if (!response) {
+    .select("+password")
+    .exec().then((user) => {
+      if (!user) {
         return res.status(404).send({
-          success: false,
-          message: 'User does not exist'
+          error: 'Failed to authenticate user'
         });
       }
-      // compare users hash passwords
-      if (!bcrypt.compareSync(req.body.password, response.password)) {
+      if (!bcrypt.compareSync(req.body.password, user.password)) {
+
         return res.status(422).send({
           success: false,
           message: 'Incorrect password'
         });
       }
-      return res.status(200).send({
-        message: 'Welcome!!',
-        success: true,
-        username: response.username,
-        token: generateToken(response)
+      if (user) {
+        return res.status(200).send({
+          message: 'Welcome!!',
+          success: true,
+          username: user.username,
+          token: generateToken(user)
+        });
+      }
+    })
+    .catch((error) => {
+      res.status(500).send({
+        error: error.message
       });
     });
-};
+},
 
 /**
  * @description allows user update profile
@@ -119,7 +133,7 @@ exports.signIn = (req, res) => {
  * @param {object} req - response object
  * @param {object} res - request object
  *
- * @return {object} - success or failure message
+ * @return { undefined }
  */
 exports.updateUserProfile = (req, res) => {
   User.findOne({
@@ -162,5 +176,322 @@ exports.updateUserProfile = (req, res) => {
     }).catch((error) => {
       res.status(500)
         .send({ message: 'Internal server error', error });
+    });
+};
+
+/**
+ * @description allows user add a vote
+ * 
+ * @param {object} req - response object
+ * @param {object} res - request object
+ *
+ * @return {undefined}
+ */
+const addVote = (req, res, voteDetails, billFound) => {
+  const { userId, billId, status } = voteDetails;
+  const vote = new Vote({
+    status,
+    votedBill: billId,
+    votedBy: userId
+  });
+  vote.save((error, newVote) => {
+    if (error) {
+      return res.status(500).send({
+        success: false,
+        message: 'Internal server Error',
+        error: error.message
+      });
+    }
+
+    const newVoteCount = status === 'upvote' ?
+      billFound.upVoteCount + 1 :
+      billFound.downVoteCount + 1;
+
+    const column = status === 'upvote' ?
+      { upVoteCount: newVoteCount } :
+      { downVoteCount: newVoteCount }
+
+    Bill.update({ _id: billId }, {
+      $set: column
+    }, (error, response) => {
+      if (error) {
+        return res.status(418).send({
+          message: error,
+        });
+      }
+      return res.status(201).send({
+        success: true,
+        message: `Your ${status} was added successfully`,
+        newVote,
+      });
+    })
+  });
+}
+
+/**
+ * @description allows user remove upvote
+ * 
+ * @param {object} req - response object
+ * @param {object} res - request object
+ *
+ * @return {undefined}
+ */
+const removeVote = (req, res, voteDetails, billFound) => {
+  const { userId, billId, status } = voteDetails;
+
+  Vote.remove({ votedBill: billId, votedBy: userId }, (error) => {
+    if (error) {
+      return res.status(500).send({
+        success: false,
+        message: 'Internal server Error',
+        error: error.message
+      });
+    }
+
+    const newVoteCount = status === 'upvote' ?
+      billFound.upVoteCount - 1 :
+      billFound.downVoteCount - 1;
+
+    const column = status === 'upvote' ?
+      { upVoteCount: newVoteCount } :
+      { downVoteCount: newVoteCount }
+
+    Bill.update({ _id: billId }, {
+      $set: column
+    }, (error, response) => {
+      if (error) {
+        //change this status code and all other 418 errors
+        return res.status(418).send({
+          message: error,
+        });
+      }
+      return res.status(200).send({
+        success: true,
+        message: `Your ${status} has been remove`,
+      });
+    })
+  });
+}
+
+
+/**
+ * @description allows user toggle through votes
+ * 
+ * @param {object} req - response object
+ * @param {object} res - request object
+ *
+ * @return {undefined}
+ */
+const toggleVote = (req, res, voteDetails, billFound) => {
+
+  const { userId, billId, status } = voteDetails;
+  if (status === 'upvote') {
+    Bill.findByIdAndUpdate({ _id: billId }, {
+      $set: {
+        upVoteCount: billFound.upVoteCount + 1,
+        downVoteCount: billFound.downVoteCount - 1,
+      },
+    })
+      .exec()
+      .then((updatedVoteCount) => {
+        if (!updatedVoteCount) {
+          return res.status(500).send({
+            success: false,
+            message: 'internal server error'
+          });
+        }
+        if (updatedVoteCount) {
+          Vote.findOneAndUpdate({ votedBill: billId }, {
+            $set: {
+              status
+            },
+
+          }, { new: true })
+            .exec()
+            .then((updatedVoteStatus) => {
+              if (!updatedVoteStatus) {
+                return res.status(418).send({
+                  message: error,
+                });
+              }
+              return res.status(201).send({
+                success: true,
+                message: `Your ${status} was added successfully`,
+                updatedVoteStatus,
+              });
+            })
+        }
+      })
+  } else if (status === 'downvote') {
+    Bill.findByIdAndUpdate({ _id: billId }, {
+      $set: {
+        upVoteCount: billFound.upVoteCount - 1,
+        downVoteCount: billFound.downVoteCount + 1,
+      },
+    })
+      .exec()
+      .then((updatedVoteCount) => {
+        if (!updatedVoteCount) {
+          return res.status(500).send({
+            success: false,
+            message: 'internal server error'
+          });
+        }
+        if (updatedVoteCount) {
+          Vote.findOneAndUpdate({ votedBill: billId }, {
+            $set: {
+              status
+            },
+
+          }, { new: true })
+            .exec()
+            .then((updatedVoteStatus) => {
+              if (!updatedVoteStatus) {
+                return res.status(418).send({
+                  message: error,
+                });
+              }
+              return res.status(201).send({
+                success: true,
+                message: `Your ${status} was added successfully`,
+                updatedVoteStatus,
+              });
+            })
+        }
+      })
+  }
+
+}
+
+/**
+ * @description allows a user upvote a bill
+ * 
+ * @param {object} req - response object
+ * @param {object} res - request object
+ *
+ * @return {undefined} 
+ */
+exports.upVoteBill = (req, res) => {
+  const userId = req.decoded.id;
+  const status = req.body.status;
+  const { billId } = req.params;
+
+  Bill.findById({ _id: billId })
+    .exec()
+    .then((billFound) => {
+      if (!billFound) {
+        return res.status(404).send({
+          message: `Sorry, no bill with id ${billId} `,
+        });
+      }
+      if (billFound.voteStatus === 'open') {
+        Vote.findOne({
+          votedBill: billId,
+          votedBy: userId
+        }, (err, result) => {
+          if (err) {
+            if (!updatedVoteStatus) {
+              return res.status(400).send({
+                message: error,
+              });
+            }
+          }
+
+          if (result) {
+            if (result && result.status === 'upvote') {
+              const voteDetails = {
+                userId, billId, status
+              };
+              return removeVote(req, res, voteDetails, billFound);
+            } else if (result && result.status === 'downvote') {
+              const voteDetails = {
+                userId, billId, status
+              };
+              return toggleVote(req, res, voteDetails, billFound);
+            }
+          } else {
+            const voteDetails = {
+              userId, billId, status
+            };
+            return addVote(req, res, voteDetails, billFound);
+          }
+        })
+      } else {
+        res.status(403).send({
+          message: 'Sorry, voting for this bill is closed',
+        });
+      }
+
+    }).catch((error) => {
+      res.status(500).send({
+        message: 'Internal server Error',
+        error: error.message
+      });
+    });
+};
+
+/**
+ * @description allows a user downvote a bill
+ * 
+ * @param {object} req - response object
+ * @param {object} res - request object
+ *
+ * @return {undefined} 
+ */
+exports.downVoteBill = (req, res) => {
+
+  const userId = req.decoded.id;
+  const status = req.body.status;
+  const { billId } = req.params;
+
+  Bill.findById(billId)
+    .exec()
+    .then((billFound) => {
+      if (!billFound) {
+        return res.status(404).send({
+          message: `Sorry, no bill with id ${billId} `,
+        });
+      }
+      if (billFound.voteStatus === 'open') {
+        Vote.findOne({
+          votedBill: billId,
+          votedBy: userId
+        }, (err, result) => {
+          if (err) {
+            return res.status(400).send({
+              message: `Sorry, no bill with id ${billId} `,
+            });
+          }
+
+          if (result) {
+            if (result && result.status === 'downvote') {
+              const voteDetails = {
+                userId, billId, status
+              };
+              return removeVote(req, res, voteDetails, billFound);
+            } else if (result && result.status === 'upvote') {
+              const voteDetails = {
+                userId, billId, status
+              };
+              return toggleVote(req, res, voteDetails, billFound);
+            }
+          } else {
+            const voteDetails = {
+              userId, billId, status
+            };
+            return addVote(req, res, voteDetails, billFound);
+          }
+        })
+      } else {
+        res.status(403).send({
+          message: 'Sorry, voting for this bill is closed',
+        });
+      }
+
+    }).catch((error) => {
+      res.status(500).send({
+        message: 'Internal server Error',
+        error: error.message
+      });
     });
 };
