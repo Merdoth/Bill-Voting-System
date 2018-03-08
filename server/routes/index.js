@@ -9,6 +9,7 @@ router.post('/api/v1/admin/bills', validators.validateToken, validators.validate
 router.post('/api/v1/admin/addpermission', validators.validateToken, adminController.addPermission);
 router.put('/api/v1/admin/bills/:billId', validators.validateToken, validators.validateBillInput, adminController.editBill);
 router.delete('/api/v1/admin/bills/:billId', validators.validateToken, adminController.deleteBill);
+router.get('/api/v1/admin/users', validators.validateToken, adminController.getAllUsers);
 router.post('/api/v1/user/signup', validators.validateSignUp, userController.signUp);
 router.post('/api/v1/user/signin', validators.validateSignIn, userController.signIn);
 router.post('/api/v1/bill/upvotes/:billId', validators.validateToken, userController.upVoteBill);

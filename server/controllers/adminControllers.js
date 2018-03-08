@@ -285,3 +285,42 @@ exports.deleteBill = (req, res) => {
         .send({ message: 'Internal server error', error });
     });
 };
+
+/**
+   * @description allows admin gets all users
+   * 
+   * @param { Object } req user request object
+   * @param { Object } res servers response
+   * 
+   * @return { undefined }
+   */
+exports.getAllUsers = (req, res) => {
+  const options = {
+    select: "-password",
+    page: 1 || Number(req.query.page),
+    limit: 6 || Number(req.query.limit)
+  };
+  User.paginate({}, options)
+    .then((users) => {
+      if (!users) {
+        res.status(404).send({
+          message: 'Users not found',
+        });
+      }
+      const pageInfo = {
+        pages: users.pages,
+        page: users.page,
+        total: users.total,
+      };
+      res.status(200).send({
+        users: users.docs,
+        pageInfo,
+        message: 'Users successfully fetched'
+      });
+    })
+    .catch((error) => {
+      res.status(500).send({
+        error: error.message
+      });
+    });
+};
