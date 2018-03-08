@@ -14,5 +14,6 @@ router.post('/api/v1/user/signin', validators.validateSignIn, userController.sig
 router.post('/api/v1/bill/upvotes/:billId', validators.validateToken, userController.upVoteBill);
 router.post('/api/v1/bill/downvotes/:billId', validators.validateToken, userController.downVoteBill);
 router.put('/api/v1/user/updateprofile', validators.validateToken, validators.validateProfile, userController.updateUserProfile);
+router.post('/api/v1/bill/:billId/opinions', validators.validateToken, userController.addOpinion);
 
 export default router;

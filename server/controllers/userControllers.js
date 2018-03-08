@@ -2,8 +2,10 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import User from '../models/User';
 import Vote from '../models/Vote';
+import Opinion from '../models/Opinion';
 import convertCase from '../utils/convertCase';
 import generateToken from '../utils/GenerateToken';
+import pagination from '../utils/pagination';
 import validators from '../middlewares/validators';
 
 /**
@@ -495,3 +497,90 @@ exports.downVoteBill = (req, res) => {
       });
     });
 };
+
+/**
+   * @description allows a user add an opinion
+   *
+   * @param { Object } req - Request object
+   * @param { Object } res - Response object
+   *
+   * @returns { undefined }
+   */
+exports.addOpinion = (req, res) => {
+  //novalidation yet
+  const { opinion } = req.body;
+  const userId = req.decoded.id;
+  const { billId } = req.params;
+
+  Bill.findById({ _id: billId })
+    .exec()
+    .then((billFound) => {
+      if (!billFound) {
+        return res.status(404).send({
+          message: `Sorry, no bill with id ${billId} `,
+        });
+      }
+      if (billFound) {
+        if (billFound.billProgress !== 'House Passed') {
+          const newDetail = new Opinion({
+            opinion: opinion,
+            opinionBy: userId,
+            opinionBill: billId
+          });
+          newDetail.save((error, newOpinion) => {
+            if (error) {
+              return res.status(500).send({
+                success: false,
+                message: 'Internal server Error',
+              });
+            }
+            return res.status(201).send({
+              success: true,
+              message: 'Opinion successfully added',
+              newOpinion
+            });
+          });
+        } else {
+          res.status(403).send({
+            message: 'Sorry, posting opinions for this bill is closed',
+          });
+        }
+      }
+    }).catch((error) => {
+      res.status(500).send({
+        message: 'Internal server Error',
+        error: error.message
+      });
+    });
+};
+
+/**
+   * @description allows a user get all opinions
+   *
+   * @param { Object } req - Request object
+   * @param { Object } res - Response object
+   *
+   * @returns { undefined }
+   */
+exports.fetchOpinion = (req, res) => {
+  Opinion.find({
+    opinionBill: req.params.billId
+  }).then((opinions) => {
+    if (!opinions) {
+      return res.status(404).send({
+        success: false,
+        message: 'No opinion found!'
+      });
+    }
+    res.status(200).send({
+      opinions,
+      message: 'Opinion successfully fetched!'
+    });
+  }).catch((error) => {
+    res.status(500).send({
+      message: 'Internal server Error',
+      error: error.message
+    });
+  });
+};
+
