@@ -584,3 +584,49 @@ exports.fetchOpinion = (req, res) => {
   });
 };
 
+/**
+   * @description allows a user to search for bills
+   *
+   * @param { Object } req - Request object
+   * @param { Object } res - Response object
+   *
+   * @returns { undefined }
+   */
+exports.searchBills = (req, res) => {
+  if (!req.body.searchTerm) {
+    res.status(401).send({
+      message: 'please add search term'
+    });
+  }
+  const offset = 1 || Number(req.query.offset);
+  const limit = 6 || Number(req.query.limit);
+  let count;
+  Bill.count({
+    $text: { $search: req.body.searchTerm.trim() },
+  }).exec()
+    .then((iscount) => {
+      count = iscount;
+      if (count > 0) {
+        Bill.find({
+          $text: { $search: req.body.searchTerm.trim() },
+        })
+          // .skip(offset)
+          .limit(limit).exec()
+          .then(bills => {
+            return res.status(202).send({
+              bills,
+              pageInfo: pagination(count, limit, offset),
+            })
+          })
+      } else {
+        return res.status(404).send({
+          message: 'bill not found',
+        });
+      }
+    })
+
+    .catch(() => {
+      res.status(500);
+    });
+};
+
