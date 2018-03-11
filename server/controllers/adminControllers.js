@@ -1,44 +1,42 @@
-import bcrypt from 'bcrypt';
-import crypto from 'crypto';
-import Admin from '../models/Admin';
-import Bill from '../models/Bill'
+import Bill from '../models/Bill';
 import User from '../models/User';
-import convertCase from '../utils/convertCase';
-import generateToken from '../utils/GenerateToken';
 import validators from '../middlewares/validators';
+import generateToken from '../utils/generateToken';
 
 /**
    * @description sign up an admin
-   * 
+   *
    * @param {Object} req user request object
    * @param {Object} res server response object
-   * 
+   *
    * @return {undefined}
    */
 exports.adminSignUp = (req, res) => {
-  if (req.body.userName !== 'admin') {
+  if (req.body.userName !== 'super-admin') {
     return res.status(400).send({
-      message: 'Username can only be \'Admin\'',
+      message: 'Username can only be "super-admin"',
       success: false
     });
   }
-  Admin.findOne({
+  User.findOne({
     userName: req.body.userName.trim().toLowerCase()
   })
     .exec()
-    .then((userName) => {
-      if (userName) {
+    .then((userNameFound) => {
+      if (userNameFound) {
         res.status(409).send({
           message: 'Admin can only sign up once, please sign in!',
           success: false
         });
       } else {
         const {
-          userName, password
+          fullName, email, userName, password
         }
           = req.body;
-        const admin = new Admin({
+        const admin = new User({
+          fullName: fullName.trim().toLowerCase(),
           userName: userName.trim().toLowerCase(),
+          email: email.trim().toLowerCase(),
           permission: 1,
           password: password.trim(),
         });
@@ -65,73 +63,33 @@ exports.adminSignUp = (req, res) => {
     });
 };
 
-
-/**
-   * @description sign in an admin
-   * 
-   * @param {Object} req user request object
-   * @param {Object} res server response object
-   * 
-   * @return {undefined}
-   */
-exports.adminSignIn = (req, res) => {
-  Admin.findOne({
-    userName: req.body.userName.trim().toLowerCase()
-  })
-    .exec((error, response) => {
-      if (error) {
-        return res.status(500).send({
-          success: false,
-          message: 'internal server error'
-        });
-      }
-      if (!response) {
-        return res.status(404).send({
-          success: false,
-          message: 'User does not exist'
-        });
-      }
-      if (!bcrypt.compareSync(req.body.password, response.password)) {
-        return res.status(422).send({
-          success: false,
-          message: 'Incorrect password'
-        });
-      }
-      return res.status(200).send({
-        message: 'Welcome!!',
-        success: true,
-        username: response.username,
-        token: generateToken(response)
-      });
-    });
-};
-
 /**
    * @description allows admins create new bills
-   * 
+   *
    * @param {Object} req user request object
    * @param {Object} res server response object
-   * 
+   *
    * @return {undefined}
    */
 exports.createBill = (req, res) => {
   const userId = req.decoded.id;
   const {
-    title, description, billProgress, voteStatus
+    title, description, billProgress
   }
     = req.body;
   User.findOne({
     $or: [
       { _id: userId },
-      { permission: 2 }
+      { permission: 1 || 2 }
     ]
   })
     .exec()
     .then((adminFound) => {
-      if (!adminFound) {
-        return res.status(400).send({
+      if (adminFound.permission === 3) {
+        return res.status(403).send({
           success: false,
-          message: 'Sorry you dont the permission to perform the requested operation'
+          message: `Sorry you dont the permission
+          to perform the requested operation`
         });
       }
       Bill.findOne({
@@ -146,10 +104,10 @@ exports.createBill = (req, res) => {
             });
           } else {
             const billDetails = {
-              title, description, billProgress, voteStatus
-            }
+              title, description, billProgress
+            };
             const newBill = new Bill(billDetails);
-            newBill.save((error, newBill) => {
+            newBill.save((error, createdBill) => {
               if (error) {
                 return res.status(500).send({
                   success: false,
@@ -160,27 +118,28 @@ exports.createBill = (req, res) => {
               return res.status(201).send({
                 success: true,
                 message: 'bill successfully created',
-                newBill
+                createdBill
               });
             });
           }
         })
         .catch((error) => {
           res.status(500)
-            .send({ message: 'Internal server error', error });
+            .send({ message: 'Internal server error', error: error.message });
         });
     })
     .catch((error) => {
       res.status(500)
-        .send({ message: 'Internal server error', error });
+        .send({ message: 'Internal server error', error: error.message });
     });
 };
+
 /**
    * @description allows admins edit bills
-   * 
+   *
    * @param {Object} req user request object
    * @param {Object} res server response object
-   * 
+   *
    * @return {undefined}
    */
 exports.editBill = (req, res) => {
@@ -188,15 +147,16 @@ exports.editBill = (req, res) => {
   User.findOne({
     $or: [
       { _id: userId },
-      { permission: 2 }
+      { permission: 1 || 2 }
     ]
   })
     .exec()
     .then((adminFound) => {
-      if (!adminFound) {
-        return res.status(400).send({
+      if (adminFound.permission === 3) {
+        return res.status(403).send({
           success: false,
-          message: 'Sorry you dont the permission to perform the requested operation'
+          message: `Sorry you dont the permission 
+          to perform the requested operation`
         });
       }
       Bill.findOne({
@@ -205,7 +165,7 @@ exports.editBill = (req, res) => {
         .exec()
         .then((billFound) => {
           if (billFound) {
-            res.status(409).send({
+            return res.status(409).send({
               message: 'bill already exists!',
               success: false
             });
@@ -217,6 +177,7 @@ exports.editBill = (req, res) => {
                   title: req.body.title,
                   description: req.body.description,
                   billProgress: req.body.billProgress,
+                  status: req.body.status,
                 },
               },
               { new: true },
@@ -234,17 +195,18 @@ exports.editBill = (req, res) => {
         })
         .catch((error) => {
           res.status(500)
-            .send({ message: 'Internal server error', error });
+            .send({ message: 'Internal server error', error: error.message });
         });
     })
     .catch((error) => {
       res.status(500)
-        .send({ message: 'Internal server error', error });
+        .send({ message: 'Internal server error', error: error.message });
     });
 };
+
 /**
    * @description allows admins delete bills
-   * 
+   *
    * @param {Object} req user request object
    * @param {Object} res server response object
    *
@@ -256,15 +218,16 @@ exports.deleteBill = (req, res) => {
   User.findOne({
     $or: [
       { _id: userId },
-      { permission: 2 }
+      { permission: 1 || 2 }
     ]
   })
     .exec()
     .then((adminFound) => {
-      if (!adminFound) {
-        return res.status(400).send({
+      if (adminFound.permission === 3) {
+        return res.status(403).send({
           success: false,
-          message: 'Sorry you dont the permission to perform the requested operation'
+          message: `Sorry you dont the permission
+           to perform the requested operation`
         });
       }
       Bill.findByIdAndRemove(billId, (err) => {
@@ -274,6 +237,7 @@ exports.deleteBill = (req, res) => {
             message: 'Internal server error',
           });
         }
+        // return response
         return res.status(200).send({
           success: true,
           message: 'Bill successfully deleted!'
@@ -287,16 +251,72 @@ exports.deleteBill = (req, res) => {
 };
 
 /**
-   * @description allows admin gets all users
-   * 
+   * @description allows admin update user permission
+   *
    * @param { Object } req user request object
    * @param { Object } res servers response
-   * 
+   *
+   * @return { undefined }
+   */
+exports.addPermission = (req, res) => {
+  const adminId = req.decoded.id;
+  const { userId } = req.body;
+  const { permission } = req.body;
+  const { errors, isValid } = validators.validatePermmission(req.body);
+  if (!isValid) {
+    return res.status(400).send({ error: errors });
+  }
+  User.findOne({
+    $and: [
+      { _id: adminId },
+      { permission: 1 }
+    ]
+  })
+    .exec()
+    .then((adminFound) => {
+      if (!adminFound) {
+        return res.status(400).send({
+          success: false,
+          message: `Sorry you dont the permission
+           to perform the requested operation`
+        });
+      }
+      User.findByIdAndUpdate(
+        { _id: userId },
+        {
+          $set: {
+            permission,
+          },
+        },
+        { new: true },
+      ).exec((error, updatedUser) => {
+        if (updatedUser) {
+          return res.status(200)
+            .send({
+              message: 'user permission has been successfully updated!',
+              updatedUser,
+            });
+        }
+      });
+    })
+    .catch((error) => {
+      res.status(500).send({
+        error: error.message
+      });
+    });
+};
+
+/**
+   * @description allows admin gets all users
+   *
+   * @param { Object } req user request object
+   * @param { Object } res servers response
+   *
    * @return { undefined }
    */
 exports.getAllUsers = (req, res) => {
   const options = {
-    select: "-password",
+    select: '-password',
     page: 1 || Number(req.query.page),
     limit: 6 || Number(req.query.limit)
   };
@@ -320,6 +340,7 @@ exports.getAllUsers = (req, res) => {
     })
     .catch((error) => {
       res.status(500).send({
+        message: 'internal server error',
         error: error.message
       });
     });

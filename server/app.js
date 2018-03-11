@@ -13,7 +13,7 @@ import routes from './routes';
 
 dotenv.config();
 
-const port = parseInt(process.env.PORT, 10) || 8000;;
+const port = parseInt(process.env.PORT, 10) || 8000;
 
 // database config
 const configDB = require('./config/database');

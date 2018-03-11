@@ -1,3 +1,8 @@
+require('dotenv').config();
+
 module.exports = {
-  url: 'mongodb://127.0.0.1:27017/billvotingdb',
+  url: process.env.MONGODB_DEV_URL,
+  url_production: process.env.MONGODB_URL,
+  url_test: process.env.MONGODB_TEST_URL,
 };
+
