@@ -4,19 +4,19 @@ import mongoosePaginate from 'mongoose-paginate';
 
 
 const SALT_WORK_FACTOR = 10;
-const userSchema = new mongoose.Schema({
-  fullName: { type: String, required: true },
-  userName: { type: String, required: true, unique: true },
-  permission: { type: Number, required: true },
-  password: { type: String, required: true, select: false },
-  email: {
-    type: String,
-    required: true,
-    unique: true
+const userSchema = new mongoose.Schema(
+  {
+    fullName: { type: String, required: true },
+    userName: { type: String, required: true, unique: true },
+    permission: { type: Number, required: true },
+    password: { type: String, required: true, select: false },
+    email: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    hash: { type: String },
   },
-  hash: { type: String },
-  expiry: { type: Date },
-},
   {
     timestamps: {
       createdAt: 'created_at',
@@ -29,9 +29,9 @@ const userSchema = new mongoose.Schema({
 userSchema.pre('save', function (next) {
   const user = this;
   if (!user.isModified('password')) return next();
-  bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+  bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
     if (err) return next(err);
-    bcrypt.hash(user.password, salt, function (err, hash) {
+    bcrypt.hash(user.password, salt, (err, hash) => {
       if (err) return next(err);
       user.password = hash;
       next();

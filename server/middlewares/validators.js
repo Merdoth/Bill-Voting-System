@@ -71,19 +71,21 @@ exports.validateSignUpInput = (value) => {
 /**
  * @description validate Bill Input Field
  *
- * @param {Object} value
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Object} next
  *
  * @returns {object} json - payload
  */
 exports.validateBillInput = (req, res, next) => {
   req.check('title', 'Title cannot be empty').notEmpty();
-  req.check('title', 'Title must be at least of 8 character long')
-    .isLength(8, 50);
+  req.check('title', 'Title must be at least of 5 character long')
+    .isLength(5, 50);
   req.check('description', 'Description cannot be empty').notEmpty();
   req.check('description', 'Description must be at least of 8 character long')
     .isLength(8, 50);
   req.check('billProgress', 'Bill Progress cannot be empty').notEmpty();
-  req.check('billProgress', 'Bill Progress must be at least of 8 character long')
+  req.check('billProgress', 'Invalid value')
     .isLength(8, 50);
   const errors = req.validationErrors();
   if (errors) {
@@ -103,7 +105,7 @@ exports.validateBillInput = (req, res, next) => {
  */
 exports.validateSignInInput = (value) => {
   const {
-    fullName, userName, email, password
+    email, password
   } = value;
   const errors = {};
   const filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -129,29 +131,20 @@ exports.validateSignInInput = (value) => {
 /**
  * @description validate Admin Input Field
  *
- * @param {Object} value
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Object} next
  *
  * @returns {object} json - payload
  */
 exports.validateAdmin = (req, res, next) => {
-  req.check('userName', 'Username cannot be empty').notEmpty();
-  req.check('password', 'Password cannot be empty').notEmpty();
-  req.check('password', 'Password must be at least of 8 character')
-    .isLength(6, 50);
-  const errors = req.validationErrors();
-  if (errors) {
-    const message = errors[0].msg;
-    res.status(400).send({ message });
-  } else {
-    next();
-  }
-};
-
-exports.validateUserProfile = (req, res, next) => {
   req.check('fullName', 'Fullname cannot be empty').notEmpty();
   req.check('userName', 'Username cannot be empty').notEmpty();
   req.check('email', 'Email cannot be empty').notEmpty();
-  req.check('email', 'Please enter a valid email').isEmail();
+  req.check('email', 'Email is not valid').isEmail();
+  req.check('password', 'Password cannot be empty').notEmpty();
+  req.check('password', 'Password must be at least of 8 character')
+    .isLength(8, 50);
   const errors = req.validationErrors();
   if (errors) {
     const message = errors[0].msg;
@@ -162,7 +155,46 @@ exports.validateUserProfile = (req, res, next) => {
 };
 
 /**
- * @description validate permisssion 
+ * @description validate User Update Profile Input Field
+ *
+ * @param {Object} value
+ *
+ * @returns {undefined}
+ */
+exports.validateUserProfile = (value) => {
+  const {
+    fullName, userName, email
+  } = value;
+  const errors = {};
+  const filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+  if (!fullName) {
+    errors.fullNameError = 'Fullname can\'t be empty';
+  } else if (fullName.trim().length === 0) {
+    errors.fullNameError = 'Fullname is required';
+  } else if (fullName.length < 3) {
+    errors.fullNameError = 'Fullname must be at least 3 characters long';
+  }
+  if (!userName) {
+    errors.userNameError = 'Username can\'t be empty';
+  } else if (userName.trim().length === 0) {
+    errors.userNameError = 'Username is required';
+  } else if (userName.length < 3) {
+    errors.userNameError = 'Username must be at least 3 characters long';
+  }
+  if (!email) {
+    errors.emailError = 'Email can\'t be empty';
+  } else if (email.trim().length === 0) {
+    errors.emailError = 'Email is required';
+  } else if (!filter.test(email)) {
+    errors.emailError = 'Email is not valid';
+  }
+
+  return { isValid: lodash.isEmpty(errors), errors };
+};
+
+/**
+ * @description validate permisssion
  *
  * @param {Object} value
  *
@@ -173,16 +205,37 @@ exports.validatePermmission = (value) => {
     permission
   } = value;
   const errors = {};
-  const filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 
   if (!permission) {
     errors.permissionError = 'permission can\'t be empty';
   } else if (permission == 1) {
-    errors.permissionError = 'This role is restricted ';
+    errors.permissionError = 'This role is restricted';
   } else if (permission < 1 || permission > 3) {
     errors.permissionError = 'this permission role is invalid';
   }
+  return { isValid: lodash.isEmpty(errors), errors };
+};
 
+/**
+ * @description validate opinion input
+ *
+ * @param {Object} value
+ *
+ * @returns {object} json - payload
+ */
+exports.validateOpinion = (value) => {
+  const {
+    opinion
+  } = value;
+  const errors = {};
+
+  if (!opinion) {
+    errors.opinionError = 'Opinion can\'t be empty';
+  } else if (opinion.trim().length === 0) {
+    errors.opinionError = 'Opinion is required';
+  } else if (opinion.length < 3) {
+    errors.opinionError = 'Opinion must be at least 3 characters long';
+  }
 
   return { isValid: lodash.isEmpty(errors), errors };
 };

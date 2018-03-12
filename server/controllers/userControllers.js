@@ -1,19 +1,19 @@
 import bcrypt from 'bcrypt';
-import crypto from 'crypto';
 import User from '../models/User';
 import Vote from '../models/Vote';
 import Opinion from '../models/Opinion';
+import Bill from '../models/Bill';
 import convertCase from '../utils/convertCase';
-import generateToken from '../utils/GenerateToken';
+import generateToken from '../utils/generateToken';
 import pagination from '../utils/pagination';
 import validators from '../middlewares/validators';
 
 /**
    * @description sign up a new user
-   * 
+   *
    * @param {Object} req user request object
    * @param {Object} res server response object
-   * 
+   *
    * @return {undefined}
    */
 exports.signUp = (req, res) => {
@@ -25,8 +25,8 @@ exports.signUp = (req, res) => {
     email: req.body.email,
   })
     .exec()
-    .then((email) => {
-      if (email) {
+    .then((emailFound) => {
+      if (emailFound) {
         res.status(409).send({
           message: 'Email already exists',
           success: false
@@ -36,8 +36,8 @@ exports.signUp = (req, res) => {
           userName: convertCase(req.body.userName)
         })
           .exec()
-          .then((userName) => {
-            if (userName) {
+          .then((userNameFound) => {
+            if (userNameFound) {
               res.status(409).send({
                 message: 'User with this username already exists',
                 success: false
@@ -73,25 +73,24 @@ exports.signUp = (req, res) => {
           })
           .catch((error) => {
             res.status(500)
-              .send({ message: 'Internal server error', error });
+              .send({ message: 'Internal server error', error: error.message });
           });
       }
     }).catch((error) => {
       res.status(500)
-        .send({ message: 'Internal server error', error });
+        .send({ message: 'Internal server error', error: error.message });
     });
 };
 
 /**
    * @description sign in a registered user
-   * 
+   *
    * @param {Object} req user request object
    * @param {Object} res server response object
-   * 
+   *
    * @return {undefined}
    */
 exports.signIn = (req, res) => {
-  console.log(req.body)
   const { errors, isValid } = validators.validateSignInInput(req.body);
   if (!isValid) {
     return res.status(400).send({ error: errors });
@@ -99,15 +98,14 @@ exports.signIn = (req, res) => {
   User.findOne({
     email: req.body.email.trim().toLowerCase()
   })
-    .select("+password")
+    .select('+password')
     .exec().then((user) => {
       if (!user) {
         return res.status(404).send({
-          error: 'Failed to authenticate user'
+          message: 'Failed to authenticate user'
         });
       }
       if (!bcrypt.compareSync(req.body.password, user.password)) {
-
         return res.status(422).send({
           success: false,
           message: 'Incorrect password'
@@ -127,65 +125,72 @@ exports.signIn = (req, res) => {
         error: error.message
       });
     });
-},
+};
 
 /**
  * @description allows user update profile
- * 
+ *
  * @param {object} req - response object
  * @param {object} res - request object
  *
  * @return { undefined }
  */
+
 exports.updateUserProfile = (req, res) => {
-  User.findOne({
-    email: req.body.email,
-  })
-    .exec()
-    .then((userFound) => {
-      if (userFound.email !== req.decoded.email) {
-        res.status(409).send({
-          message: 'The email address is already in use by another account.',
-          success: false
-        });
-      } else {
-        const { fullName, userName, email } = req.body;
-        User.findByIdAndUpdate(
-          { _id: req.decoded.id },
-          {
-            $set: {
-              fullName,
-              userName,
-              email,
-            },
-          },
-          { new: true },
-        )
-          .exec((error, user) => {
-            if (user) {
-              return res.status(200).send({
-                user: {
-                  fullName,
-                  userName,
-                  email,
-                },
-                message: 'Profile Update successful',
-              });
-            }
-            return res.status(404).send({ message: 'User not Found' });
-          })
+  const { errors, isValid } = validators.validateUserProfile(req.body);
+  if (!isValid) {
+    return res.status(400).send({ error: errors });
+  }
+  const { fullName, userName, email } = req.body;
+  User.findByIdAndUpdate(
+    { _id: req.decoded.id },
+    {
+      $set: {
+        fullName: convertCase(fullName),
+        userName: convertCase(userName),
+        email: email.toLowerCase(),
+      },
+    },
+    { new: true },
+  )
+    .exec((error, user) => {
+      if (error) {
+        if (error.codeName === 'DuplicateKey' &&
+        error.message.includes(req.body.email)) {
+          return res.status(409).send({
+            message: 'This email address is already in use by another account.',
+            success: false
+          });
+        }
+        if (error.codeName === 'DuplicateKey' &&
+        error.message.includes(req.body.userName)) {
+          return res.status(409).send({
+            message: 'This username is already in use by another account.',
+            success: false
+          });
+        }
+        return res.status(500).json(error);
       }
-    }).catch((error) => {
-      res.status(500)
-        .send({ message: 'Internal server error', error });
+      if (user) {
+        return res.status(200).send({
+          user: {
+            fullName: convertCase(fullName),
+            userName: convertCase(userName),
+            email: email.toLowerCase(),
+          },
+          message: 'Profile successfully updated',
+        });
+      }
+      return res.status(404).send({ message: 'User not Found' });
     });
 };
-
 /**
  * @description allows user add a vote
- * 
+ *
  * @param {object} req - response object
  * @param {object} res - request object
+ * @param {object} voteDetails - voteDetails object
+ * @param {object} billFound - billFound object
  *
  * @return {undefined}
  */
@@ -211,13 +216,13 @@ const addVote = (req, res, voteDetails, billFound) => {
 
     const column = status === 'upvote' ?
       { upVoteCount: newVoteCount } :
-      { downVoteCount: newVoteCount }
+      { downVoteCount: newVoteCount };
 
     Bill.update({ _id: billId }, {
       $set: column
-    }, (error, response) => {
-      if (error) {
-        return res.status(418).send({
+    }, (err, response) => {
+      if (err) {
+        return res.status(400).send({
           message: error,
         });
       }
@@ -226,15 +231,17 @@ const addVote = (req, res, voteDetails, billFound) => {
         message: `Your ${status} was added successfully`,
         newVote,
       });
-    })
+    });
   });
-}
+};
 
 /**
  * @description allows user remove upvote
- * 
+ *
  * @param {object} req - response object
  * @param {object} res - request object
+ * @param {object} voteDetails - voteDetails object
+ * @param {object} billFound - billFound object
  *
  * @return {undefined}
  */
@@ -256,14 +263,14 @@ const removeVote = (req, res, voteDetails, billFound) => {
 
     const column = status === 'upvote' ?
       { upVoteCount: newVoteCount } :
-      { downVoteCount: newVoteCount }
+      { downVoteCount: newVoteCount };
 
     Bill.update({ _id: billId }, {
       $set: column
-    }, (error, response) => {
-      if (error) {
-        //change this status code and all other 418 errors
-        return res.status(418).send({
+    }, (err, response) => {
+      if (err) {
+        // change this status code and all other 418 errors
+        return res.status(400).send({
           message: error,
         });
       }
@@ -271,22 +278,23 @@ const removeVote = (req, res, voteDetails, billFound) => {
         success: true,
         message: `Your ${status} has been remove`,
       });
-    })
+    });
   });
-}
+};
 
 
 /**
  * @description allows user toggle through votes
- * 
+ *
  * @param {object} req - response object
  * @param {object} res - request object
+ * @param {object} voteDetails - voteDetails object
+ * @param {object} billFound - billFound object
  *
  * @return {undefined}
  */
 const toggleVote = (req, res, voteDetails, billFound) => {
-
-  const { userId, billId, status } = voteDetails;
+  const { billId, status } = voteDetails;
   if (status === 'upvote') {
     Bill.findByIdAndUpdate({ _id: billId }, {
       $set: {
@@ -312,8 +320,8 @@ const toggleVote = (req, res, voteDetails, billFound) => {
             .exec()
             .then((updatedVoteStatus) => {
               if (!updatedVoteStatus) {
-                return res.status(418).send({
-                  message: error,
+                return res.status(400).send({
+                  message: 'An error occured while updating',
                 });
               }
               return res.status(201).send({
@@ -321,9 +329,9 @@ const toggleVote = (req, res, voteDetails, billFound) => {
                 message: `Your ${status} was added successfully`,
                 updatedVoteStatus,
               });
-            })
+            });
         }
-      })
+      });
   } else if (status === 'downvote') {
     Bill.findByIdAndUpdate({ _id: billId }, {
       $set: {
@@ -349,8 +357,8 @@ const toggleVote = (req, res, voteDetails, billFound) => {
             .exec()
             .then((updatedVoteStatus) => {
               if (!updatedVoteStatus) {
-                return res.status(418).send({
-                  message: error,
+                return res.status(400).send({
+                  message: 'An error occured while updating',
                 });
               }
               return res.status(201).send({
@@ -358,24 +366,23 @@ const toggleVote = (req, res, voteDetails, billFound) => {
                 message: `Your ${status} was added successfully`,
                 updatedVoteStatus,
               });
-            })
+            });
         }
-      })
+      });
   }
-
-}
+};
 
 /**
  * @description allows a user upvote a bill
- * 
+ *
  * @param {object} req - response object
  * @param {object} res - request object
  *
- * @return {undefined} 
+ * @return {undefined}
  */
 exports.upVoteBill = (req, res) => {
   const userId = req.decoded.id;
-  const status = req.body.status;
+  const { status } = req.body;
   const { billId } = req.params;
 
   Bill.findById({ _id: billId })
@@ -386,17 +393,15 @@ exports.upVoteBill = (req, res) => {
           message: `Sorry, no bill with id ${billId} `,
         });
       }
-      if (billFound.voteStatus === 'open') {
+      if (billFound.billProgress !== 'House Passed') {
         Vote.findOne({
           votedBill: billId,
           votedBy: userId
         }, (err, result) => {
           if (err) {
-            if (!updatedVoteStatus) {
-              return res.status(400).send({
-                message: error,
-              });
-            }
+            return res.status(400).send({
+              message: 'An error occured while updating',
+            });
           }
 
           if (result) {
@@ -417,13 +422,12 @@ exports.upVoteBill = (req, res) => {
             };
             return addVote(req, res, voteDetails, billFound);
           }
-        })
+        });
       } else {
         res.status(403).send({
           message: 'Sorry, voting for this bill is closed',
         });
       }
-
     }).catch((error) => {
       res.status(500).send({
         message: 'Internal server Error',
@@ -434,16 +438,15 @@ exports.upVoteBill = (req, res) => {
 
 /**
  * @description allows a user downvote a bill
- * 
+ *
  * @param {object} req - response object
  * @param {object} res - request object
  *
- * @return {undefined} 
+ * @return {undefined}
  */
 exports.downVoteBill = (req, res) => {
-
   const userId = req.decoded.id;
-  const status = req.body.status;
+  const { status } = req.body;
   const { billId } = req.params;
 
   Bill.findById(billId)
@@ -454,7 +457,7 @@ exports.downVoteBill = (req, res) => {
           message: `Sorry, no bill with id ${billId} `,
         });
       }
-      if (billFound.voteStatus === 'open') {
+      if (billFound.billProgress !== 'House Passed') {
         Vote.findOne({
           votedBill: billId,
           votedBy: userId
@@ -483,13 +486,12 @@ exports.downVoteBill = (req, res) => {
             };
             return addVote(req, res, voteDetails, billFound);
           }
-        })
+        });
       } else {
         res.status(403).send({
           message: 'Sorry, voting for this bill is closed',
         });
       }
-
     }).catch((error) => {
       res.status(500).send({
         message: 'Internal server Error',
@@ -507,7 +509,10 @@ exports.downVoteBill = (req, res) => {
    * @returns { undefined }
    */
 exports.addOpinion = (req, res) => {
-  //novalidation yet
+  const { errors, isValid } = validators.validateOpinion(req.body);
+  if (!isValid) {
+    return res.status(400).send({ error: errors });
+  }
   const { opinion } = req.body;
   const userId = req.decoded.id;
   const { billId } = req.params;
@@ -517,13 +522,13 @@ exports.addOpinion = (req, res) => {
     .then((billFound) => {
       if (!billFound) {
         return res.status(404).send({
-          message: `Sorry, no bill with id ${billId} `,
+          message: `Sorry, no bill with id ${billId}`,
         });
       }
       if (billFound) {
         if (billFound.billProgress !== 'House Passed') {
           const newDetail = new Opinion({
-            opinion: opinion,
+            opinion,
             opinionBy: userId,
             opinionBill: billId
           });
@@ -585,7 +590,7 @@ exports.fetchOpinion = (req, res) => {
 };
 
 /**
-   * @description allows a user to fetch all bills voted 
+   * @description allows a user to fetch all bills voted
    *
    * @param { Object } req - Request object
    * @param { Object } res - Response object
@@ -594,7 +599,7 @@ exports.fetchOpinion = (req, res) => {
    */
 exports.fetchUserVotedBill = (req, res) => {
   const userId = req.decoded.id;
-  var options = {
+  let options = {
     populate: 'votedBill',
     page: 1 || Number(req.query.page),
     limit: 6 || Number(req.query.limit)
@@ -637,7 +642,7 @@ exports.fetchUserVotedBill = (req, res) => {
    */
 exports.searchBills = (req, res) => {
   if (!req.body.searchTerm) {
-    res.status(401).send({
+    res.status(400).send({
       message: 'please add search term'
     });
   }
@@ -653,14 +658,11 @@ exports.searchBills = (req, res) => {
         Bill.find({
           $text: { $search: req.body.searchTerm.trim() },
         })
-          // .skip(offset)
           .limit(limit).exec()
-          .then(bills => {
-            return res.status(202).send({
-              bills,
-              pageInfo: pagination(count, limit, offset),
-            })
-          })
+          .then(bills => res.status(202).send({
+            bills,
+            pageInfo: pagination(count, limit, offset),
+          }));
       } else {
         return res.status(404).send({
           message: 'bill not found',
@@ -672,4 +674,36 @@ exports.searchBills = (req, res) => {
       res.status(500);
     });
 };
-
+/**
+   * @description allows a user get a bill
+   *
+   * @param { Object } req - Request object
+   * @param { Object } res - Response object
+   *
+   * @returns { undefined }
+   */
+exports.getABill = (req, res) => {
+  const { billId } = req.params;
+  Bill.find({
+    _id: billId
+  })
+    .exec()
+    .then((billFound) => {
+      if (!billFound || billFound.length < 1) {
+        return res.status(404).send({
+          success: false,
+          message: 'None Found!!! Bill does not exist.'
+        });
+      }
+      res.status(200).send({
+        billFound,
+        message: 'Bill successfully fetched'
+      });
+    })
+    .catch((error) => {
+      res.status(500).send({
+        message: 'internal server error',
+        error: error.message
+      });
+    });
+};

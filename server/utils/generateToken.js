@@ -15,6 +15,7 @@ export default (user) => {
     token: {
       id: user._id,
       userName: user.userName,
+      email: user.email
     }
   }, process.env.SECRET);
   return Token;
