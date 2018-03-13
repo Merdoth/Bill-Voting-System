@@ -1,0 +1,53 @@
+html, body, #root, .login, main{
+  width: 100%;
+  height: 100%
+}
+
+body {
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  color: gray;  
+}
+
+h3 {
+  font-size: 28px;
+  font-weight: 300 !important; 
+}
+
+h4 {
+  font-size: 18px;
+  font-weight: 500 !important; 
+}
+
+header, main {
+  padding-left: 300px;
+  overflow: hidden;
+}
+
+@media only screen and (max-width : 992px) {
+  header, main, footer {
+    padding-left: 0;
+  }
+}
+#sidenav-overlay {
+  background-color: transparent;
+}
+
+.flexer {
+  display: flex;
+  height: 100%;
+
+  &.flexer-row {
+    flex-direction: row;
+  }
+  &.flexer-col {
+    flex-direction: column;
+  }
+
+  > :not(.flexed) {
+    flex: 0 0 auto;
+  }
+  > .flexed {
+    flex: 1 1 auto;
+  }
+}

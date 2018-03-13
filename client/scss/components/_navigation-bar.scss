@@ -1,0 +1,53 @@
+.logo {
+  padding: 0 15px !important;
+  cursor: pointer;
+}
+
+.logo-text {
+  color: $color-brand-blue;
+  font-weight: 700;
+  font-size: 30px;
+}
+
+.navbar-main {
+  height: 85px;
+  i,
+  [class^="mdi-"],
+  [class*="mdi-"],
+  i.material-icons,
+
+  ul{
+    height: 100%;
+  }
+
+  li a:hover{
+    height: 100%;
+    background-color: $color-brand-blue;
+    color: #000000;
+  }
+
+  nav {
+    background-color: $color-white;
+    color: $color-white;
+    height: 85px;
+    line-height: 85px;
+  }
+
+  nav i, nav [class^="mdi-"], nav [class*="mdi-"], nav i.material-icons {
+    height: 85px;
+    line-height: 85px;
+  }
+
+  nav .brand-logo { 
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center; 
+  }
+}
+
+@media only screen and (min-width: 601px){
+    nav, nav .nav-wrapper i, nav a.button-collapse, nav a.button-collapse i {
+        height: 30px;
+        line-height: 30px;
+    }
+}

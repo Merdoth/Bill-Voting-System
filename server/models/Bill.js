@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const billSchema = new mongoose.Schema(
   {
-    title: { type: String, unique: true, required: true },
+    title: { type: String, required: true },
     description: { type: String, required: true },
     upVoteCount: {
       type: Number,

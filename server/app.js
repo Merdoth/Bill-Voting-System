@@ -5,11 +5,14 @@ import logger from 'morgan';
 import path from 'path';
 import colors from 'colors';
 import webpack from 'webpack';
-import webpackMiddleware from 'webpack-dev-middleware';
+import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import routes from './routes';
+import devConfig from '../webpack.config.babel';
+import prodConfig from '../webpack.config.prod.babel';
+
 
 dotenv.config();
 
@@ -22,29 +25,36 @@ const configDB = require('./config/database');
 const app = express();
 
 
-let webpackConfig;
 mongoose.Promise = global.Promise;
+let compiler;
 
 // Setup a default catch-all route that sends back a welcome message in JSON format.
-if (process.env.NODE_ENV !== 'production') {
-  if (process.env.NODE_ENV === 'test') {
-    mongoose.connect(configDB.url_test);
-  } else {
-    mongoose.connect(configDB.url);
-  }
-} else {
+if (process.env.NODE_ENV === 'production') {
   mongoose.connect(configDB.url_production);
+} else if (process.env.NODE_ENV === 'test') {
+  mongoose.connect(configDB.url_test);
+  compiler = webpack(devConfig);
+} else {
+  mongoose.connect(configDB.url);
+  compiler = webpack(devConfig);
 }
 // Log requests to the console.
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
+app.use(express.static(__dirname + './../public'));
 
-app.use(routes);
-
+if (process.env.NODE_ENV === 'development') {
+  app.use(webpackDevMiddleware(compiler, {
+    publicPath: devConfig.output.publicPath,
+    open: false
+  }));
+  app.use(webpackHotMiddleware(compiler));
+}
+app.use('/api/v1', routes);
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/index.html')); 
+  res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
 app.listen(port, (err) => {

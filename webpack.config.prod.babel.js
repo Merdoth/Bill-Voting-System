@@ -15,7 +15,7 @@ const extractSass = new ExtractTextPlugin({
 
 export default {
   devtool: 'source-map',
-  entry: path.resolve(__dirname, 'client/index'),
+  entry: path.resolve(__dirname, 'client/index.html'),
 
   target: 'web',
   output: {
@@ -31,7 +31,7 @@ export default {
     extractSass,
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: path.join(__dirname, 'client/index.html'),
+      template: path.join(__dirname, 'client/index'),
       inject: 'body',
       minify: false,
       excludeAssets: [/.js/]

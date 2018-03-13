@@ -1,0 +1,49 @@
+.not-found-wrapper {
+  height: 100%;
+  background-color: #ebf8fe;
+  overflow: hidden;
+}
+
+.not-found-content {
+  height: 100%;
+
+  p {
+    font-weight: 800;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .back-btn {
+    border: solid 1px $color-brand-blue;
+    width: 300px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    color: $color-brand-blue;
+  }
+
+  .back-btn:hover{
+    background-color: $color-brand-blue;
+    color: $color-white;
+  }
+
+  .not-found-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .not-found-404-text {
+    font-size: 40px;
+    font-weight: 800
+  }
+  .img-wrapper {
+    height: 50%;
+  }
+  .not-found-img {
+    height: 500px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+ 

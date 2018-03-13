@@ -139,6 +139,8 @@ exports.validateSignInInput = (value) => {
  */
 exports.validateAdmin = (req, res, next) => {
   req.check('fullName', 'Fullname cannot be empty').notEmpty();
+  req.check('fullName', 'fullName must be at least of 8 character')
+    .isLength(8, 50);
   req.check('userName', 'Username cannot be empty').notEmpty();
   req.check('email', 'Email cannot be empty').notEmpty();
   req.check('email', 'Email is not valid').isEmail();

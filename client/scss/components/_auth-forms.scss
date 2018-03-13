@@ -1,0 +1,123 @@
+.auth-form {
+  padding-top: 5rem;
+  max-width: 500px;
+  margin-bottom: 80px;
+  height: 100%;
+
+  .input-field input {
+    margin: 5px;
+  }
+}
+
+.signup-form {
+  padding-top: 2rem;
+  max-width: 500px;
+  margin-bottom: 80px;
+  .input-field input {
+    margin: 5px;
+  }
+}
+
+.container {
+  width: 62%;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 20px
+  }
+}
+.form-cta {
+  margin-top: 3rem;
+
+  .btn {
+    height: unset;
+    padding: .5rem 2rem;
+    width: 100%;
+    background-color: $color-brand-blue    
+  }
+}
+
+.update-form-cta {
+  margin-top: 3rem;
+
+  .btn {
+    height: unset;
+    padding: .5rem 2rem;
+    width: 30%;
+    background-color: $color-brand-blue    
+  }
+}
+
+.update-btn {
+  margin-left: 10px;
+}
+
+.btn.shadow-effect {
+  margin: 0 auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  &:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
+}
+
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #82b1ff !important;;
+    box-shadow: 0 1px 0 0 #82b1ff !important;;
+}
+
+.input-field input[type=email]:focus {
+    border-bottom: 1px solid #82b1ff !important;;
+    box-shadow: 0 1px 0 0 #82b1ff !important;;
+}
+
+.input-field input[type=password]:focus {
+  border-bottom: 1px solid #82b1ff !important;;
+  box-shadow: 0 1px 0 0 #82b1ff !important;;
+}
+
+.authlinks {
+  line-height: 1.5;
+  padding-left: 10px;
+  
+  a {
+    color: $color-link-normal;
+    &:hover{
+      color: $color-brand-blue;
+    }
+  }
+}
+
+.disclaimer {
+  display: flex;
+  padding: 0 20px;
+}
+
+.disclaimer-right {
+  display: flex;
+  flex-direction: column;
+  margin-left: 50px;
+  
+  span {
+    display: block;
+    font-size: 10px;
+  }
+}
+
+.login{
+  overflow: scroll;
+}
+
+.login-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+
+  i {
+    font-size: 40px;
+    border: solid 1px;
+  }
+}
