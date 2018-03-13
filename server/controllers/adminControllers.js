@@ -92,41 +92,23 @@ exports.createBill = (req, res) => {
           to perform the requested operation`
         });
       }
-      Bill.findOne({
-        title: req.body.title.trim().toLowerCase()
-      })
-        .exec()
-        .then((billFound) => {
-          if (billFound) {
-            return res.status(409).send({
-              message: 'bill already exists!',
-              success: false
-            });
-          } else {
-            const billDetails = {
-              title, description, billProgress
-            };
-            const newBill = new Bill(billDetails);
-            newBill.save((error, createdBill) => {
-              if (error) {
-                return res.status(500).send({
-                  success: false,
-                  message: 'Internal server Error',
-                  error: error.message
-                });
-              }
-              return res.status(201).send({
-                success: true,
-                message: 'bill successfully created',
-                createdBill
-              });
-            });
-          }
-        })
-        .catch((error) => {
-          res.status(500)
-            .send({ message: 'Internal server error', error: error.message });
+      const billDetails = {
+        title, description, billProgress
+      };
+      const newBill = new Bill(billDetails);
+      newBill.save((error, createdBill) => {
+        if (error) {
+          return res.status(409).send({
+            message: 'bill already exists!',
+            success: false
+          });
+        }
+        return res.status(201).send({
+          success: true,
+          message: 'bill successfully created',
+          createdBill
         });
+      });
     })
     .catch((error) => {
       res.status(500)
@@ -159,43 +141,32 @@ exports.editBill = (req, res) => {
           to perform the requested operation`
         });
       }
-      Bill.findOne({
-        title: req.body.title.trim().toLowerCase()
-      })
-        .exec()
-        .then((billFound) => {
-          if (billFound) {
+      Bill.findByIdAndUpdate(
+        { _id: req.params.billId },
+        {
+          $set: {
+            title: req.body.title,
+            description: req.body.description,
+            billProgress: req.body.billProgress,
+            status: req.body.status,
+          },
+        },
+        { new: true },
+      )
+        .exec((error, editedBill) => {
+          if (error) {
             return res.status(409).send({
               message: 'bill already exists!',
               success: false
             });
-          } else {
-            Bill.findByIdAndUpdate(
-              { _id: req.params.billId },
-              {
-                $set: {
-                  title: req.body.title,
-                  description: req.body.description,
-                  billProgress: req.body.billProgress,
-                  status: req.body.status,
-                },
-              },
-              { new: true },
-            )
-              .exec((error, editedBill) => {
-                if (editedBill) {
-                  return res.status(200)
-                    .send({
-                      message: 'Bill has been successfully updated!',
-                      editedBill,
-                    });
-                }
+          }
+          if (editedBill) {
+            return res.status(200)
+              .send({
+                message: 'Bill has been successfully updated!',
+                editedBill,
               });
           }
-        })
-        .catch((error) => {
-          res.status(500)
-            .send({ message: 'Internal server error', error: error.message });
         });
     })
     .catch((error) => {
@@ -237,7 +208,6 @@ exports.deleteBill = (req, res) => {
             message: 'Internal server error',
           });
         }
-        // return response
         return res.status(200).send({
           success: true,
           message: 'Bill successfully deleted!'

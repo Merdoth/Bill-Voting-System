@@ -1,0 +1,32 @@
+.mastfoot {
+  color: $color-brand-black;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 70px;
+  width: 100%;
+  background: $color-white;
+  border-top: 1px solid #d8d8d8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.footer-left {
+  font-size: 10px;
+  display: flex;
+  padding-right:20px; 
+  img {
+    margin-top: 10px;
+  }
+}
+.footer-left-trademark {
+  flex-direction: column;
+  padding: 20px;
+  color: gray;
+
+   span {
+    display: block
+  }
+}

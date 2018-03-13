@@ -169,7 +169,7 @@ exports.updateUserProfile = (req, res) => {
             success: false
           });
         }
-        return res.status(500).json(error);
+        return res.status(500).send(error);
       }
       if (user) {
         return res.status(200).send({
