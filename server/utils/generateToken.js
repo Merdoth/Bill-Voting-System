@@ -15,8 +15,9 @@ export default (user) => {
     token: {
       id: user._id,
       userName: user.userName,
+      permission: user.permission,
       email: user.email
     }
-  }, process.env.SECRET, { expiresIn: 60 });
+  }, process.env.SECRET, { expiresIn: 86400 });
   return Token;
 };

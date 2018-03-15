@@ -1,0 +1,83 @@
+.side-nav {
+  background-color: ghostwhite;
+  box-shadow: none;
+}
+.side-nav-section {
+  margin-bottom: 25px;
+
+  &.logo {
+    padding: 10px 15px !important;
+    box-shadow: 0px 1px 1px #d0d4d9;
+    background-color: #fff;
+  }
+
+  ul {
+    margin: 0;
+  }
+
+  li, li > a {
+    height: unset;
+    line-height: unset;
+  }
+
+  .side-nav-logout-btn {
+    font-size: .9rem;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    a {
+      padding: 15px 32px !important;
+      cursor: pointer;
+      color: $color-link-normal;
+      width:100%;
+    }
+    a:hover {
+      width: 100%;
+      background: $color-brand-blue;
+      border-left: solid 4px rosybrown;
+      color: $color-white
+    }
+  }
+
+  .side-nav-item {
+    a {
+      padding: 15px 32px !important;
+      cursor: pointer;
+      color: $color-link-normal;
+    }
+    a:hover {
+      border-left: solid 4px $color-link-normal;
+    }
+    a.active {
+      border-left: solid 4px #0d47a1;
+    }
+    a:active {
+      border-left: solid 4px #f6b63a;
+    }
+  }
+}
+.mobile-hambuger {
+  padding-left: 33px;
+
+  i {
+    font-size: 36px;
+  }
+}
+.side-nav-profile {
+  padding: 0 32px !important;
+}
+
+.page-down {
+  float: right;
+  padding-left: 110px;
+}
+.profile-item {
+  display: flex;
+  align-items: center;
+}
+.side-nav-section.logo {
+  padding: 25px 32px;
+  border-bottom: 1px solid $color-brand-gray-light;
+  
+}

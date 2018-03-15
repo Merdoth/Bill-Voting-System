@@ -1,0 +1,153 @@
+.welcome-caption {
+  padding-right: 10px;
+  border-bottom: solid 1px $color-brand-gray-light;
+  display: flex;
+  height: 73px;
+  box-shadow: 0px 1px 1px #d0d4d9
+}
+
+.dashboard-container {
+  height: 100%
+}
+
+.float-header-with-flex {
+  flex: 1;
+}
+
+.username-format {
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 25px 30px 10px 0;
+}
+
+.right-sidenav {
+  width: 100px !important;
+  height: 100%;
+  border-top: solid 1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 24px 40px 0 rgba(0, 0, 0, 0.2);
+  background-color: ghostwhite;
+}
+
+.username-icon {
+  font-size: 30px;
+}
+
+.bill-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.bill-header {
+  flex: 0 0 auto;
+  height: 150px;
+
+    h3 {
+      margin-left: 30px;
+      border-bottom: solid 4px #0d47a1;
+      width: 110px;
+      padding: 16px;
+      border-radius: 5px;
+      padding-top: 70px;
+    }
+}
+
+.bill-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: scroll;
+  padding: 10px 25px;
+  flex: 1 1 auto;
+}
+
+.bill-content {
+  width: 100%;
+  height: 80px;
+  background-color: #f9f9f9;
+  display: flex;
+  margin: 3px 0;
+  border: solid 1px #dddddd;
+  justify-content: space-between;
+  color: #747474;
+  font-size: 13px;
+  box-shadow: 0 20px 80px 4px rgba(0, 0, 0, 0.03);
+  padding: 15px;
+  transition: 0.3s;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  &:hover {
+    border: 1px solid rgba(51, 89, 223, 0.2);
+    box-shadow: 0 10px 30px 7px rgba(77, 14, 33, 0.07);
+    transform: scale(1.03);
+    z-index: 2;
+  }
+}
+.Not.enacted {
+  height: 10px;
+  background-color: green;
+  width: 10px;
+  border-radius: 50%;
+  display: block;  
+  opacity: .5;
+  margin-right: 10px;
+}
+
+.Senate.Voted {
+  height: 10px;
+  background-color: orange;
+  width: 10px;
+  border-radius: 50%;
+  display: block;
+  opacity: .5;
+  margin-right: 10px;
+}
+
+.House.Passed {
+  height: 10px;
+  background-color: red;
+  width: 10px;
+  border-radius: 50%;
+  display: block;
+  opacity: .5;
+  margin-right: 10px;
+}
+.vote-btn {
+  width: 200px;
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 10px;
+}
+
+.bill-details {
+  align-items: center;
+}
+
+.content-align {
+  padding: 10px
+}
+
+.bill-title {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.upvote-count, .downvote-count{
+    height: 30px;
+    background-color: lightgray;
+    width: 30px;
+    border-radius: 50%;
+    display: block;
+    opacity: .5;
+    text-align: center;
+    padding: 7px;
+    color: white;
+}
+
+.backdrop {
+  background-color: purple;
+  border-radius: 10px;
+}

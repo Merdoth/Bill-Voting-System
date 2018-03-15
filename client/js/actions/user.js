@@ -54,11 +54,11 @@ export const userSignupRequest = userData => dispatch =>
       localStorage.setItem('jwtToken', token);
       setAuthToken(token);
       dispatch(setCurrentUser(jwt.decode(token)));
-      Materialize.toast(response.data.message, 3000, 'rounded green');
+      Materialize.toast(response.data.message, 3000, 'green');
       history.push('/dashboard');
     }).catch((err) => {
       dispatch(signupUserFail(err));
-      Materialize.toast(err.response.data.error, 3000, 'rounded red');
+      Materialize.toast(err.response.data.message, 3000, 'red');
     });
 
 const userLoginSuccess = user => ({ type: types.LOGIN_USER_SUCCESS, user });
@@ -79,12 +79,12 @@ export const userLoginRequest = userData => dispatch =>
       localStorage.setItem('jwtToken', token);
       setAuthToken(token);
       dispatch(setCurrentUser(jwt.decode(token)));
-      Materialize.toast(response.data.message, 3000, 'rounded green');
+      Materialize.toast(response.data.message, 3000, 'green');
       history.push('/dashboard');
     })
     .catch((err) => {
       dispatch(userLoginFailed(err));
-      Materialize.toast(err.response.data.error, 3000, 'rounded red');
+      Materialize.toast(err.response.data.message, 3000, 'red');
     });
 
 const logoutSuccess = user => ({
@@ -105,23 +105,23 @@ export const logout = () => (dispatch) => {
   history.push('/');
 };
 
-const userDetailsSuccess = details =>
-  ({ type: types.GET_USERDETAILS_SUCCESS, details });
+const getBillsSuccess = bills =>
+  ({ type: types.GET_BILLS_SUCCESS, bills });
 
-const userDetailsFailed = details =>
-  ({ type: types.GET_USERDETAILS_ERROR, details });
+const getBillsFailed = bills =>
+  ({ type: types.GET_BILLS_ERROR, bills });
 
 /**
    * @function getUserDetails
    * @returns {object} dispatches an action
    * @description It logs out the user and deletes token from local storage
    */
-export const getUserDetails = () => dispatch => axios.get('/api/v1/user/info')
+export const getAllBills = () => dispatch => axios.get('/api/v1/bills')
   .then((response) => {
-    dispatch(userDetailsSuccess(response.data.user));
+    dispatch(getBillsSuccess(response.data));
   })
   .catch((response) => {
-    dispatch(userDetailsFailed(response));
+    dispatch(getBillsFailed(response));
   });
 
 const updateDetailsSuccess = details =>
@@ -148,10 +148,3 @@ export const updateUserDetails = userData => dispatch =>
       Materialize.toast(response.error, 3000, 'rounded red');
     });
 
-const confirmEmailSuccess = email => ({
-  type: types.CONFIRM_EMAIL_SUCCESS, email
-});
-
-const confirmEmailFailed = email => ({
-  type: types.CONFIRM_EMAIL_FAILED, email
-});

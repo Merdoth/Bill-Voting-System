@@ -4,11 +4,13 @@ import { Router } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
 import history from '../utils/history';
 import CheckLoggedinUser from '../utils/CheckLoggedInUser';
+import AuthenticateUser from '../utils/AuthenticateUser';
 import Signup from '../components/Signup';
 import Signin from '../components/Signin';
 import SuperAdminSignup from '../components/SuperAdminSignup';
 import NotFound from '../components/NotFound';
-import ClientDashboard from '../components/ClientDashboard';
+import AdminDashboard from '../components/AdminDashboard';
+import Home from '../components/Home';
 
 const App = () => (
   <Router history={history}>
@@ -17,22 +19,28 @@ const App = () => (
         exact
         path="/"
         name="landing"
-        component={Signin}
+        component={CheckLoggedinUser(Home)}
+      />
+      <Route
+        exact
+        path="/signin"
+        name="landing"
+        component={CheckLoggedinUser(Signin)}
       />
       <Route
         path="/register"
         name="signup"
-        component={Signup}
+        component={CheckLoggedinUser(Signup)}
       />
       <Route
         path="/admin/signup"
         name="admin-signup"
-        component={SuperAdminSignup}
+        component={CheckLoggedinUser(SuperAdminSignup)}
       />
       <Route
         path="/dashboard"
         name="dashboard"
-        component={ClientDashboard}
+        component={AuthenticateUser(AdminDashboard)}
       />
       <Route
         path="*"
