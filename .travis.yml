@@ -1,14 +1,25 @@
+sudo: required
+dist: trusty
 language: node_js
 node_js:
-  - "node"
-  - "6.11.2"
-before_install:
+  - node
+
+services:
+  - mongodb
+
+mongodb:
+  adapter: mongodb
+  database: billvoting
+  username: merdoth
+  
+before_script:
   - npm install
   - sleep 15
+
 script:
   - npm run test
-after_script:
-  - npm run coverage
 
-services: mongodb
+after_success:
+  - npm run coveralls
 
+group: deprecated-2017Q4
