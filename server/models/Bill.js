@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate';
 
 const billSchema = new mongoose.Schema(
   {
@@ -28,6 +29,7 @@ const billSchema = new mongoose.Schema(
   }
 );
 billSchema.index({ title: 'text', description: 'text' });
+billSchema.plugin(mongoosePaginate);
 const Bill = mongoose.model('Bill', billSchema);
 
 export default Bill;

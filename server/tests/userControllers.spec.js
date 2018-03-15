@@ -518,7 +518,7 @@ describe('Users', () => {
           if (!error) {
             expect(res).to.have.status(200);
             res.body.should.have.property('message')
-              .equal('Welcome!!');
+              .equal(`Welcome ${res.body.user.userName}`);
             jwtToken = res.body.token;
           }
           done();

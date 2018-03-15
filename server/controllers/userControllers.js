@@ -65,8 +65,6 @@ exports.signUp = (req, res) => {
                   success: true,
                   token: generateToken(newUser),
                   message: 'User successfully created',
-                  fullName: newUser.fullName,
-                  userName: newUser.userName,
                 });
               });
             }
@@ -113,9 +111,8 @@ exports.signIn = (req, res) => {
       }
       if (user) {
         return res.status(200).send({
-          message: 'Welcome!!',
+          message: `Welcome ${user.userName}`,
           success: true,
-          username: user.username,
           token: generateToken(user)
         });
       }
@@ -632,6 +629,47 @@ exports.fetchUserVotedBill = (req, res) => {
     });
 };
 
+
+/**
+   * @description allows a user to fetch all bills
+   *
+   * @param { Object } req - Request object
+   * @param { Object } res - Response object
+   *
+   * @returns { undefined }
+   */
+exports.getAllBills = (req, res) => {
+  let options = {
+    page: 1 || Number(req.query.page),
+    limit: 6 || Number(req.query.limit)
+  };
+  Bill.paginate({
+  }, options)
+    .then((bills) => {
+      if (!bills) {
+        return res.status(404).send({
+          success: false,
+          message: 'You don\'t a bill yet, please try to vote some!'
+        });
+      }
+      const pageInfo = {
+        pages: bills.pages,
+        page: bills.page,
+        total: bills.total,
+      };
+      res.status(200).send({
+        allBills: bills.docs,
+        pageInfo,
+        message: 'bill fetched successfully!'
+      });
+    }).catch((error) => {
+      res.status(500).send({
+        message: 'Internal server Error',
+        error: error.message
+      });
+    });
+};
+
 /**
    * @description allows a user to search for bills
    *
@@ -674,6 +712,7 @@ exports.searchBills = (req, res) => {
       res.status(500);
     });
 };
+
 /**
    * @description allows a user get a bill
    *
@@ -707,3 +746,38 @@ exports.getABill = (req, res) => {
       });
     });
 };
+
+/**
+   * @description allows get one user
+   *
+   * @param { Object } req - Request object
+   * @param { Object } res - Response object
+   *
+   * @returns { undefined }
+   */
+exports.getAUser = (req, res) => {
+  const { userId } = req.params;
+  User.find({
+    _id: userId
+  })
+    .exec()
+    .then((userFound) => {
+      if (!userFound || userFound.length < 1) {
+        return res.status(404).send({
+          success: false,
+          message: 'User does not exist.'
+        });
+      }
+      res.status(200).send({
+        userFound,
+        message: 'User successfully fetched'
+      });
+    })
+    .catch((error) => {
+      res.status(500).send({
+        message: 'internal server error',
+        error: error.message
+      });
+    });
+};
+
