@@ -9,8 +9,11 @@ import Signup from '../components/Signup';
 import Signin from '../components/Signin';
 import SuperAdminSignup from '../components/SuperAdminSignup';
 import NotFound from '../components/NotFound';
-import AdminDashboard from '../components/AdminDashboard';
+import Bills from '../components/Bills';
+import CreateBill from '../components/CreateBill';
+import EditBill from '../components/EditBill';
 import Home from '../components/Home';
+import BillDetail from '../components/BillDetail';
 
 const App = () => (
   <Router history={history}>
@@ -38,9 +41,24 @@ const App = () => (
         component={CheckLoggedinUser(SuperAdminSignup)}
       />
       <Route
-        path="/dashboard"
-        name="dashboard"
-        component={AuthenticateUser(AdminDashboard)}
+        path="/bills/create"
+        name="createBill"
+        component={AuthenticateUser(CreateBill)}
+      />
+      <Route
+        path="/bills/:billId/edit"
+        name="editBill"
+        component={AuthenticateUser(EditBill)}
+      />
+      <Route
+        path="/bills/:billId"
+        name="billDetail"
+        component={AuthenticateUser(BillDetail)}
+      />
+      <Route
+        path="/bills"
+        name="bills"
+        component={AuthenticateUser(Bills)}
       />
       <Route
         path="*"

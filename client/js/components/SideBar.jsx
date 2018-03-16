@@ -59,13 +59,13 @@ export class SideBar extends React.Component {
             </div>
             <ul className="side-nav-list">
               <li className="side-nav-item">
-                <NavLink exact to="/admin/dashboard/clients">Profile </NavLink>
+                <NavLink exact to="/profile">Profile </NavLink>
               </li>
               <li className="side-nav-item">
-                <NavLink exact to="/admin/dashboard/clients">Bills </NavLink>
+                <NavLink exact to="/bills">Bills </NavLink>
               </li>
               <li className="side-nav-item">
-                <NavLink exact to="/admin/dashboard/create">Voted Bills </NavLink>
+                <NavLink exact to="/bills/voted">Voted Bills </NavLink>
               </li>
             </ul>
           </div>
@@ -95,16 +95,16 @@ export class SideBar extends React.Component {
             </div>
             <ul className="side-nav-list">
               <li className="side-nav-item">
-                <NavLink exact to="/admin/dashboard/clients">Profile </NavLink>
+                <NavLink exact to="/profile">Profile </NavLink>
               </li>
               <li className="side-nav-item">
-                <NavLink exact to="/admin/dashboard/clients">Bills </NavLink>
+                <NavLink exact to="/bills">Bills </NavLink>
               </li>
               <li className="side-nav-item">
-                <NavLink exact to="/admin/dashboard/create">Create a Bill </NavLink>
+                <NavLink exact to="/bills/create">Create a Bill </NavLink>
               </li>
               <li className="side-nav-item">
-                <NavLink exact to="/admin/dashboard/create">Voted Bills </NavLink>
+                <NavLink exact to="/bills/voted">Voted Bills </NavLink>
               </li>
             </ul>
           </div>
@@ -134,13 +134,13 @@ export class SideBar extends React.Component {
             </div>
             <ul className="side-nav-list">
               <li className="side-nav-item">
-                <NavLink exact to="/admin/dashboard/clients">Bills </NavLink>
+                <NavLink exact to="/bills">Bills </NavLink>
               </li>
               <li className="side-nav-item">
-                <NavLink exact to="/admin/dashboard/clients">Users </NavLink>
+                <NavLink exact to="/users">Users </NavLink>
               </li>
               <li className="side-nav-item">
-                <NavLink exact to="/admin/dashboard/create">Create a Bill </NavLink>
+                <NavLink exact to="/bills/create">Create a Bill </NavLink>
               </li>
             </ul>
           </div>

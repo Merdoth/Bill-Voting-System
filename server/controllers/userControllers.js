@@ -640,6 +640,7 @@ exports.fetchUserVotedBill = (req, res) => {
    */
 exports.getAllBills = (req, res) => {
   let options = {
+    sort: ({ title: 'descending' }),
     page: 1 || Number(req.query.page),
     limit: 6 || Number(req.query.limit)
   };
