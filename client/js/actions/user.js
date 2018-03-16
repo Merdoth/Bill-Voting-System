@@ -30,7 +30,7 @@ export const SuperAdminSignupRequest = userData => dispatch =>
       setAuthToken(token);
       dispatch(setCurrentUser(jwt.decode(token)));
       Materialize.toast(response.data.message, 3000, 'rounded green');
-      history.push('/dashboard');
+      history.push('/bills');
     }).catch((err) => {
       dispatch(signupSuperAdminFail(err));
       Materialize.toast(err.response.data.message, 3000, 'rounded red');
@@ -55,7 +55,7 @@ export const userSignupRequest = userData => dispatch =>
       setAuthToken(token);
       dispatch(setCurrentUser(jwt.decode(token)));
       Materialize.toast(response.data.message, 3000, 'green');
-      history.push('/dashboard');
+      history.push('/bills');
     }).catch((err) => {
       dispatch(signupUserFail(err));
       Materialize.toast(err.response.data.message, 3000, 'red');
@@ -80,7 +80,7 @@ export const userLoginRequest = userData => dispatch =>
       setAuthToken(token);
       dispatch(setCurrentUser(jwt.decode(token)));
       Materialize.toast(response.data.message, 3000, 'green');
-      history.push('/dashboard');
+      history.push('/bills');
     })
     .catch((err) => {
       dispatch(userLoginFailed(err));
@@ -104,25 +104,6 @@ export const logout = () => (dispatch) => {
   dispatch(logoutSuccess());
   history.push('/');
 };
-
-const getBillsSuccess = bills =>
-  ({ type: types.GET_BILLS_SUCCESS, bills });
-
-const getBillsFailed = bills =>
-  ({ type: types.GET_BILLS_ERROR, bills });
-
-/**
-   * @function getUserDetails
-   * @returns {object} dispatches an action
-   * @description It logs out the user and deletes token from local storage
-   */
-export const getAllBills = () => dispatch => axios.get('/api/v1/bills')
-  .then((response) => {
-    dispatch(getBillsSuccess(response.data));
-  })
-  .catch((response) => {
-    dispatch(getBillsFailed(response));
-  });
 
 const updateDetailsSuccess = details =>
   ({ type: types.UPDATE_USERDETAILS_SUCCESS, details });

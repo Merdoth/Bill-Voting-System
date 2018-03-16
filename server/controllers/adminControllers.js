@@ -74,7 +74,7 @@ exports.adminSignUp = (req, res) => {
 exports.createBill = (req, res) => {
   const userId = req.decoded.id;
   const {
-    title, description, billProgress
+    title, description
   }
     = req.body;
   User.findOne({
@@ -83,6 +83,7 @@ exports.createBill = (req, res) => {
       { permission: 1 || 2 }
     ]
   })
+    .sort({ title: 'descending' })
     .exec()
     .then((adminFound) => {
       if (adminFound.permission === 3) {
@@ -93,7 +94,7 @@ exports.createBill = (req, res) => {
         });
       }
       const billDetails = {
-        title, description, billProgress
+        title: title.toUpperCase(), description
       };
       const newBill = new Bill(billDetails);
       newBill.save((error, createdBill) => {
@@ -148,7 +149,6 @@ exports.editBill = (req, res) => {
             title: req.body.title,
             description: req.body.description,
             billProgress: req.body.billProgress,
-            status: req.body.status,
           },
         },
         { new: true },
