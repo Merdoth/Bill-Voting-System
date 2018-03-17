@@ -10,7 +10,6 @@ const bills = (state = initialState, action) => {
       return {
         ...state, ...action.bills
       };
-
     case types.GET_BILLS_ERROR:
       return {};
 

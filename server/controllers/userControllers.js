@@ -215,9 +215,9 @@ const addVote = (req, res, voteDetails, billFound) => {
       { upVoteCount: newVoteCount } :
       { downVoteCount: newVoteCount };
 
-    Bill.update({ _id: billId }, {
+    Bill.findByIdAndUpdate({ _id: billId }, {
       $set: column
-    }, (err, response) => {
+    }, { new: true }, (err, votedBill) => {
       if (err) {
         return res.status(400).send({
           message: error,
@@ -226,7 +226,7 @@ const addVote = (req, res, voteDetails, billFound) => {
       return res.status(201).send({
         success: true,
         message: `Your ${status} was added successfully`,
-        newVote,
+        votedBill,
       });
     });
   });
@@ -262,11 +262,10 @@ const removeVote = (req, res, voteDetails, billFound) => {
       { upVoteCount: newVoteCount } :
       { downVoteCount: newVoteCount };
 
-    Bill.update({ _id: billId }, {
+    Bill.findByIdAndUpdate({ _id: billId }, {
       $set: column
-    }, (err, response) => {
+    }, { new: true }, (err, votedBill) => {
       if (err) {
-        // change this status code and all other 418 errors
         return res.status(400).send({
           message: error,
         });
@@ -274,6 +273,7 @@ const removeVote = (req, res, voteDetails, billFound) => {
       return res.status(200).send({
         success: true,
         message: `Your ${status} has been remove`,
+        votedBill
       });
     });
   });
@@ -298,7 +298,7 @@ const toggleVote = (req, res, voteDetails, billFound) => {
         upVoteCount: billFound.upVoteCount + 1,
         downVoteCount: billFound.downVoteCount - 1,
       },
-    })
+    }, { new: true })
       .exec()
       .then((updatedVoteCount) => {
         if (!updatedVoteCount) {
@@ -313,7 +313,7 @@ const toggleVote = (req, res, voteDetails, billFound) => {
               status
             },
 
-          }, { new: true })
+          })
             .exec()
             .then((updatedVoteStatus) => {
               if (!updatedVoteStatus) {
@@ -324,7 +324,7 @@ const toggleVote = (req, res, voteDetails, billFound) => {
               return res.status(201).send({
                 success: true,
                 message: `Your ${status} was added successfully`,
-                updatedVoteStatus,
+                updatedVoteCount,
               });
             });
         }
@@ -335,7 +335,7 @@ const toggleVote = (req, res, voteDetails, billFound) => {
         upVoteCount: billFound.upVoteCount - 1,
         downVoteCount: billFound.downVoteCount + 1,
       },
-    })
+    }, { new: true })
       .exec()
       .then((updatedVoteCount) => {
         if (!updatedVoteCount) {
@@ -350,7 +350,7 @@ const toggleVote = (req, res, voteDetails, billFound) => {
               status
             },
 
-          }, { new: true })
+          })
             .exec()
             .then((updatedVoteStatus) => {
               if (!updatedVoteStatus) {
@@ -361,7 +361,7 @@ const toggleVote = (req, res, voteDetails, billFound) => {
               return res.status(201).send({
                 success: true,
                 message: `Your ${status} was added successfully`,
-                updatedVoteStatus,
+                updatedVoteCount,
               });
             });
         }
@@ -724,7 +724,7 @@ exports.searchBills = (req, res) => {
    */
 exports.getABill = (req, res) => {
   const { billId } = req.params;
-  Bill.find({
+  Bill.findOne({
     _id: billId
   })
     .exec()

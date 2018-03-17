@@ -78,9 +78,9 @@ class Bills extends Component {
             <span>
               <h5 className="username-format">
                 <i className="material-icons username-icon">
-                   account_circle
+                  account_circle
                 </i>
-              Welcome, {userName}
+                Welcome, {userName}
               </h5>
             </span>
           </div>
