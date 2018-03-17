@@ -2,8 +2,30 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import * as types from '../app/actionTypes';
 import history from '../utils/history';
-import setAuthToken from '../utils/setAuthToken';
 
+const getABillSuccess = bill =>
+  ({ type: types.GET_BILL_SUCCESS, bill });
+
+const getABillFailed = bill =>
+  ({ type: types.GET_BILL_ERROR, bill });
+
+/**
+   * @function getABill
+   *
+   * @param { number } billId
+   *
+   * @returns {object} dispatches an action
+   *
+   * @description It logs out the user and deletes token from local storage
+   */
+export const getABill = billId => dispatch =>
+  axios.get(`/api/v1/bills/${billId}`)
+    .then((response) => {
+      dispatch(getABillSuccess(response.data));
+    })
+    .catch((response) => {
+      dispatch(getABillFailed(response));
+    });
 
 const getBillsSuccess = bills =>
   ({ type: types.GET_BILLS_SUCCESS, bills });
@@ -13,7 +35,9 @@ const getBillsFailed = bills =>
 
 /**
    * @function getUserDetails
+   *
    * @returns {object} dispatches an action
+   *
    * @description It logs out the user and deletes token from local storage
    */
 export const getAllBills = () => dispatch => axios.get('/api/v1/bills')
@@ -54,7 +78,7 @@ const updateBillSuccess = bill => ({ type: types.UPDATE_BILL_SUCCESS, bill });
 const updateBillFail = bill => ({ type: types.UPDATE_BILL_ERROR, bill });
 
 /**
- * @function createBillRequest
+ * @function updateBillRequest
  *
  * @param { number } billId
  * @param { object } billData
@@ -75,7 +99,7 @@ export const updateBill = (billId, billData) => dispatch =>
     });
 
 /**
- * @function createBillRequest
+ * @function deleteBillRequest
  *
  * @param { number } billId
  *
@@ -89,5 +113,99 @@ export const deleteBill = billId =>
       Materialize.toast(response.data.message, 3000, 'green');
       history.push('/bills');
     }).catch((err) => {
+      Materialize.toast(err.response.data.message, 3000, 'red');
+    });
+
+const upvoteBillSuccess = bill => ({ type: types.UPVOTE_BILL_SUCCESS, bill });
+
+const upvoteBillFail = bill => ({ type: types.UPVOTE_BILL_ERROR, bill });
+/**
+* @function upvoteBillRequest
+*
+* @param { number } billId
+* @param { string } status
+*
+* @returns {object} dispatches an action
+*
+* @description It makes an api call to register a new user
+*/
+export const upvoteBill = (billId, status) => dispatch =>
+  axios.post(`/api/v1//bill/upvotes/${billId}`, { status })
+    .then((response) => {
+      const bill = response.data.votedBill || response.data.updatedVoteCount;
+      dispatch(upvoteBillSuccess(bill));
+      // Materialize.toast(response.data.message, 3000, 'green');
+    }).catch((err) => {
+      dispatch(upvoteBillFail(err));
+      Materialize.toast(err.response.data.message, 3000, 'red');
+    });
+
+const downvoteBillSuccess = bill => ({ type: types.DOWNVOTE_BILL_SUCCESS, bill });
+
+const downvoteBillFail = bill => ({ type: types.DOWNVOTE_BILL_ERROR, bill });
+/**
+* @function upvoteBillRequest
+*
+* @param { number } billId
+* @param { string } status
+*
+* @returns {object} dispatches an action
+*
+* @description It makes an api call to register a new user
+*/
+export const downvoteBill = (billId, status) => dispatch =>
+  axios.post(`/api/v1//bill/downvotes/${billId}`, { status })
+    .then((response) => {
+      const bill = response.data.votedBill || response.data.updatedVoteCount;
+      dispatch(downvoteBillSuccess(bill));
+      // Materialize.toast(response.data.message, 3000, 'green');
+    }).catch((err) => {
+      dispatch(downvoteBillFail(err));
+      Materialize.toast(err.response.data.message, 3000, 'red');
+    });
+
+const addOpinionSuccess = opinions => ({ type: types.ADD_OPINION_SUCCESS, opinions });
+
+const addOpinionFail = opinions => ({ type: types.ADD_OPINION_ERROR, opinions });
+/**
+* @function upvoteBillRequest
+*
+* @param { number } billId
+* @param { object } opinion
+*
+* @returns {object} dispatches an action
+*
+* @description It makes an api call to register a new user
+*/
+export const addOpinion = (billId, opinion) => dispatch =>
+  axios.post(`/api/v1/bill/${billId}/opinions`, opinion)
+    .then((response) => {
+      dispatch(addOpinionSuccess(response.data.newOpinion));
+      // Materialize.toast(response.data.message, 3000, 'green');
+    }).catch((err) => {
+      dispatch(addOpinionFail(err));
+      Materialize.toast(err.response.data.message, 3000, 'red');
+    });
+
+
+const getOpinionSuccess = opinions => ({ type: types.GET_OPINION_SUCCESS, opinions });
+
+const getOpinionFail = opinions => ({ type: types.GET_OPINION_ERROR, opinions });
+/**
+* @function upvoteBillRequest
+*
+* @param { number } billId
+*
+* @returns {object} dispatches an action
+*
+* @description It makes an api call to register a new user
+*/
+export const getOpinion = billId => dispatch =>
+  axios.get(`/api/v1/bill/${billId}/opinions`)
+    .then((response) => {
+      dispatch(getOpinionSuccess(response.data));
+      // Materialize.toast(response.data.message, 3000, 'green');
+    }).catch((err) => {
+      dispatch(getOpinionFail(err));
       Materialize.toast(err.response.data.message, 3000, 'red');
     });

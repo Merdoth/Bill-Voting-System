@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { getAllBills, deleteBill } from '../actions';
+import { deleteBill, upvoteBill, downvoteBill, getABill, addOpinion, getOpinion } from '../actions';
 import SideBar from './SideBar';
 
 
@@ -22,8 +22,13 @@ class BillDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      opinion: ''
     };
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleUpvote = this.handleUpvote.bind(this);
+    this.handleDownVote = this.handleDownVote.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
   /**
  *
@@ -32,13 +37,35 @@ class BillDetails extends Component {
  * @returns {void}
  */
   componentDidMount() {
-    this.props.getAllBills();
+    const billId = this.props.match.params.billId;
+    this.props.getABill(billId);
+    this.props.getOpinion(billId);
     $(document).ready(() => {
       $('.button-collapse').sideNav();
       $('.collapsible').collapsible('open');
       $('.tooltipped').tooltip({ delay: 50 });
     });
   }
+  /**
+   * @method onChange
+   * @param {Event} event
+   * @return {Object} updates State
+   */
+  onChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
+  /**
+  * @method onSubmit
+  * @param {Event} event
+  * @return {Object} new State
+  */
+  onSubmit(event) {
+    event.preventDefault();
+    const billId = this.props.currentBill._id;
+    this.props.addOpinion(billId, this.state);
+  }
+
   /**
    *
    * @param {any} event
@@ -53,6 +80,39 @@ class BillDetails extends Component {
     billId = this.props.currentBill._id;
     this.props.deleteBill(billId);
   }
+
+  /**
+ *
+ * @param {any} event
+ * @param { number } billId
+ *
+ * @return { undefined }
+ *
+ * @memberof BillDetails
+ */
+  handleUpvote(event, billId) {
+    event.preventDefault();
+    const status = 'upvote';
+    billId = this.props.currentBill._id;
+    this.props.upvoteBill(billId, status);
+  }
+
+  /**
+ *
+ * @param {any} event
+ * @param { number } billId
+ *
+ * @return { undefined }
+ *
+ * @memberof BillDetails
+ */
+  handleDownVote(event, billId) {
+    event.preventDefault();
+    const status = 'downvote';
+    billId = this.props.currentBill._id;
+    this.props.downvoteBill(billId, status);
+  }
+
   /**
    *
    *
@@ -60,11 +120,10 @@ class BillDetails extends Component {
    * @memberof AdminDashboard
    */
   render() {
+    const test = this.props.opinions.map(opinion => opinion.opinion);
     const { userName } = this.props.user.token;
     const bill = this.props.currentBill;
     const { title } = bill;
-    const status = bill.billProgress ===
-    'House Passed' ? 'Vote Closed' : 'Vote In-progress';
     return (
       <div className="dashboard-container">
         <SideBar permission={this.props.user.token.permission} />
@@ -99,41 +158,56 @@ class BillDetails extends Component {
                         <span className="billProgress">
                           {bill.billProgress}
                         </span>
-                        <span className="status">{status}</span>
+                        {/* <span className="status">{status}</span> */}
                       </div>
                       <div className="bill-created">
-                        <span className="created-time">
-                          {moment(bill.created_at).fromNow()}
+                        <span className="created-time">Created
+                          &nbsp;{moment(bill.created_at).fromNow()}
                         </span>
                       </div>
                     </div>
-                    <div className="bill-desc-footer flexer">
-                      <span>upvote</span>
-                      <span>donwvote</span>
-                      <span username={userName} bill={bill}>
-                        <Link to={`/bills/${bill._id}/edit`}>edit</Link>
-                      </span>
-                      <span onClick={this.handleDelete}>delete</span>
-                    </div>
+
                     <div className="bill-desc-body flexed">
                       <h2>{title}</h2>
                       <p>
                         {bill.description}
                       </p>
                     </div>
-
+                    <div className="bill-desc-footer flexer">
+                      <span onClick={this.handleUpvote}>upvote {bill.upVoteCount}</span>
+                      <span onClick={this.handleDownVote}>donwvote {bill.downVoteCount}</span>
+                      <span username={userName} bill={bill}>
+                        <Link to={`/bills/${bill._id}/edit`}>edit</Link>
+                      </span>
+                      <span onClick={this.handleDelete}>delete</span>
+                    </div>
                   </div>
                 </div>
                 <div className="flexed bill-opinion">
                   <div>
-                    <div className="row">
-                      <div className="input-field col s10">
-                        <input id="icon_prefix" type="text" className="validate" />
-                        <label htmlFor="icon_prefix">First Name</label>
+                    <form className="row" onSubmit={this.onSubmit}>
+                      <div className="row">
+                        <div className="input-field col s10">
+                          <input
+                            id="icon_prefix"
+                            type="text"
+                            name="opinion"
+                            className="form-control"
+                            required
+                            value={this.state.opinion}
+                            onChange={this.onChange}
+                          />
+                          <label htmlFor="icon_prefix">Opinion</label>
+                        </div>
                       </div>
-                    </div>
+                    </form>
                   </div>
                   <div className="opinions">
+                    {this.props.opinions.map(opinion => (<div>{opinion.opinion}
+                      <span className="created-time">Created
+                        {moment(opinion.created_at).fromNow()}
+                      </span>
+                    </div>))}
                     <div />
                   </div>
                 </div>
@@ -149,20 +223,30 @@ class BillDetails extends Component {
 BillDetails.propTypes = {
   user: PropTypes.object.isRequired,
   currentBill: PropTypes.object.isRequired,
-  getAllBills: PropTypes.func.isRequired,
-  deleteBill: PropTypes.func.isRequired
+  getABill: PropTypes.func.isRequired,
+  deleteBill: PropTypes.func.isRequired,
+  upvoteBill: PropTypes.func.isRequired,
+  downvoteBill: PropTypes.func.isRequired,
+  addOpinion: PropTypes.func.isRequired,
+  getOpinion: PropTypes.func.isRequired
 };
-const mapStateToProps = (state, ownProps) => {
-  const { billId } = ownProps.match.params;
-  const currentBill = state.bills.allBills
-    .find(bill => bill._id === billId) || {};
+const mapStateToProps = (state) => {
+  const currentBill = state.bill.billFound;
+  const { opinions } = state.opinion;
   const { user } = state.setCurrentUser;
   return {
-    currentBill, user
+    currentBill, user, opinions
   };
 };
 
 export default connect(
   mapStateToProps,
-  { getAllBills, deleteBill }
+  {
+    deleteBill,
+    upvoteBill,
+    downvoteBill,
+    getABill,
+    addOpinion,
+    getOpinion
+  }
 )(BillDetails);
