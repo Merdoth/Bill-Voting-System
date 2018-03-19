@@ -12,6 +12,16 @@
 
 .float-header-with-flex {
   flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+    .search-icon {
+      cursor: pointer;
+      font-size: 3rem;
+      &:hover {
+        color: $color-brand-blue;
+      }
+    }
 }
 
 .username-format {

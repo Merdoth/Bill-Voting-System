@@ -5,7 +5,7 @@ import Opinion from '../models/Opinion';
 import Bill from '../models/Bill';
 import convertCase from '../utils/convertCase';
 import generateToken from '../utils/generateToken';
-import pagination from '../utils/pagination';
+import paginate from '../utils/pagination';
 import validators from '../middlewares/validators';
 
 /**
@@ -170,11 +170,7 @@ exports.updateUserProfile = (req, res) => {
       }
       if (user) {
         return res.status(200).send({
-          user: {
-            fullName: convertCase(fullName),
-            userName: convertCase(userName),
-            email: email.toLowerCase(),
-          },
+          user,
           message: 'Profile successfully updated',
         });
       }
@@ -685,11 +681,11 @@ exports.searchBills = (req, res) => {
       message: 'please add search term'
     });
   }
-  const offset = 1 || Number(req.query.offset);
-  const limit = 6 || Number(req.query.limit);
+  const offset = Number(req.query.offset);
+  const limit = Number(req.query.limit) || 6;
   let count;
   Bill.count({
-    $text: { $search: req.body.searchTerm.trim() },
+    $text: { $search: req.body.searchTerm.trim() }
   }).exec()
     .then((iscount) => {
       count = iscount;
@@ -697,10 +693,11 @@ exports.searchBills = (req, res) => {
         Bill.find({
           $text: { $search: req.body.searchTerm.trim() },
         })
+          .skip(offset)
           .limit(limit).exec()
           .then(bills => res.status(202).send({
             bills,
-            pageInfo: pagination(count, limit, offset),
+            pageInfo: paginate(count, limit, offset),
           }));
       } else {
         return res.status(404).send({
@@ -758,7 +755,7 @@ exports.getABill = (req, res) => {
    */
 exports.getAUser = (req, res) => {
   const { userId } = req.params;
-  User.find({
+  User.findOne({
     _id: userId
   })
     .exec()

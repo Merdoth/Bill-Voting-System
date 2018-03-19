@@ -3,7 +3,11 @@ import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { deleteBill, upvoteBill, downvoteBill, getABill, addOpinion, getOpinion } from '../actions';
+import shortId from 'shortid';
+import { deleteBill, upvoteBill, downvoteBill, 
+  getABill, addOpinion, 
+  getOpinion,
+  getAllUsers } from '../actions';
 import SideBar from './SideBar';
 
 
@@ -38,6 +42,7 @@ class BillDetails extends Component {
  */
   componentDidMount() {
     const billId = this.props.match.params.billId;
+    this.props.getAllUsers();    
     this.props.getABill(billId);
     this.props.getOpinion(billId);
     $(document).ready(() => {
@@ -64,6 +69,9 @@ class BillDetails extends Component {
     event.preventDefault();
     const billId = this.props.currentBill._id;
     this.props.addOpinion(billId, this.state);
+    this.setState({
+      opinion: '',
+    });
   }
 
   /**
@@ -120,7 +128,6 @@ class BillDetails extends Component {
    * @memberof AdminDashboard
    */
   render() {
-    const test = this.props.opinions.map(opinion => opinion.opinion);
     const { userName } = this.props.user.token;
     const bill = this.props.currentBill;
     const { title } = bill;
@@ -203,7 +210,7 @@ class BillDetails extends Component {
                     </form>
                   </div>
                   <div className="opinions">
-                    {this.props.opinions.map(opinion => (<div>{opinion.opinion}
+                    {this.props.opinions.map(opinion => (<div key={shortId.generate()} >{opinion.opinion}
                       <span className="created-time">Created
                         {moment(opinion.created_at).fromNow()}
                       </span>
@@ -228,12 +235,14 @@ BillDetails.propTypes = {
   upvoteBill: PropTypes.func.isRequired,
   downvoteBill: PropTypes.func.isRequired,
   addOpinion: PropTypes.func.isRequired,
-  getOpinion: PropTypes.func.isRequired
+  getOpinion: PropTypes.func.isRequired,
+  getAllUsers: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => {
+  const { user } = state.setCurrentUser;
   const currentBill = state.bill.billFound;
   const { opinions } = state.opinion;
-  const { user } = state.setCurrentUser;
+  // const opinionAuthor = state.users.users.find(author => author._id === opinions.opinionBy) || {};
   return {
     currentBill, user, opinions
   };
@@ -247,6 +256,7 @@ export default connect(
     downvoteBill,
     getABill,
     addOpinion,
-    getOpinion
+    getOpinion,
+    getAllUsers
   }
 )(BillDetails);

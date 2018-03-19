@@ -102,9 +102,9 @@ export class CreateBill extends Component {
                           name="description"
                           id="description"
                           type="text"
-                          pattern=".{8,50}"
+                          pattern=".{5,300}"
                           required
-                          title="8 characters minimum"
+                          title="5 characters minimum"
                           value={this.state.description}
                           onChange={this.onChange}
                         />

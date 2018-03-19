@@ -9,3 +9,7 @@ export { downvoteBill } from './bill';
 export { getABill } from './bill';
 export { addOpinion } from './bill';
 export { getOpinion } from './bill';
+export { getAllUsers } from './user';
+export { getAUser } from './user';
+export { updateUser } from './user';
+export { searchBill } from './bill';
