@@ -7,10 +7,10 @@
  * 
  * @returns {object} return an object with the page
  */
-const pagination = (count, limit, offset) => {
+const paginate = (count, limit, offset) => {
   const page = Math.floor(offset / limit) + 1;
   const pageCount = Math.ceil(count / limit);
-  const pageSize = (count - offset) > limit ? limit : (count - offset);
+  const pageSize = limit;
   return {
     page,
     pageCount,
@@ -18,4 +18,4 @@ const pagination = (count, limit, offset) => {
     count
   };
 };
-export default pagination;
+export default paginate;

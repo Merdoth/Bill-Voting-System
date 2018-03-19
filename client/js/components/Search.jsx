@@ -1,63 +1,69 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
 import shortId from 'shortid';
-import { getAllBills } from '../actions';
 import SideBar from './SideBar';
-
-
+import { searchBill } from '../actions';
 /**
- *
- *
- * @class AdminDashboard
- * @extends {Component}
+ * @class Search
  */
-class Bills extends Component {
+class Search extends Component {
   /**
-  * Creates Instance of UpdateProfilePage
-  * @param {Object} props
-  * @memberOf UpdateProfilePage
-  */
+   *
+   * @param {*} props
+   */
   constructor(props) {
     super(props);
     this.state = {
-      allBills: [],
+      searchTerm: '',
+      offset: 0,
     };
-  }
-  /**
- *
- *
- * @memberof Dashboard
- * @returns {void}
- */
-  componentDidMount() {
-    this.props.getAllBills();
-    $(document).ready(() => {
-      $('.button-collapse').sideNav();
-      $('.collapsible').collapsible('open');
-      $('.tooltipped').tooltip({ delay: 50 });
-    });
+    this.onChange = this.onChange.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
 
   /**
-  * @method
-  * @memberOf Class CommentPage
-  * @param {*} nextProps updated props
-  * @return {*} sets state to currrent prop
-  */
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      allBills: nextProps.allBills
-    });
-  }
-
-  /**
-   *
-   *
-   * @returns { undefined }
-   * @memberof AdminDashboard
+   * @method onChange
+   * @param {*} event
+   * @description updates state on event change and makes call to api via props
+   * @return {DOM} Dom
    */
+  onChange(event) {
+    const searchInput = {
+      searchTerm: event.target.value
+    };
+    event.preventDefault();
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+
+    if (event.target.value.length > 0) {
+      this.props.searchBill(searchInput, this.state.offset);
+    }
+  }
+
+  /**
+ * @method handlePageClick
+ * @param {*} event
+ * @return {DOM} returns a new page of result
+ *
+ */
+  handlePageClick(event) {
+    const { selected } = event;
+    const limit = 6;
+    const offset = Math.ceil(selected * limit);
+    this.setState({
+      offset
+    });
+    this.props.searchBill(this.state, offset);
+  }
+  /**
+ * @method render
+ * @description renders the Dom
+ * @returns {DOM} returns DOM element
+ */
   render() {
     const { userName } = this.props.user.token;
     return (
@@ -75,7 +81,21 @@ class Bills extends Component {
               </a>
             </div>
             <span className="float-header-with-flex">
-              <Link to={'/search'}><i className="material-icons medium search-icon">search</i></Link>
+              <div className="input-field s6 search">
+                <label
+                  htmlFor="search"
+                  className="control-label"
+                >Search:
+                </label>
+                <input
+                  type="text"
+                  name="searchTerm"
+                  value={this.state.searchTerm}
+                  className="form-control"
+                  required
+                  onChange={this.onChange}
+                />
+              </div>
             </span>
             <span>
               <h5 className="username-format">
@@ -89,10 +109,10 @@ class Bills extends Component {
           <div className="flexer flexer-row">
             <div className="flexed bill-list">
               <div className="bill-header" >
-                <h3>Bills</h3>
+                <h3>Result</h3>
               </div>
               <div className="bill-body">
-                {this.props.allBills.length > 0 ? this.props.allBills.map(bill => (
+                {this.props.result.length > 0 ? this.props.result.map(bill => (
                   <Link to={`/bills/${bill._id}`} className="flexer bill-content" key={shortId.generate()}>
                     <div className="flexed content-align">
                       <div className="flexer bill-details">
@@ -126,6 +146,17 @@ class Bills extends Component {
                     </div>
                   </Link>
                 )) : (<h3>Sadly nothing to show :)</h3>)}
+                <ReactPaginate
+                  previousLabel="previous"
+                  nextLabel="next"
+                  pageCount={this.props.currentPage.pageCount || 0}
+                  marginPagesDisplayed={1}
+                  pageRangeDisplayed={5}
+                  onPageChange={this.handlePageClick}
+                  containerClassName="pagination"
+                  subContainerClassName="pages pagination"
+                  activeClassName="active"
+                />
               </div>
             </div>
           </div>
@@ -135,15 +166,16 @@ class Bills extends Component {
   }
 }
 
-Bills.propTypes = {
+Search.propTypes = {
   user: PropTypes.object.isRequired,
-  getAllBills: PropTypes.func.isRequired,
-  allBills: PropTypes.array.isRequired
+  result: PropTypes.array.isRequired,
+  searchBill: PropTypes.func.isRequired,
+  currentPage: PropTypes.object.isRequired
 };
-
 const mapStateToProps = state => ({
-  isAuthenticated: state.setCurrentUser.isAuthenticated,
   user: state.setCurrentUser.user,
-  allBills: state.bills.allBills
+  result: state.search.bills || [],
+  currentPage: state.search.pageInfo || {}
 });
-export default connect(mapStateToProps, { getAllBills })(Bills);
+
+export default connect(mapStateToProps, { searchBill })(Search);

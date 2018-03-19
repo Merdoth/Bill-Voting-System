@@ -105,11 +105,11 @@ export const logout = () => (dispatch) => {
   history.push('/');
 };
 
-const updateDetailsSuccess = details =>
-  ({ type: types.UPDATE_USERDETAILS_SUCCESS, details });
+const getAllUsersSuccess = users =>
+  ({ type: types.GET_ALL_USERS_SUCCESS, users });
 
-const updateDetailsFailed = details =>
-  ({ type: types.UPDATE_USERDETAILS_ERROR, details });
+const getAllUsersFailure = users =>
+  ({ type: types.GET_ALL_USERS_ERROR, users });
 
 /**
      * @function updateUserDetails
@@ -117,15 +117,60 @@ const updateDetailsFailed = details =>
      * @description It logs out the user and deletes token from local storage
      * @param {object} userData form data
      */
-export const updateUserDetails = userData => dispatch =>
-  axios.put('/api/v1/user/update', userData)
+export const getAllUsers = () => dispatch =>
+  axios.get('/api/v1/admin/users')
     .then((response) => {
-      dispatch(updateDetailsSuccess(response));
-      Materialize.toast(response.data.message, 3000, 'rounded green');
-      history.push('/my-ideas');
+      dispatch(getAllUsersSuccess(response.data));
     })
     .catch((response) => {
-      dispatch(updateDetailsFailed(response));
-      Materialize.toast(response.error, 3000, 'rounded red');
+      dispatch(getAllUsersFailure(response));
     });
 
+
+const getAUserSuccess = user =>
+  ({ type: types.GET_A_USER_SUCCESS, user });
+
+const getAUserFailure = user =>
+  ({ type: types.GET_A_USER_ERROR, user });
+
+/**
+     * @function updateUserDetails
+     *
+     * @returns {object} dispatches an action
+     *
+     * @description It logs out the user and deletes token from local storage
+     *
+     * @param {object} userId form data
+     */
+export const getAUser = userId => dispatch =>
+  axios.get(`/api/v1/user/${userId}`)
+    .then((response) => {
+      dispatch(getAUserSuccess(response.data));
+    })
+    .catch((response) => {
+      dispatch(getAUserFailure(response));
+    });
+
+const updateUserSuccess = user =>
+  ({ type: types.UPDATE_A_USER_SUCCESS, user });
+
+const updateUserFailure = user =>
+  ({ type: types.UPDATE_A_USER_ERROR, user });
+
+/**
+     * @function updateUserDetails
+     *
+     * @returns {object} dispatches an action
+     *
+     * @description It logs out the user and deletes token from local storage
+     *
+     * @param {object} userData form data
+     */
+export const updateUser = userData => dispatch =>
+  axios.put('/api/v1/user/updateprofile', userData)
+    .then((response) => {
+      dispatch(updateUserSuccess(response.data.user));
+    })
+    .catch((response) => {
+      dispatch(updateUserFailure(response));
+    });

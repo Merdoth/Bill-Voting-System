@@ -78,7 +78,7 @@ const updateBillSuccess = bill => ({ type: types.UPDATE_BILL_SUCCESS, bill });
 const updateBillFail = bill => ({ type: types.UPDATE_BILL_ERROR, bill });
 
 /**
- * @function updateBillRequest
+ * @function updateBill
  *
  * @param { number } billId
  * @param { object } billData
@@ -99,7 +99,7 @@ export const updateBill = (billId, billData) => dispatch =>
     });
 
 /**
- * @function deleteBillRequest
+ * @function deleteBill
  *
  * @param { number } billId
  *
@@ -120,7 +120,7 @@ const upvoteBillSuccess = bill => ({ type: types.UPVOTE_BILL_SUCCESS, bill });
 
 const upvoteBillFail = bill => ({ type: types.UPVOTE_BILL_ERROR, bill });
 /**
-* @function upvoteBillRequest
+* @function upvoteBill
 *
 * @param { number } billId
 * @param { string } status
@@ -144,7 +144,7 @@ const downvoteBillSuccess = bill => ({ type: types.DOWNVOTE_BILL_SUCCESS, bill }
 
 const downvoteBillFail = bill => ({ type: types.DOWNVOTE_BILL_ERROR, bill });
 /**
-* @function upvoteBillRequest
+* @function downvoteBill
 *
 * @param { number } billId
 * @param { string } status
@@ -168,7 +168,7 @@ const addOpinionSuccess = opinions => ({ type: types.ADD_OPINION_SUCCESS, opinio
 
 const addOpinionFail = opinions => ({ type: types.ADD_OPINION_ERROR, opinions });
 /**
-* @function upvoteBillRequest
+* @function addOpinion
 *
 * @param { number } billId
 * @param { object } opinion
@@ -192,7 +192,7 @@ const getOpinionSuccess = opinions => ({ type: types.GET_OPINION_SUCCESS, opinio
 
 const getOpinionFail = opinions => ({ type: types.GET_OPINION_ERROR, opinions });
 /**
-* @function upvoteBillRequest
+* @function getOpinion
 *
 * @param { number } billId
 *
@@ -209,3 +209,25 @@ export const getOpinion = billId => dispatch =>
       dispatch(getOpinionFail(err));
       Materialize.toast(err.response.data.message, 3000, 'red');
     });
+
+
+const searchBillSuccess = bill => ({ type: types.SEARCH_SUCCESS, bill });
+
+const searchBillError = bill => ({ type: types.SEARCH_ERROR, bill });
+/**
+* @function searchBill
+*
+* @param { string } searchTerm
+* @param { number } offset
+*
+* @returns {object} dispatches an action
+*
+* @description It makes an api call to register a new user
+*/
+export const searchBill = (searchTerm, offset) => dispatch => axios.post(`/api/v1/bills/search?offset=${offset}`, searchTerm)
+  .then((response) => {
+    dispatch(searchBillSuccess(response.data));
+  })
+  .catch((error) => {
+    dispatch(searchBillError(error));
+  });

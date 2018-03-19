@@ -9,10 +9,12 @@ import Signup from '../components/Signup';
 import Signin from '../components/Signin';
 import SuperAdminSignup from '../components/SuperAdminSignup';
 import NotFound from '../components/NotFound';
-import Bills from '../components/Bills';
+import Bills from '../components/BIlls';
+import UpdateUser from '../components/UpdateUser';
 import CreateBill from '../components/CreateBill';
 import EditBill from '../components/EditBill';
 import Home from '../components/Home';
+import Search from '../components/Search';
 import BillDetail from '../components/BillDetail';
 
 const App = () => (
@@ -34,6 +36,16 @@ const App = () => (
         path="/register"
         name="signup"
         component={CheckLoggedinUser(Signup)}
+      />
+      <Route
+        path="/profile"
+        name="profile"
+        component={AuthenticateUser(UpdateUser)}
+      />
+      <Route
+        path="/search"
+        name="search"
+        component={AuthenticateUser(Search)}
       />
       <Route
         path="/admin/signup"
