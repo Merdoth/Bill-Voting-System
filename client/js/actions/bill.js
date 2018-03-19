@@ -36,11 +36,13 @@ const getBillsFailed = bills =>
 /**
    * @function getUserDetails
    *
+   * @param { number } page
+   *
    * @returns {object} dispatches an action
    *
    * @description It logs out the user and deletes token from local storage
    */
-export const getAllBills = () => dispatch => axios.get('/api/v1/bills')
+export const getAllBills = page => dispatch => axios.get(`/api/v1/bills?page=${page}`)
   .then((response) => {
     dispatch(getBillsSuccess(response.data));
   })
@@ -230,4 +232,28 @@ export const searchBill = (searchTerm, offset) => dispatch => axios.post(`/api/v
   })
   .catch((error) => {
     dispatch(searchBillError(error));
+  });
+
+
+const getUserVotedBillsSuccess = userVotedBills =>
+  ({ type: types.GET_USER_VOTED_BILLS_SUCCESS, userVotedBills });
+
+const getUserVotedBillsFailed = userVotedBills =>
+  ({ type: types.GET_USER_VOTED_BILLS_ERROR, userVotedBills });
+
+/**
+   * @function getUserDetails
+   *
+   * @param { number } page
+   *
+   * @returns {object} dispatches an action
+   *
+   * @description It logs out the user and deletes token from local storage
+   */
+export const getUserVotedBills = page => dispatch => axios.get(`/api/v1/user/votedbills?page=${page}`)
+  .then((response) => {
+    dispatch(getUserVotedBillsSuccess(response.data));
+  })
+  .catch((response) => {
+    dispatch(getUserVotedBillsFailed(response));
   });

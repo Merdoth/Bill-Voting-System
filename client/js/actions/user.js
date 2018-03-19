@@ -170,6 +170,7 @@ export const updateUser = userData => dispatch =>
   axios.put('/api/v1/user/updateprofile', userData)
     .then((response) => {
       dispatch(updateUserSuccess(response.data.user));
+      Materialize.toast(response.data.message, 3000, 'green');
     })
     .catch((response) => {
       dispatch(updateUserFailure(response));

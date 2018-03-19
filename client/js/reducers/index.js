@@ -8,6 +8,7 @@ import opinion from './opinion';
 import users from './users';
 import user from './user';
 import search from './search';
+import userVotedBill from './userVotedBill';
 import setCurrentUser from './setCurrentUser';
 
 
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   opinion,
   users,
   user,
-  search
+  search,
+  userVotedBill
 });
 
 export default rootReducer;

@@ -10,13 +10,15 @@
   border-bottom: solid 1px lightgray;
 }
 
-.bill-opinion {
-
-}
 .sticky-cta {
   height: 50%;
   margin: 50% auto;
 }
+
+.dont-display, .disable-vote { 
+  display: none !important;
+}
+
 
 .bill-desc-wrapper {
   height: 100%;

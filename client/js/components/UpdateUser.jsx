@@ -29,7 +29,6 @@ export class UpdateUser extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    // this.resetForm = this.resetForm.bind(this);
   }
 
   /**

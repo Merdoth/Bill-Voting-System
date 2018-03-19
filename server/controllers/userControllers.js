@@ -5,7 +5,7 @@ import Opinion from '../models/Opinion';
 import Bill from '../models/Bill';
 import convertCase from '../utils/convertCase';
 import generateToken from '../utils/generateToken';
-import paginate from '../utils/pagination';
+import pagination from '../utils/pagination';
 import validators from '../middlewares/validators';
 
 /**
@@ -594,14 +594,14 @@ exports.fetchUserVotedBill = (req, res) => {
   const userId = req.decoded.id;
   let options = {
     populate: 'votedBill',
-    page: 1 || Number(req.query.page),
-    limit: 6 || Number(req.query.limit)
+    page: Number(req.query.page) || 1,
+    limit: Number(req.query.limit) || 6
   };
   Vote.paginate({
     votedBy: userId
   }, options)
     .then((userVotes) => {
-      if (!userVotes) {
+      if (userVotes.docs.length === 0) {
         return res.status(404).send({
           success: false,
           message: 'You did not vote any bill please try to vote some!'
@@ -637,8 +637,8 @@ exports.fetchUserVotedBill = (req, res) => {
 exports.getAllBills = (req, res) => {
   let options = {
     sort: ({ title: 'descending' }),
-    page: 1 || Number(req.query.page),
-    limit: 6 || Number(req.query.limit)
+    page: Number(req.query.page) || 1,
+    limit: Number(req.query.limit) || 6
   };
   Bill.paginate({
   }, options)
@@ -697,7 +697,7 @@ exports.searchBills = (req, res) => {
           .limit(limit).exec()
           .then(bills => res.status(202).send({
             bills,
-            pageInfo: paginate(count, limit, offset),
+            pageInfo: pagination(count, limit, offset),
           }));
       } else {
         return res.status(404).send({
