@@ -131,6 +131,13 @@ class BillDetails extends Component {
     const { userName } = this.props.user.token;
     const bill = this.props.currentBill;
     const { title } = bill;
+    let adminBtn;
+    if (this.props.user.token.permission === 1 || this.props.user.token.permission === 2 )  {
+      adminBtn = 'display';
+    } else {
+      adminBtn = 'dont-display';
+    }
+    const voteStatus = this.props.currentBill.billProgress === 'House Passed' ? 'disable-vote' : 'allow-vote';
     return (
       <div className="dashboard-container">
         <SideBar permission={this.props.user.token.permission} />
@@ -181,12 +188,12 @@ class BillDetails extends Component {
                       </p>
                     </div>
                     <div className="bill-desc-footer flexer">
-                      <span onClick={this.handleUpvote}>upvote {bill.upVoteCount}</span>
-                      <span onClick={this.handleDownVote}>donwvote {bill.downVoteCount}</span>
-                      <span username={userName} bill={bill}>
+                      <span className={voteStatus} onClick={this.handleUpvote}>upvote {bill.upVoteCount}</span>
+                      <span className={voteStatus}  onClick={this.handleDownVote}>donwvote {bill.downVoteCount}</span>
+                      <span className={adminBtn} username={userName} bill={bill}>
                         <Link to={`/bills/${bill._id}/edit`}>edit</Link>
                       </span>
-                      <span onClick={this.handleDelete}>delete</span>
+                      <span className={adminBtn} onClick={this.handleDelete}>delete</span>
                     </div>
                   </div>
                 </div>

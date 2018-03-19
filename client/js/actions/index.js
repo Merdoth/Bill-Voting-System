@@ -13,3 +13,4 @@ export { getAllUsers } from './user';
 export { getAUser } from './user';
 export { updateUser } from './user';
 export { searchBill } from './bill';
+export { getUserVotedBills } from './bill';

@@ -9,7 +9,8 @@ import Signup from '../components/Signup';
 import Signin from '../components/Signin';
 import SuperAdminSignup from '../components/SuperAdminSignup';
 import NotFound from '../components/NotFound';
-import Bills from '../components/BIlls';
+import Bills from '../components/Bills';
+import userVotedBills from '../components/UserVotedBills';
 import UpdateUser from '../components/UpdateUser';
 import CreateBill from '../components/CreateBill';
 import EditBill from '../components/EditBill';
@@ -56,6 +57,11 @@ const App = () => (
         path="/bills/create"
         name="createBill"
         component={AuthenticateUser(CreateBill)}
+      />
+      <Route
+        path="/bills/voted"
+        name="userVotedBills"
+        component={AuthenticateUser(userVotedBills)}
       />
       <Route
         path="/bills/:billId/edit"

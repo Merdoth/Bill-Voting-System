@@ -16,8 +16,8 @@ router.get('/admin/users', validators.validateToken, adminController.getAllUsers
 // users route
 router.post('/user/signup', userController.signUp);
 router.post('/user/signin', userController.signIn);
-router.get('/user/:userId', validators.validateToken, userController.getAUser);
 router.get('/user/votedbills', validators.validateToken, userController.fetchUserVotedBill);
+router.get('/user/:userId', validators.validateToken, userController.getAUser);
 router.put('/user/updateprofile', validators.validateToken, userController.updateUserProfile);
 
 // bills route

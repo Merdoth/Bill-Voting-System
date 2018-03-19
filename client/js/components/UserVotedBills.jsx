@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactPaginate from 'react-paginate';
 import shortId from 'shortid';
-import { getAllBills } from '../actions';
+import { getUserVotedBills } from '../actions';
 import SideBar from './SideBar';
 
 
@@ -14,7 +14,7 @@ import SideBar from './SideBar';
  * @class AdminDashboard
  * @extends {Component}
  */
-class Bills extends Component {
+class UserVotedBills extends Component {
   /**
   * Creates Instance of UpdateProfilePage
   * @param {Object} props
@@ -23,7 +23,7 @@ class Bills extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      allBills: [],
+      votedBills: [],
       page: 1
     };
     this.handlePageClick = this.handlePageClick.bind(this);
@@ -35,7 +35,7 @@ class Bills extends Component {
  * @returns {void}
  */
   componentDidMount() {
-    this.props.getAllBills(this.state.page);
+    this.props.getUserVotedBills(this.state.page);
     $(document).ready(() => {
       $('.button-collapse').sideNav();
       $('.collapsible').collapsible('open');
@@ -51,10 +51,10 @@ class Bills extends Component {
   */
   componentWillReceiveProps(nextProps) {
     this.setState({
-      allBills: nextProps.allBills
+      votedBills: nextProps.votedBills
     });
   }
-  
+
   /**
   * @method handlePageClick
   * @param {*} event
@@ -64,7 +64,7 @@ class Bills extends Component {
   handlePageClick(event) {
     const { selected } = event;
     const page = Math.ceil(selected) + 1;
-    this.props.getAllBills(page);
+    this.props.getUserVotedBills(page);
   }
   /**
    *
@@ -106,19 +106,19 @@ class Bills extends Component {
                 <h3>Bills</h3>
               </div>
               <div className="bill-body">
-                {this.props.allBills.length > 0 ? this.props.allBills.map(bill => (
-                  <Link to={`/bills/${bill._id}`} className="flexer bill-content" key={shortId.generate()}>
+                {this.props.votedBills.length > 0 ? this.props.votedBills.map(bill => (
+                  <Link to={`/bills/${bill.votedBill._id}`} className="flexer bill-content" key={shortId.generate()}>
                     <div className="flexed content-align">
                       <div className="flexer bill-details">
                         <span
-                          className={`${bill.billProgress} tooltipped`}
+                          className={`${bill.votedBill.billProgress} tooltipped`}
                           data-position="top"
                           data-delay="50"
-                          data-tooltip={`${bill.billProgress}`}
+                          data-tooltip={`${bill.votedBill.billProgress}`}
                         />
-                        <div className="bill-title">{bill.title}</div>
+                        <div className="bill-title">{bill.votedBill.title}</div>
                       </div>
-                      <div className="truncate">{bill.description}</div>
+                      <div className="truncate">{bill.votedBill.description}</div>
                     </div>
                     <div className="vote-btn">
                       <div
@@ -127,7 +127,7 @@ class Bills extends Component {
                         data-delay="50"
                         data-tooltip="upvote count"
                       >
-                        {bill.upVoteCount}
+                        {bill.votedBill.upVoteCount}
                       </div>
                       <div
                         className="downvote-count tooltipped"
@@ -135,7 +135,7 @@ class Bills extends Component {
                         data-delay="50"
                         data-tooltip="downvote count"
                       >
-                        {bill.downVoteCount}
+                        {bill.votedBill.downVoteCount}
                       </div>
                     </div>
                   </Link>
@@ -160,16 +160,17 @@ class Bills extends Component {
   }
 }
 
-Bills.propTypes = {
+UserVotedBills.propTypes = {
   user: PropTypes.object.isRequired,
-  getAllBills: PropTypes.func.isRequired,
-  allBills: PropTypes.array.isRequired
+  getUserVotedBills: PropTypes.func.isRequired,
+  votedBills: PropTypes.array.isRequired,
+  currentPage: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   isAuthenticated: state.setCurrentUser.isAuthenticated,
   user: state.setCurrentUser.user,
-  allBills: state.bills.allBills || [],
-  currentPage: state.bills.pageInfo || {}
+  votedBills: state.userVotedBill.userVotes || [],
+  currentPage: state.userVotedBill.pageInfo || {}
 });
-export default connect(mapStateToProps, { getAllBills })(Bills);
+export default connect(mapStateToProps, { getUserVotedBills })(UserVotedBills);
