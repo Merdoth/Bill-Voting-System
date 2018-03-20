@@ -53,3 +53,23 @@ header, main {
     flex: 1 1 auto;
   }
 }
+
+.summary-container {
+  width: 100%;
+  max-width: 570px;
+  height: 100%;
+  padding: 10px;
+}
+.summary-section {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: 100;
+}
+.summary-list {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: solid 1px $color-brand-gray-light;
+  padding: 15px;
+}

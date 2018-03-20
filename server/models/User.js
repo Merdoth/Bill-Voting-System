@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true
     },
+    isActive: {
+      type: Boolean,
+      default: false
+    },
     hash: { type: String },
   },
   {

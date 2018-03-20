@@ -232,6 +232,7 @@ exports.addPermission = (req, res) => {
   const adminId = req.decoded.id;
   const { userId } = req.body;
   const { permission } = req.body;
+  const { isActive } = req.body;
   const { errors, isValid } = validators.validatePermmission(req.body);
   if (!isValid) {
     return res.status(400).send({ error: errors });
@@ -256,6 +257,7 @@ exports.addPermission = (req, res) => {
         {
           $set: {
             permission,
+            isActive
           },
         },
         { new: true },
@@ -287,8 +289,8 @@ exports.addPermission = (req, res) => {
 exports.getAllUsers = (req, res) => {
   const options = {
     select: '-password',
-    page: 1 || Number(req.query.page),
-    limit: 6 || Number(req.query.limit)
+    page: Number(req.query.page) || 1,
+    limit: Number(req.query.limit) || 6
   };
   User.paginate({}, options)
     .then((users) => {

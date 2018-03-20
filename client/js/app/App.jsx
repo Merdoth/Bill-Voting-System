@@ -10,6 +10,7 @@ import Signin from '../components/Signin';
 import SuperAdminSignup from '../components/SuperAdminSignup';
 import NotFound from '../components/NotFound';
 import Bills from '../components/Bills';
+import Users from '../components/Users';
 import userVotedBills from '../components/UserVotedBills';
 import UpdateUser from '../components/UpdateUser';
 import CreateBill from '../components/CreateBill';
@@ -37,6 +38,11 @@ const App = () => (
         path="/register"
         name="signup"
         component={CheckLoggedinUser(Signup)}
+      />
+      <Route
+        path="/users"
+        name="users"
+        component={AuthenticateUser(Users)}
       />
       <Route
         path="/profile"

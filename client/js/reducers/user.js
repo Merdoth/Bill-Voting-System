@@ -5,7 +5,6 @@ const initialState = {
 };
 
 const user = (state = initialState, action) => {
-  console.log(action.type)
   switch (action.type) {
     case types.GET_A_USER_SUCCESS:
       return {
