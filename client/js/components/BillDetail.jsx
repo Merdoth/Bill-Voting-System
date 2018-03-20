@@ -4,10 +4,22 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import shortId from 'shortid';
-import { deleteBill, upvoteBill, downvoteBill, 
-  getABill, addOpinion, 
+import {
+  EmailIcon,
+  FacebookIcon,
+  TwitterIcon,
+  LinkedinIcon,
+  EmailShareButton,
+  FacebookShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
+} from 'react-share';
+import {
+  deleteBill, upvoteBill, downvoteBill,
+  getABill, addOpinion,
   getOpinion,
-  getAllUsers } from '../actions';
+  getAllUsers
+} from '../actions';
 import SideBar from './SideBar';
 
 
@@ -42,7 +54,7 @@ class BillDetails extends Component {
  */
   componentDidMount() {
     const billId = this.props.match.params.billId;
-    this.props.getAllUsers();    
+    this.props.getAllUsers();
     this.props.getABill(billId);
     this.props.getOpinion(billId);
     $(document).ready(() => {
@@ -131,8 +143,9 @@ class BillDetails extends Component {
     const { userName } = this.props.user.token;
     const bill = this.props.currentBill;
     const { title } = bill;
+    const shareUrl = 'https://bill-voting-system.herokuapp.com';
     let adminBtn;
-    if (this.props.user.token.permission === 1 || this.props.user.token.permission === 2 )  {
+    if (this.props.user.token.permission === 1 || this.props.user.token.permission === 2) {
       adminBtn = 'display';
     } else {
       adminBtn = 'dont-display';
@@ -186,10 +199,59 @@ class BillDetails extends Component {
                       <p>
                         {bill.description}
                       </p>
+                      <div className="social-content">
+                        <FacebookShareButton
+                          url={shareUrl}
+                          quote={title}
+                          className="share-button"
+                        >
+                          <FacebookIcon
+                            size={32}
+                            round
+                          />
+                        </FacebookShareButton>
+
+                        <TwitterShareButton
+                          url={shareUrl}
+                          title={title}
+                          className="share-button"
+                        >
+                          <TwitterIcon
+                            size={32}
+                            round
+                          />
+                        </TwitterShareButton>
+
+                        <LinkedinShareButton
+                          url={shareUrl}
+                          title={title}
+                          windowWidth={750}
+                          windowHeight={600}
+                          className="share-button"
+                        >
+                          <LinkedinIcon
+                            size={32}
+                            round
+                          />
+                        </LinkedinShareButton>
+
+                        <EmailShareButton
+                          url={shareUrl}
+                          subject={title}
+                          body="body"
+                          className="share-button"
+                        >
+                          <EmailIcon
+                            size={32}
+                            round
+                          />
+                        </EmailShareButton>
+
+                      </div>
                     </div>
                     <div className="bill-desc-footer flexer">
                       <span className={voteStatus} onClick={this.handleUpvote}>upvote {bill.upVoteCount}</span>
-                      <span className={voteStatus}  onClick={this.handleDownVote}>donwvote {bill.downVoteCount}</span>
+                      <span className={voteStatus} onClick={this.handleDownVote}>donwvote {bill.downVoteCount}</span>
                       <span className={adminBtn} username={userName} bill={bill}>
                         <Link to={`/bills/${bill._id}/edit`}>edit</Link>
                       </span>
