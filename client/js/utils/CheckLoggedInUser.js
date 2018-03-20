@@ -13,7 +13,7 @@ const CheckLoggedInUser = (ComposedComponent) => {
      */
     componentWillMount() {
       if (this.props.isAuthenticated) {
-        history.push('/dashboard');
+        history.push('/bills');
       }
     }
     /**
@@ -23,7 +23,7 @@ const CheckLoggedInUser = (ComposedComponent) => {
      */
     componentWillUpdate(nextProps) {
       if (nextProps.isAuthenticated) {
-        history.push('/dashboard');
+        history.push('/bills');
       }
     }
     /**

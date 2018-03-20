@@ -14,3 +14,4 @@ export { getAUser } from './user';
 export { updateUser } from './user';
 export { searchBill } from './bill';
 export { getUserVotedBills } from './bill';
+export { addPermission } from './user';

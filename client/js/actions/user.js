@@ -115,10 +115,10 @@ const getAllUsersFailure = users =>
      * @function updateUserDetails
      * @returns {object} dispatches an action
      * @description It logs out the user and deletes token from local storage
-     * @param {object} userData form data
+     * @param {number} page form data
      */
-export const getAllUsers = () => dispatch =>
-  axios.get('/api/v1/admin/users')
+export const getAllUsers = page => dispatch =>
+  axios.get(`/api/v1/admin/users?page=${page}`)
     .then((response) => {
       dispatch(getAllUsersSuccess(response.data));
     })
@@ -174,4 +174,34 @@ export const updateUser = userData => dispatch =>
     })
     .catch((response) => {
       dispatch(updateUserFailure(response));
+    });
+
+const addPermissionSuccess = user =>
+  ({ type: types.ADD_PERMISSION_SUCCESS, user });
+
+const addPermissionFailure = user =>
+  ({ type: types.ADD_PERMISSION_ERROR, user });
+
+/**
+     * @function updateUserDetails
+     *
+     * @returns {object} dispatches an action
+     *
+     * @description It logs out the user and deletes token from local storage
+     *
+     * @param {object} userId
+     *
+     * @param {number} permission
+     *
+     * @param {boolean} isActive
+     *
+     */
+export const addPermission = (userId, permission, isActive) => dispatch =>
+  axios.post('/api/v1/admin/addpermission', { userId, permission, isActive })
+    .then((response) => {
+      dispatch(addPermissionSuccess(response.data.updatedUser));
+      Materialize.toast(response.data.message, 3000, 'green');
+    })
+    .catch((response) => {
+      dispatch(addPermissionFailure(response));
     });
