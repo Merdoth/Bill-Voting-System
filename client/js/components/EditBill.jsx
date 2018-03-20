@@ -149,7 +149,7 @@ export class EditBill extends Component {
                           name="description"
                           id="description"
                           type="text"
-                          pattern=".{8,50}"
+                          pattern=".{8,1000}"
                           required
                           title="8 characters minimum"
                           value={this.state.description || ''}

@@ -83,7 +83,7 @@ exports.validateBillInput = (req, res, next) => {
     .isLength(5, 50);
   req.check('description', 'Description cannot be empty').notEmpty();
   req.check('description', 'Description must be at least of 8 character long')
-    .isLength(8, 50);
+    .isLength(8, 1000);
   const errors = req.validationErrors();
   if (errors) {
     const message = errors[0].msg;

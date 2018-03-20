@@ -97,3 +97,18 @@
     }
 }
 
+.share-button {
+  cursor: pointer;
+  margin-bottom: 5px;
+  width: 32px;
+  height: 32px;
+}
+
+.share-button:hover:not(:active) {
+opacity: 0.75;
+}
+
+.social-content {
+  width: 32px;
+  
+}
