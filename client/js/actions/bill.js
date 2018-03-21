@@ -183,9 +183,8 @@ export const addOpinion = (billId, opinion) => dispatch =>
   axios.post(`/api/v1/bill/${billId}/opinions`, opinion)
     .then((response) => {
       dispatch(addOpinionSuccess(response.data.newOpinion));
-      // Materialize.toast(response.data.message, 3000, 'green');
+      Materialize.toast(response.data.message, 3000, 'green');
     }).catch((err) => {
-      dispatch(addOpinionFail(err));
       Materialize.toast(err.response.data.message, 3000, 'red');
     });
 

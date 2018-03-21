@@ -20,8 +20,6 @@ export default {
   target: 'web',
   output: {
     path: path.join(__dirname, '/dist/client'),
-    /** Note: Physical files are only output by
-     * the production build task `npm run build`.* */
     publicPath: '/',
     filename: 'bundle.js'
   },

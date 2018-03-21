@@ -24,6 +24,13 @@
     }
 }
 
+.bill-desc-summary {
+  width: 500px;
+}
+
+.bill-desc-body {
+  overflow: scroll;
+}
 .username-format {
   font-size: 15px;
   font-weight: 700;
@@ -48,6 +55,7 @@
 .bill-list {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .bill-header {

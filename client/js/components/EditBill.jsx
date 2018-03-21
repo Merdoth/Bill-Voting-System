@@ -151,7 +151,7 @@ export class EditBill extends Component {
                           type="text"
                           pattern=".{8,1000}"
                           required
-                          title="8 characters minimum"
+                          title="8 characters minimum and 1000 maximum"
                           value={this.state.description || ''}
                           onChange={this.onChange}
                         />

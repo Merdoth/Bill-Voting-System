@@ -1,12 +1,13 @@
 import Bill from '../models/Bill';
 import User from '../models/User';
+import Vote from '../models/Vote';
 import validators from '../middlewares/validators';
 import generateToken from '../utils/generateToken';
 
 /**
-   * @description sign up an admin
+   * @description allows a super-admin sign up
    *
-   * @param {Object} req user request object
+   * @param {Object} req admin request object
    * @param {Object} res server response object
    *
    * @return {undefined}
@@ -208,10 +209,22 @@ exports.deleteBill = (req, res) => {
             message: 'Internal server error',
           });
         }
-        return res.status(200).send({
-          success: true,
-          message: 'Bill successfully deleted!'
+        Vote.remove({ votedBill: billId }, (err) => {
+          if (err) {
+            return res.status(500).send({
+              success: false,
+              message: 'Internal server error',
+            });
+          }
+          return res.status(200).send({
+            success: true,
+            message: 'Bill successfully deleted!'
+          });
         });
+        // return res.status(200).send({
+        //   success: true,
+        //   message: 'Bill successfully deleted!'
+        // });
       });
     })
     .catch((error) => {
