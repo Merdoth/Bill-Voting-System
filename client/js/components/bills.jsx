@@ -118,7 +118,7 @@ class Bills extends Component {
                         />
                         <div className="bill-title">{bill.title}</div>
                       </div>
-                      <div className="truncate">{bill.description}</div>
+                      <div className="bill-desc-summary truncate">{bill.description}</div>
                     </div>
                     <div className="vote-btn">
                       <div

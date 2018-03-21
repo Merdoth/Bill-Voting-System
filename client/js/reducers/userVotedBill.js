@@ -5,6 +5,8 @@ const initialState = {
 };
 
 const userVotedBill = (state = initialState, action) => {
+  console.log(action.userVotedBills, 'this is a response');
+
   switch (action.type) {
     case types.GET_USER_VOTED_BILLS_SUCCESS:
       return {

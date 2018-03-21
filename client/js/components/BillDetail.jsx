@@ -53,7 +53,7 @@ class BillDetails extends Component {
  * @returns {void}
  */
   componentDidMount() {
-    const billId = this.props.match.params.billId;
+    const { billId } = this.props.match.params;
     this.props.getAllUsers();
     this.props.getABill(billId);
     this.props.getOpinion(billId);
@@ -154,7 +154,7 @@ class BillDetails extends Component {
     return (
       <div className="dashboard-container">
         <SideBar permission={this.props.user.token.permission} />
-        <main>
+        <main className="row s12">
           <div className="welcome-caption" >
             <div className="mobile-hambuger">
               <a
@@ -175,17 +175,16 @@ class BillDetails extends Component {
               </h5>
             </span>
           </div>
-          <div className="flexer flexer-row">
+          <div className="flexer flexer-row row s12">
             <div className="flexed">
               <div className="flexer flexer-col">
-                <div className="bill-desc">
+                <div className="bill-desc row s12">
                   <div className="bill-desc-wrapper flexer flexer-col">
                     <div className="bill-desc-notifications flexer">
                       <div className="flexed flexer bill-status">
                         <span className="billProgress">
                           {bill.billProgress}
                         </span>
-                        {/* <span className="status">{status}</span> */}
                       </div>
                       <div className="bill-created">
                         <span className="created-time">Created
@@ -196,65 +195,76 @@ class BillDetails extends Component {
 
                     <div className="bill-desc-body flexed">
                       <h2>{title}</h2>
-                      <p>
-                        {bill.description}
-                      </p>
-                      <div className="social-content">
-                        <FacebookShareButton
-                          url={shareUrl}
-                          quote={title}
-                          className="share-button"
-                        >
-                          <FacebookIcon
-                            size={32}
-                            round
-                          />
-                        </FacebookShareButton>
+                      <div className="flexer">
+                        <div className="">
+                          <div className="social-content">
+                            <FacebookShareButton
+                              url={shareUrl}
+                              quote={title}
+                              className="share-button"
+                            >
+                              <FacebookIcon
+                                size={32}
+                                round
+                              />
+                            </FacebookShareButton>
 
-                        <TwitterShareButton
-                          url={shareUrl}
-                          title={title}
-                          className="share-button"
-                        >
-                          <TwitterIcon
-                            size={32}
-                            round
-                          />
-                        </TwitterShareButton>
+                            <TwitterShareButton
+                              url={shareUrl}
+                              title={title}
+                              className="share-button"
+                            >
+                              <TwitterIcon
+                                size={32}
+                                round
+                              />
+                            </TwitterShareButton>
 
-                        <LinkedinShareButton
-                          url={shareUrl}
-                          title={title}
-                          windowWidth={750}
-                          windowHeight={600}
-                          className="share-button"
-                        >
-                          <LinkedinIcon
-                            size={32}
-                            round
-                          />
-                        </LinkedinShareButton>
+                            <LinkedinShareButton
+                              url={shareUrl}
+                              title={title}
+                              windowWidth={750}
+                              windowHeight={600}
+                              className="share-button"
+                            >
+                              <LinkedinIcon
+                                size={32}
+                                round
+                              />
+                            </LinkedinShareButton>
 
-                        <EmailShareButton
-                          url={shareUrl}
-                          subject={title}
-                          body="body"
-                          className="share-button"
-                        >
-                          <EmailIcon
-                            size={32}
-                            round
-                          />
-                        </EmailShareButton>
+                            <EmailShareButton
+                              url={shareUrl}
+                              subject={title}
+                              body="body"
+                              className="share-button"
+                            >
+                              <EmailIcon
+                                size={32}
+                                round
+                              />
+                            </EmailShareButton>
 
+                          </div>
+                        </div>
+                        <div className="flexed">
+
+                          <p>
+                            {bill.description}
+                          </p>
+                        </div>
                       </div>
                     </div>
                     <div className="bill-desc-footer flexer">
                       <span className={voteStatus} onClick={this.handleUpvote}>upvote {bill.upVoteCount}</span>
                       <span className={voteStatus} onClick={this.handleDownVote}>donwvote {bill.downVoteCount}</span>
-                      <span className={adminBtn} username={userName} bill={bill}>
-                        <Link to={`/bills/${bill._id}/edit`}>edit</Link>
-                      </span>
+
+                      <Link to={`/bills/${bill._id}/edit`}>
+                        <span className={adminBtn} username={userName} bill={bill}>
+                          edit
+                        </span>
+                      </Link>
+
                       <span className={adminBtn} onClick={this.handleDelete}>delete</span>
                     </div>
                   </div>
@@ -262,7 +272,7 @@ class BillDetails extends Component {
                 <div className="flexed bill-opinion">
                   <div>
                     <form className="row" onSubmit={this.onSubmit}>
-                      <div className="row">
+                      <div className="row opinion-input">
                         <div className="input-field col s10">
                           <input
                             id="icon_prefix"
@@ -279,11 +289,16 @@ class BillDetails extends Component {
                     </form>
                   </div>
                   <div className="opinions">
-                    {this.props.opinions.map(opinion => (<div key={shortId.generate()} >{opinion.opinion}
-                      <span className="created-time">Created
-                        {moment(opinion.created_at).fromNow()}
-                      </span>
-                    </div>))}
+                    {this.props.opinions.map(opinion =>
+                      (
+                        <div className="opinion-box" key={shortId.generate()} >
+                          <span className="created-time">Created&nbsp;
+                            {moment(opinion.created_at).fromNow()}
+                          </span>
+                          <div className="opinion-text"><span>{opinion.opinion}</span>
+                          </div>
+                        </div>
+                    ))}
                     <div />
                   </div>
                 </div>
@@ -306,11 +321,13 @@ BillDetails.propTypes = {
   addOpinion: PropTypes.func.isRequired,
   getOpinion: PropTypes.func.isRequired,
   getAllUsers: PropTypes.func.isRequired,
+  opinions: PropTypes.array.isRequired,
+  match: PropTypes.object.isRequired
 };
 const mapStateToProps = (state) => {
   const { user } = state.setCurrentUser;
   const currentBill = state.bill.billFound;
-  const { opinions } = state.opinion;
+  const { opinions } = state.opinion || [];
   // const opinionAuthor = state.users.users.find(author => author._id === opinions.opinionBy) || {};
   return {
     currentBill, user, opinions
