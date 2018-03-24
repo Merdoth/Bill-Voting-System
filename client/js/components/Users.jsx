@@ -9,16 +9,20 @@ import SideBar from './SideBar';
 
 
 /**
+ * @description this class returns a Users component
  *
- *
- * @class AdminDashboard
  * @extends {Component}
+ *
+ * @returns { undefined }
  */
-class Users extends Component {
+export class Users extends Component {
   /**
-  * Creates Instance of UpdateProfilePage
+  * Creates Instance of Users
   * @param {Object} props
-  * @memberOf UpdateProfilePage
+  *
+  * @memberof Users
+  *
+  * @returns { undefined }
   */
   constructor(props) {
     super(props);
@@ -30,9 +34,9 @@ class Users extends Component {
   }
   /**
  *
+ * @memberof Users
  *
- * @memberof Dashboard
- * @returns {void}
+ * @returns {undefined}
  */
   componentDidMount() {
     this.props.getAllUsers(this.state.page);
@@ -44,12 +48,12 @@ class Users extends Component {
   }
 
   /**
+ * @method onChange
  *
- *
- * @param {any} event
+ * @param {event} event
  *
  * @returns { undefined }
- * @memberof Users
+ *
  */
   onChange(event) {
     const isActive = event.target.checked;
@@ -60,8 +64,10 @@ class Users extends Component {
 
   /**
 * @method handlePageClick
-* @param {*} event
-* @return {DOM} returns a new page of result
+*
+* @param {event} event
+*
+* @return {undefined}
 *
 */
   handlePageClick(event) {
@@ -71,9 +77,9 @@ class Users extends Component {
   }
   /**
    *
-   *
    * @returns { undefined }
-   * @memberof AdminDashboard
+   *
+   * @memberof Users
    */
   render() {
     const { userName } = this.props.user.token;
@@ -92,7 +98,9 @@ class Users extends Component {
               </a>
             </div>
             <span className="float-header-with-flex">
-              <Link to="/search"><i className="material-icons medium search-icon">search</i></Link>
+              <Link to="/search">
+                <i className="material-icons medium search-icon">search</i>
+              </Link>
             </span>
             <span>
               <h5 className="username-format">
@@ -111,7 +119,8 @@ class Users extends Component {
               <div className="bill-body">
                 <div className="summary-container">
                   <div className="summary-section">
-                    {this.props.users.length > 0 ? this.props.users.map(user => (
+                    {this.props.users.length > 0 ?
+                    this.props.users.map(user => (
                       <div className="summary-list" key={shortId.generate()}>
                         <span key={shortId.generate()}> {user.fullName}</span>
                         <div className="switch">
@@ -165,4 +174,7 @@ const mapStateToProps = state => ({
   user: state.setCurrentUser.user,
   currentPage: state.users.pageInfo || {}
 });
-export default connect(mapStateToProps, { getAllUsers, addPermission })(Users);
+export default connect(
+  mapStateToProps,
+  { getAllUsers, addPermission }
+)(Users);

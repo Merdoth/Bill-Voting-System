@@ -8,6 +8,7 @@ dotenv.config();
  * @description When called, this function generates a
  * token
  * @param {Object} user request object
+ *
  * @return {string} Token
  */
 export default (user) => {

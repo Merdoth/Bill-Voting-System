@@ -4,11 +4,11 @@ import NavigationBar from './NavigationBar';
 import Footer from './Footer';
 
 
-
 /**
  *
- * @desc the functional component returns the footer if the page
- * @returns { void }
+ * @description this returns a NotFound component
+ *
+ * @returns { undefined }
  */
 const NotFound = () => {
   return (

@@ -8,13 +8,21 @@ import { SuperAdminSignupRequest } from '../actions/user';
 
 
 /**
- * @class SignupForm
+ * @description this class returns a SuperAdminSignup component
+ *
+ * @extends {Component}
+ *
+ * @returns { undefined }
  */
 export class SuperAdminSignup extends Component {
   /**
-   * @constructor
-   * @param {State} props
-   */
+  * Creates Instance of SuperAdminSignup
+  * @param {Object} props
+  *
+  * @memberof SuperAdminSignup
+  *
+  * @returns { undefined }
+  */
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +38,8 @@ export class SuperAdminSignup extends Component {
   }
 
   /**
-   * @desc componentWillMount
+   * @memberof SuperAdminSignup
+   *
    * @return { undefined }
    */
   componentWillMount() {
@@ -39,25 +48,31 @@ export class SuperAdminSignup extends Component {
     });
   }
   /**
+   * @method onChange
    *
    * @param {Event} event
-   * @return {state} sets state of button
+   *
+   * @return {undefined} updates state
    */
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
 
   /**
+   * @method onSubmit
    *
    * @param {Event} event
-   * @return {state} updates state
+   *
+   * @return {undefined} new state
    */
   onSubmit(event) {
     event.preventDefault();
     this.props.SuperAdminSignupRequest(this.state);
   }
   /**
-   * @return {Object} Returns DOM element
+   * @return {undefined}
+   *
+   * @memberof SuperAdminSignup
    */
   render() {
     return (
@@ -84,7 +99,11 @@ export class SuperAdminSignup extends Component {
                       value={this.state.fullName}
                       onChange={this.onChange}
                     />
-                    <label htmlFor="firstname" className="control-label">Fullname :</label>
+                    <label
+                      htmlFor="firstname"
+                      className="control-label"
+                    >Fullname :
+                    </label>
                   </div>
                 </div>
                 <div className="row">
@@ -99,7 +118,11 @@ export class SuperAdminSignup extends Component {
                       onChange={this.onChange}
                       disabled
                     />
-                    <label htmlFor="lastname" className="control-label">Username :</label>
+                    <label
+                      htmlFor="lastname"
+                      className="control-label"
+                    >Username :
+                    </label>
                   </div>
                 </div>
                 <div className="row">
@@ -113,7 +136,11 @@ export class SuperAdminSignup extends Component {
                       value={this.state.email}
                       onChange={this.onChange}
                     />
-                    <label htmlFor="userId" className="control-label">Email :</label>
+                    <label
+                      htmlFor="userId"
+                      className="control-label"
+                    >Email :
+                    </label>
                   </div>
                 </div>
                 <div className="row">
@@ -129,11 +156,20 @@ export class SuperAdminSignup extends Component {
                       value={this.state.password}
                       onChange={this.onChange}
                     />
-                    <label htmlFor="userId" className="control-label">Password :</label>
+                    <label
+                      htmlFor="userId"
+                      className="control-label"
+                    >Password :
+                    </label>
                   </div>
                 </div>
                 <div className="row form-cta">
-                  <button type="submit" className="btn shadow-effect" href="#">Signup</button>
+                  <button
+                    type="submit"
+                    className="btn shadow-effect"
+                    href="#"
+                  >Signup
+                  </button>
                 </div>
               </form>
               <div className="row">
@@ -148,7 +184,12 @@ export class SuperAdminSignup extends Component {
               <div className="disclaimer row">
                 <div>
                   <span>
-                    <img src="/img/votebox.png" alt="" width="100" height="100" />
+                    <img
+                      src="/img/votebox.png"
+                      alt=""
+                      width="100"
+                      height="100"
+                    />
                   </span>
                 </div>
                 <div className="disclaimer-right">
@@ -156,7 +197,8 @@ export class SuperAdminSignup extends Component {
                   <span>
                     Services is provided through a
                     secured connection.
-                    If you have difficulty creating a user please contact your site administrator.
+                    If you have difficulty creating a user please
+                     contact your site administrator.
                   </span>
                 </div>
               </div>

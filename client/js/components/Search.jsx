@@ -6,14 +6,24 @@ import { connect } from 'react-redux';
 import shortId from 'shortid';
 import SideBar from './SideBar';
 import { searchBill } from '../actions';
+
+
 /**
- * @class Search
+ * @description this class returns a Search component
+ *
+ * @extends {Component}
+ *
+ * @returns { undefined }
  */
-class Search extends Component {
-  /**
-   *
-   * @param {*} props
-   */
+export class Search extends Component {
+ /**
+  * Creates Instance of Search
+  * @param {Object} props
+  *
+  * @memberof Search
+  *
+  * @returns { undefined }
+  */
   constructor(props) {
     super(props);
     this.state = {
@@ -26,9 +36,10 @@ class Search extends Component {
 
   /**
    * @method onChange
-   * @param {*} event
-   * @description updates state on event change and makes call to api via props
-   * @return {DOM} Dom
+   *
+   * @param {event} event
+   *
+   * @return {undefined} updates state
    */
   onChange(event) {
     const searchInput = {
@@ -46,8 +57,10 @@ class Search extends Component {
 
   /**
  * @method handlePageClick
- * @param {*} event
- * @return {DOM} returns a new page of result
+ *
+ * @param {event} event
+ *
+ * @return {undefined} returns a new page of result
  *
  */
   handlePageClick(event) {
@@ -59,11 +72,13 @@ class Search extends Component {
     });
     this.props.searchBill(this.state, offset);
   }
+
   /**
- * @method render
- * @description renders the Dom
- * @returns {DOM} returns DOM element
- */
+   *
+   * @returns { undefined }
+   *
+   * @memberof Search
+   */
   render() {
     const { userName } = this.props.user.token;
     return (
@@ -124,7 +139,9 @@ class Search extends Component {
                         />
                         <div className="bill-title">{bill.title}</div>
                       </div>
-                      <div className="truncate">{bill.description}</div>
+                      <div className="truncate bill-desc-summary">
+                        {bill.description}
+                      </div>
                     </div>
                     <div className="vote-btn">
                       <div

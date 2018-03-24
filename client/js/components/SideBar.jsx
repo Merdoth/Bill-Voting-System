@@ -6,19 +6,20 @@ import { logout } from '../actions/user';
 
 
 /**
+ * @description this class returns a SideBar component
  *
- * @desc the functional component returns the footer if the page
+ * @extends {Component}
  *
- * @param { object } props
- *
- * @returns { void }
+ * @returns { undefined }
  */
 export class SideBar extends React.Component {
   /**
-   * Creates an instance of NavigationBar.
+   * Creates an instance of SideBar.
    * @param { Object } props
    *
-   * @memberof NavigationBar
+   * @memberof SideBar
+   *
+   * @returns {undefined}
    */
   constructor(props) {
     super(props);
@@ -26,9 +27,9 @@ export class SideBar extends React.Component {
   }
 
   /**
-   * @param { Object } event
+   * @param { event } event
    *
-   * @memberof NavigationBar
+   * @memberof SideBar
    *
    * @returns { undefined }
    */
@@ -39,7 +40,7 @@ export class SideBar extends React.Component {
 
   /**
    *
-   * @memberof NavigationBar
+   * @memberof SideBar
    *
    * @returns { undefined }
    */
@@ -75,7 +76,7 @@ export class SideBar extends React.Component {
   }
   /**
  *
- * @memberof NavigationBar
+ * @memberof SideBar
  *
  * @returns { undefined }
  */
@@ -114,7 +115,7 @@ export class SideBar extends React.Component {
   }
   /**
 *
-* @memberof NavigationBar
+* @memberof SideBar
 *
 * @returns { undefined }
 */
@@ -150,8 +151,8 @@ export class SideBar extends React.Component {
   }
   /**
    *
-   *
    * @returns { undefined }
+   *
    * @memberof SideBar
    */
   render() {

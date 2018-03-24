@@ -5,12 +5,15 @@ import history from './history';
 
 const AuthenticateUser = (ComposedComponent) => {
   /**
+   * @class Authenticate
    *
+   * @extends {Component}
    */
   class Authenticate extends Component {
     /**
      * @method componentWillMount
-     * @return {*} set user authentication status
+     *
+     * @return { object } sets user authentication status
      */
     componentWillMount() {
       if (!this.props.isAuthenticated) {
@@ -19,8 +22,10 @@ const AuthenticateUser = (ComposedComponent) => {
     }
     /**
      * @method componentWillUpdate
-     * @param {*} nextProps
-     * @return {*} props
+     *
+     * @param {nextProps} nextProps
+     *
+     * @return {object} props
      */
     componentWillUpdate(nextProps) {
       if (!nextProps.isAuthenticated) {
@@ -30,8 +35,9 @@ const AuthenticateUser = (ComposedComponent) => {
 
     /**
  *
- * @returns { undefined }
  * @memberof Authenticate
+ *
+ * @returns { Component-DOM } DOM
  */
     render() {
       return (

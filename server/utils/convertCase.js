@@ -1,9 +1,11 @@
 /**
  * @function capitalizeFirstLetter
  *
- * @return { object } a string in lowercase and the First letter in Capital
+ * @description a string in lowercase and the First letter in uppercase
  *
  * @param { String } text
+ *
+ * @return { object } json
  */
 const convertCase = (text) => {
   const string = text.toLowerCase();

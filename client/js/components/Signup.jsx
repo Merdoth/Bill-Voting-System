@@ -8,13 +8,21 @@ import { userSignupRequest } from '../actions/user';
 
 
 /**
- * @class SignupForm
+ * @description this class returns a Signup component
+ *
+ * @extends {Component}
+ *
+ * @returns { undefined }
  */
 export class Signup extends Component {
   /**
-   * @constructor
-   * @param {State} props
-   */
+  * Creates Instance of Signup
+  * @param {Object} props
+  *
+  * @memberof Signup
+  *
+  * @returns { undefined }
+  */
   constructor(props) {
     super(props);
     this.state = {
@@ -30,34 +38,42 @@ export class Signup extends Component {
   }
 
   /**
-   * @desc componentWillMount
-   * @return { undefined }
-   */
+ *
+ * @memberof Signup
+ *
+ * @returns {undefined}
+ */
   componentWillMount() {
     $(document).ready(() => {
       $('select').material_select();
     });
   }
   /**
+   * @method onChange
    *
    * @param {Event} event
-   * @return {state} sets state of button
+   *
+   * @return {undefined} updates state
    */
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
 
   /**
+   * @method onSubmit
    *
    * @param {Event} event
-   * @return {state} updates state
+   *
+   * @return {undefined} new state
    */
   onSubmit(event) {
     event.preventDefault();
     this.props.userSignupRequest(this.state);
   }
   /**
-   * @return {Object} Returns DOM element
+   * @return {undefined}
+   *
+   * @memberof Signup
    */
   render() {
     return (
@@ -82,7 +98,11 @@ export class Signup extends Component {
                       value={this.state.fullName}
                       onChange={this.onChange}
                     />
-                    <label htmlFor="firstname" className="control-label">Fullname :</label>
+                    <label
+                      htmlFor="firstname"
+                      className="control-label"
+                    >Fullname :
+                    </label>
                   </div>
                 </div>
                 <div className="row">
@@ -96,7 +116,11 @@ export class Signup extends Component {
                       value={this.state.userName}
                       onChange={this.onChange}
                     />
-                    <label htmlFor="lastname" className="control-label">Username :</label>
+                    <label
+                      htmlFor="lastname"
+                      className="control-label"
+                    >Username :
+                    </label>
                   </div>
                 </div>
                 <div className="row">
@@ -110,7 +134,11 @@ export class Signup extends Component {
                       value={this.state.email}
                       onChange={this.onChange}
                     />
-                    <label htmlFor="userId" className="control-label">Email :</label>
+                    <label
+                      htmlFor="userId"
+                      className="control-label"
+                    >Email :
+                    </label>
                   </div>
                 </div>
                 <div className="row">
@@ -126,17 +154,26 @@ export class Signup extends Component {
                       value={this.state.password}
                       onChange={this.onChange}
                     />
-                    <label htmlFor="userId" className="control-label">Password :</label>
+                    <label
+                      htmlFor="userId"
+                      className="control-label"
+                    >Password :
+                    </label>
                   </div>
                 </div>
                 <div className="row form-cta">
-                  <button type="submit" className="btn shadow-effect" href="#">Signup</button>
+                  <button
+                    type="submit"
+                    className="btn shadow-effect"
+                    href="#"
+                  >Signup
+                  </button>
                 </div>
               </form>
               <div className="row">
                 <div className="col s12">
                   <p className="authlinks">
-                    <Link to="/">
+                    <Link to="/signin">
                       or Log in
                     </Link>
                   </p>
@@ -145,7 +182,12 @@ export class Signup extends Component {
               <div className="disclaimer row">
                 <div>
                   <span>
-                    <img src="/img/votebox.png" alt="" width="100" height="100" />
+                    <img
+                      src="/img/votebox.png"
+                      alt=""
+                      width="100"
+                      height="100"
+                    />
                   </span>
                 </div>
                 <div className="disclaimer-right">
@@ -153,7 +195,8 @@ export class Signup extends Component {
                   <span>
                     Services is provided through a
                     secured connection.
-                    If you have difficulty creating a user please contact your site administrator.
+                    If you have difficulty creating a user please
+                     contact your site administrator.
                   </span>
                 </div>
               </div>

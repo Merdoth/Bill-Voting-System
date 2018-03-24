@@ -5,19 +5,21 @@ import { logout, getAllBills, updateBill } from '../actions';
 import SideBar from './SideBar';
 
 /**
+ * @description this class returns a EditBill component
  *
- *
- * @export
- * @class EditBill
  * @extends {Component}
+ *
+ * @returns { undefined }
  */
 export class EditBill extends Component {
   /**
-    * @constructor
-    * @description Creates Instance of LoginForm
-    * @param {Object} props
-    * @memberOf LoginForm
-    */
+  * Creates Instance of EditBill
+  * @param {Object} props
+  *
+  * @memberof EditBill
+  *
+  * @returns { undefined }
+  */
   constructor(props) {
     super(props);
     this.state = {
@@ -32,9 +34,9 @@ export class EditBill extends Component {
 
   /**
   *
+  * @memberof EditBill
   *
-  * @memberof Dashboard
-  * @returns {void}
+  * @returns {undefined}
   */
   componentDidMount() {
     this.props.getAllBills();
@@ -44,10 +46,13 @@ export class EditBill extends Component {
     });
   }
   /**
-*
-* @param {*} nextProps updated props
-* @returns {DOM} DOM object
-*/
+  *
+  * @memberof EditBill
+  *
+  * @param {Object} nextProps updated props
+  *
+  * @return {undefined} sets state to currrent prop
+  */
   componentWillReceiveProps(nextProps) {
     this.setState({
       title: nextProps.currentBill.title,
@@ -57,7 +62,9 @@ export class EditBill extends Component {
   }
   /**
     * @method onChange
+    *
     * @param {Event} event
+    *
     * @return {Object} updates State
     */
   onChange(event) {
@@ -66,7 +73,9 @@ export class EditBill extends Component {
 
   /**
    * @method onSubmit
+   *
    * @param {Event} event
+   *
    * @return {Object} new State
    */
   onSubmit(event) {
@@ -77,7 +86,7 @@ export class EditBill extends Component {
   /**
     * @method resetForm
     *
-    * @memberof EditClient
+    * @memberof EditBill
     *
     * @return { undefined }
     */
@@ -88,8 +97,8 @@ export class EditBill extends Component {
   }
   /**
  *
- *
  * @returns { undefined }
+ *
  * @memberof EditBill
  */
   render() {
@@ -139,7 +148,11 @@ export class EditBill extends Component {
                           value={this.state.title || ''}
                           onChange={this.onChange}
                         />
-                        <label htmlFor="title" className="control-label">Title :</label>
+                        <label
+                          htmlFor="title"
+                          className="control-label"
+                        >Title :
+                        </label>
                       </div>
                     </div>
                     <div className="row">
@@ -155,7 +168,11 @@ export class EditBill extends Component {
                           value={this.state.description || ''}
                           onChange={this.onChange}
                         />
-                        <label htmlFor="description" className="control-label">Description :</label>
+                        <label
+                          htmlFor="description"
+                          className="control-label"
+                        >Description :
+                        </label>
                       </div>
                     </div>
                     <div className="row">
@@ -169,13 +186,20 @@ export class EditBill extends Component {
                         value={this.state.billProgress}
                         onChange={this.onChange}
                       >
-                        <option value="Not enacted" defaultValue>Not enacted</option>
+                        <option value="Not enacted" defaultValue>
+                        Not enacted
+                        </option>
                         <option value="Senate Voted">Senate Voted</option>
                         <option value="House passed">House Passed</option>
                       </select>
                     </div>
                     <div className="row form-cta">
-                      <button type="submit" className="btn shadow-effect" href="#">Submit</button>
+                      <button
+                        type="submit"
+                        className="btn shadow-effect"
+                        href="#"
+                      >Submit
+                      </button>
                     </div>
                   </form>
                 </div>

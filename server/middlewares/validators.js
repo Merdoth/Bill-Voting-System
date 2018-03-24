@@ -3,7 +3,15 @@ import lodash from 'lodash';
 
 const secret = process.env.SECRET;
 
-
+/**
+   * @description verifies if a users token is valid
+   *
+   * @param { Object } req - Request object
+   * @param { Object } res - Response object
+   * @param { Object } next - callback
+   *
+   * @returns { Object } json
+   */
 exports.validateToken = (req, res, next) => {
   const token = req.body.token
     || req.query.token
@@ -27,7 +35,7 @@ exports.validateToken = (req, res, next) => {
  *
  * @param {Object} value
  *
- * @returns {undefined}
+ * @returns {Object} json
  */
 exports.validateSignUpInput = (value) => {
   const {
@@ -69,36 +77,11 @@ exports.validateSignUpInput = (value) => {
 };
 
 /**
- * @description validate Bill Input Field
- *
- * @param {Object} req
- * @param {Object} res
- * @param {Object} next
- *
- * @returns {object} json - payload
- */
-exports.validateBillInput = (req, res, next) => {
-  req.check('title', 'Title cannot be empty').notEmpty();
-  req.check('title', 'Title must be at least of 5 character long')
-    .isLength(5, 50);
-  req.check('description', 'Description cannot be empty').notEmpty();
-  req.check('description', 'Description must be at least of 8 character long and not more than 1000 characters')
-    .isLength(8, 1000);
-  const errors = req.validationErrors();
-  if (errors) {
-    const message = errors[0].msg;
-    res.status(400).send({ message });
-  } else {
-    next();
-  }
-};
-
-/**
  * @description validate User Sign in Field
  *
  * @param {Object} value
  *
- * @returns {object} json - payload
+ * @returns {object} json
  */
 exports.validateSignInInput = (value) => {
   const {
@@ -126,13 +109,38 @@ exports.validateSignInInput = (value) => {
 };
 
 /**
+ * @description validate Bill Input Field
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Object} next
+ *
+ * @returns {object} json
+ */
+exports.validateBillInput = (req, res, next) => {
+  req.check('title', 'Title cannot be empty').notEmpty();
+  req.check('title', 'Title must be at least of 5 character long')
+    .isLength(5, 50);
+  req.check('description', 'Description cannot be empty').notEmpty();
+  req.check('description', 'Description must be at least of 8 character long and not more than 1000 characters')
+    .isLength(8, 1000);
+  const errors = req.validationErrors();
+  if (errors) {
+    const message = errors[0].msg;
+    res.status(400).send({ message });
+  } else {
+    next();
+  }
+};
+
+/**
  * @description validate Admin Input Field
  *
  * @param {Object} req
  * @param {Object} res
  * @param {Object} next
  *
- * @returns {object} json - payload
+ * @returns {object} json
  */
 exports.validateAdmin = (req, res, next) => {
   req.check('fullName', 'Fullname cannot be empty').notEmpty();
@@ -153,12 +161,14 @@ exports.validateAdmin = (req, res, next) => {
   }
 };
 
+
+
 /**
  * @description validate User Update Profile Input Field
  *
  * @param {Object} value
  *
- * @returns {undefined}
+ * @returns {object} json
  */
 exports.validateUserProfile = (value) => {
   const {
@@ -197,7 +207,7 @@ exports.validateUserProfile = (value) => {
  *
  * @param {Object} value
  *
- * @returns {object} json - payload
+ * @returns {object} json
  */
 exports.validatePermmission = (value) => {
   const {
@@ -220,7 +230,7 @@ exports.validatePermmission = (value) => {
  *
  * @param {Object} value
  *
- * @returns {object} json - payload
+ * @returns {object} json
  */
 exports.validateOpinion = (value) => {
   const {
