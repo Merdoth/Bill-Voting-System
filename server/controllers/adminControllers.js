@@ -147,7 +147,7 @@ exports.editBill = (req, res) => {
         { _id: req.params.billId },
         {
           $set: {
-            title: req.body.title,
+            title: req.body.title.toUpperCase(),
             description: req.body.description,
             billProgress: req.body.billProgress,
           },

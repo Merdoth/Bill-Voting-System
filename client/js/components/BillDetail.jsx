@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import shortId from 'shortid';
@@ -108,7 +109,23 @@ export class BillDetails extends Component {
   handleDelete(event, billId) {
     event.preventDefault();
     billId = this.props.currentBill._id;
-    this.props.deleteBill(billId);
+    swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to view this bill again!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          this.props.deleteBill(billId);
+          swal('Poof! Your imaginary file has been deleted!', {
+            icon: 'success',
+          });
+        } else {
+          swal('User was not deleted!');
+        }
+      });
   }
 
   /**
@@ -277,7 +294,7 @@ export class BillDetails extends Component {
                         className={voteStatus}
                         onClick={this.handleDownVote}
                       >
-                      donwvote {bill.downVoteCount}
+                      downvote {bill.downVoteCount}
                       </span>
 
                       <Link to={`/bills/${bill._id}/edit`}>

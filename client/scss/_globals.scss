@@ -74,3 +74,16 @@ header, main {
   border-bottom: solid 1px $color-brand-gray-light;
   padding: 15px;
 }
+.swal-title, .swal-button {
+  font-weight: 400;
+}
+.pagination {
+  li {
+    a {
+      cursor: pointer !important;
+    }
+    a:hover {
+      color: #0d47a1;
+    }
+  }
+}

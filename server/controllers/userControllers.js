@@ -153,14 +153,14 @@ exports.updateUserProfile = (req, res) => {
     .exec((error, user) => {
       if (error) {
         if (error.codeName === 'DuplicateKey' &&
-        error.message.includes(req.body.email)) {
+          error.message.includes(req.body.email)) {
           return res.status(409).send({
             message: 'This email address is already in use by another account.',
             success: false
           });
         }
         if (error.codeName === 'DuplicateKey' &&
-        error.message.includes(req.body.userName)) {
+          error.message.includes(req.body.userName)) {
           return res.status(409).send({
             message: 'This username is already in use by another account.',
             success: false
@@ -287,12 +287,12 @@ const removeVote = (req, res, voteDetails, billFound) => {
  * @return {object} json
  */
 const toggleVote = (req, res, voteDetails, billFound) => {
-  const { billId, status } = voteDetails;
+  const { billId, userId, status } = voteDetails;
   if (status === 'upvote') {
     Bill.findByIdAndUpdate({ _id: billId }, {
       $set: {
-        upVoteCount: billFound.upVoteCount + 1,
         downVoteCount: billFound.downVoteCount - 1,
+        upVoteCount: billFound.upVoteCount + 1,
       },
     }, { new: true })
       .exec()
@@ -304,7 +304,7 @@ const toggleVote = (req, res, voteDetails, billFound) => {
           });
         }
         if (updatedVoteCount) {
-          Vote.findOneAndUpdate({ votedBill: billId }, {
+          Vote.findOneAndUpdate({ votedBill: billId, votedBy: userId }, {
             $set: {
               status
             },
@@ -341,7 +341,10 @@ const toggleVote = (req, res, voteDetails, billFound) => {
           });
         }
         if (updatedVoteCount) {
-          Vote.findOneAndUpdate({ votedBill: billId }, {
+          Vote.findOneAndUpdate({
+            votedBill: billId,
+            votedBy: userId
+          }, {
             $set: {
               status
             },
@@ -405,7 +408,7 @@ exports.upVoteBill = (req, res) => {
               return removeVote(req, res, voteDetails, billFound);
             } else if (result && result.status === 'downvote') {
               const voteDetails = {
-                userId, billId, status
+                userId, billId, status,
               };
               return toggleVote(req, res, voteDetails, billFound);
             }

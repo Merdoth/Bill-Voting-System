@@ -64,6 +64,7 @@
     "sass-loader": "^6.0.7",
     "shortid": "^2.2.8",
     "style-loader": "^0.20.3",
+    "sweetalert": "^2.1.0",
     "uglifyjs-webpack-plugin": "^1.2.3",
     "webpack": "^3.11.0",
     "webpack-dev-middleware": "^1.12.2",
@@ -77,15 +78,14 @@
     "eslint-plugin-react": "^7.7.0"
   },
   "scripts": {
-    "coverage-report": "cat ./coverage/lcov.info | coveralls",
+    "coverage":"nyc report --reporter=text-lcov | coveralls",
     "start": "NODE_ENV=production node dist/server/app.js",
     "start:dev": "NODE_ENV=development nodemon --watch server --exec babel-node -- ./server/app.js",
     "build:server": "rm -rf dist && babel ./server/ -d ./dist/server",
     "build": "npm run build:copy && npm run build:webpack",
     "build:webpack": "NODE_ENV=production webpack --config ./webpack.config.prod.babel.js",
-    "build:copy": "NODE_ENV=production babel ./ -d dist --copy-files  --ignore node_modules/,dist",   
+    "build:copy": "NODE_ENV=production babel ./ -d dist --copy-files  --ignore node_modules/,dist",
     "heroku-postbuild": "npm run build",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "test": "NODE_ENV=test nyc --reporter=lcov --reporter=text  mocha  --compilers js:babel-core/register ./server/tests/index.spec.js --timeout 80000"
   },
   "bin": {

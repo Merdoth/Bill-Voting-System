@@ -55,9 +55,6 @@ export class SideBar extends React.Component {
             </Link>
           </div>
           <div className="side-nav-section channels">
-            <div className="side-nav-logout-btn">
-              <a onClick={this.logout}>Logout</a>
-            </div>
             <ul className="side-nav-list">
               <li className="side-nav-item">
                 <NavLink exact to="/profile">Profile </NavLink>
@@ -69,6 +66,9 @@ export class SideBar extends React.Component {
                 <NavLink exact to="/bills/voted">Voted Bills </NavLink>
               </li>
             </ul>
+            <div className="side-nav-logout-btn">
+              <a onClick={this.logout}>Logout</a>
+            </div>
           </div>
         </div>
       </header>
@@ -91,9 +91,7 @@ export class SideBar extends React.Component {
             </Link>
           </div>
           <div className="side-nav-section channels">
-            <div className="side-nav-logout-btn">
-              <a onClick={this.logout}>Logout</a>
-            </div>
+           
             <ul className="side-nav-list">
               <li className="side-nav-item">
                 <NavLink exact to="/profile">Profile </NavLink>
@@ -108,6 +106,9 @@ export class SideBar extends React.Component {
                 <NavLink exact to="/bills/voted">Voted Bills </NavLink>
               </li>
             </ul>
+            <div className="side-nav-logout-btn">
+              <a onClick={this.logout}>Logout</a>
+            </div>
           </div>
         </div>
       </header>
@@ -130,9 +131,6 @@ export class SideBar extends React.Component {
             </Link>
           </div>
           <div className="side-nav-section channels">
-            <div className="side-nav-logout-btn">
-              <a onClick={this.logout}>Logout</a>
-            </div>
             <ul className="side-nav-list">
               <li className="side-nav-item">
                 <NavLink exact to="/bills">Bills </NavLink>
@@ -144,6 +142,9 @@ export class SideBar extends React.Component {
                 <NavLink exact to="/bills/create">Create a Bill </NavLink>
               </li>
             </ul>
+            <div className="side-nav-logout-btn">
+              <a onClick={this.logout}>Logout</a>
+            </div>
           </div>
         </div>
       </header>

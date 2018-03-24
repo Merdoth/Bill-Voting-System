@@ -135,7 +135,7 @@ export class Signin extends Component {
               <div className="disclaimer-right">
                 <img src="/img/norton.png" alt="" width="100" height="50" />
                 <span>
-                  A username and password is required to use this service.
+                  A email and password is required to use this service.
                   If you have difficulty logging in please
                   contact your admin for support.
                 </span>

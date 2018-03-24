@@ -1,23 +1,16 @@
-sudo: required
-dist: trusty
 language: node_js
 node_js:
-  - node
-
-services:
-  - mongodb
-
-mongodb:
-  adapter: mongodb
-  database: billvoting
-  username: merdoth
-  
-before_script:
+  - "node"
+  - "6.11.2"
+before_install:
   - npm install
   - sleep 15
-
 script:
   - npm run test
+after_script:
+  - npm run coverage
 
-after_success:
-  - npm run coveralls
+services: mongodb
+
+env:
+  CODECLIMATE_REPO_TOKEN: 713671664457aabeba4337bdb71661e72c73414ad1f15d397c5ee43ed8087ae1

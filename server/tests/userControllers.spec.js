@@ -518,7 +518,7 @@ describe('Users', () => {
           if (!error) {
             expect(res).to.have.status(200);
             res.body.should.have.property('message')
-              .equal(`Welcome ${res.body.user.userName}`);
+              .equal('Welcome Black t');
             jwtToken = res.body.token;
           }
           done();
@@ -712,27 +712,6 @@ describe('Users', () => {
           done();
         });
     });
-    // it(`should throw an error if
-    //  email already exists and return 409`, (done) => {
-    //   const fullName = 'Pablo Twinny';
-    //   const userName = 'Pablo';
-    //   const email = 'blackt@yahoo.com';
-    //   chai.request(app)
-    //     .put('/api/v1/user/updateprofile', userControllers.updateUserProfile)
-    //     .set('Accept', 'application/json')
-    //     .set('x-access-token', jwtToken1)
-    //     .send({
-    //       email, fullName, userName
-    //     })
-    //     .end((error, res) => {
-    //       if (res) {
-    //         expect(res).to.have.status(409);
-    //         res.body.should.have.property('message')
-    //           .equal('This email address is already in use by another account.');
-    //       }
-    //       done();
-    //     });
-    // });
     it(`should throw an error if username
      already exist and return 409`, (done) => {
       const fullName = 'Black Twinny';

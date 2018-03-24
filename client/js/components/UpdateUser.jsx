@@ -26,7 +26,7 @@ export class UpdateUser extends Component {
       fullName: '',
       email: '',
       userName: '',
-      loggedIn: false,
+      isLoading: false,
     };
 
     this.onChange = this.onChange.bind(this);

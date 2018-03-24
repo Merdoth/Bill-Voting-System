@@ -34,9 +34,9 @@ export class Home extends Component {
               <p>Making better decision for tomorrows leaders</p>
               <span
                 className="quote"
-              >We grants people the opportunity to vote for or
+              >We grant people the opportunity to vote for or
                 against bills that affect their lives and existence. We give
-                voice to the citizenry and participation in legislation
+                voice to the citizenry and participants in legislation.
               </span>
               <Link to="/signin">
                 <span className="link-signin">

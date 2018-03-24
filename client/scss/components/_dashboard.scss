@@ -17,7 +17,8 @@
   align-items: center;
     .search-icon {
       cursor: pointer;
-      font-size: 3rem;
+      font-size: 2rem;
+      margin-top: 15px;
       &:hover {
         color: $color-brand-blue;
       }

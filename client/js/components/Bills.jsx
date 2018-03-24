@@ -32,6 +32,7 @@ export class Bills extends Component {
     };
     this.handlePageClick = this.handlePageClick.bind(this);
   }
+
   /**
  *
  * @memberof BillDetails
@@ -43,7 +44,7 @@ export class Bills extends Component {
     $(document).ready(() => {
       $('.button-collapse').sideNav();
       $('.collapsible').collapsible('open');
-      $('.tooltipped').tooltip({ delay: 50 });
+      $('.tooltipped').tooltip();
     });
   }
 
@@ -61,6 +62,17 @@ export class Bills extends Component {
     });
   }
 
+  /**
+ *
+ * @memberof BillDetails
+ *
+ * @returns {undefined}
+ */
+  componentDidUpdate() {
+    $(document).ready(() => {
+      $('.tooltipped').tooltip({ delay: 50 });
+    });
+  }
   /**
   * @method handlePageClick
   *
