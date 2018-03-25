@@ -522,7 +522,7 @@ exports.addOpinion = (req, res) => {
         });
       }
       if (billFound) {
-        if (billFound.billProgress !== 'House Passed') {
+        if (billFound.billProgress !== 'House passed') {
           const newDetail = new Opinion({
             opinion,
             opinionBy: userId,
