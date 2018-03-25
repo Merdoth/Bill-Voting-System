@@ -9,16 +9,20 @@ import SideBar from './SideBar';
 
 
 /**
+ * @description this class returns a UserVotedBills component
  *
- *
- * @class AdminDashboard
  * @extends {Component}
+ *
+ * @returns { undefined }
  */
-class UserVotedBills extends Component {
+export class UserVotedBills extends Component {
   /**
-  * Creates Instance of UpdateProfilePage
+  * Creates Instance of UserVotedBills
   * @param {Object} props
-  * @memberOf UpdateProfilePage
+  *
+  * @memberof UserVotedBills
+  *
+  * @returns { undefined }
   */
   constructor(props) {
     super(props);
@@ -30,9 +34,9 @@ class UserVotedBills extends Component {
   }
   /**
  *
+ * @memberof UserVotedBills
  *
- * @memberof Dashboard
- * @returns {void}
+ * @returns {undefined}
  */
   componentDidMount() {
     this.props.getUserVotedBills(this.state.page);
@@ -44,10 +48,12 @@ class UserVotedBills extends Component {
   }
 
   /**
-  * @method
-  * @memberOf Class CommentPage
-  * @param {*} nextProps updated props
-  * @return {*} sets state to currrent prop
+  *
+  * @memberof UserVotedBills
+  *
+  * @param {Object} nextProps updated props
+  *
+  * @return {undefined} sets state to currrent prop
   */
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -57,8 +63,10 @@ class UserVotedBills extends Component {
 
   /**
   * @method handlePageClick
-  * @param {*} event
-  * @return {DOM} returns a new page of result
+  *
+  * @param {event} event
+  *
+  * @return {undefined}
   *
   */
   handlePageClick(event) {
@@ -68,9 +76,9 @@ class UserVotedBills extends Component {
   }
   /**
    *
-   *
    * @returns { undefined }
-   * @memberof AdminDashboard
+   *
+   * @memberof UserVotedBills
    */
   render() {
     const { userName } = this.props.user.token;
@@ -89,7 +97,9 @@ class UserVotedBills extends Component {
               </a>
             </div>
             <span className="float-header-with-flex">
-              <Link to={'/search'}><i className="material-icons medium search-icon">search</i></Link>
+              <Link to="/search">
+                <i className="material-icons medium search-icon">search</i>
+              </Link>
             </span>
             <span>
               <h5 className="username-format">
@@ -106,39 +116,50 @@ class UserVotedBills extends Component {
                 <h3>Bills</h3>
               </div>
               <div className="bill-body">
-                {this.props.votedBills.length > 0 ? this.props.votedBills.map(bill => (
-                  <Link to={`/bills/${bill.votedBill._id}`} className="flexer bill-content" key={shortId.generate()}>
-                    <div className="flexed content-align">
-                      <div className="flexer bill-details">
-                        <span
-                          className={`${bill.votedBill.billProgress} tooltipped`}
-                          data-position="top"
-                          data-delay="50"
-                          data-tooltip={`${bill.votedBill.billProgress}`}
-                        />
-                        <div className="bill-title">{bill.votedBill.title}</div>
-                      </div>
-                      <div className="truncate">{bill.votedBill.description}</div>
-                    </div>
-                    <div className="vote-btn">
-                      <div
-                        className="upvote-count tooltipped"
-                        data-position="top"
-                        data-delay="50"
-                        data-tooltip="upvote count"
-                      >
-                        {bill.votedBill.upVoteCount}
-                      </div>
-                      <div
-                        className="downvote-count tooltipped"
-                        data-position="top"
-                        data-delay="50"
-                        data-tooltip="downvote count"
-                      >
-                        {bill.votedBill.downVoteCount}
-                      </div>
-                    </div>
-                  </Link>
+                {this.props.votedBills.length > 0 ?
+                 this.props.votedBills.map(bill => (
+                   <Link
+                     to={`/bills/${bill.votedBill._id}`}
+                     className="flexer bill-content"
+                     key={shortId.generate()}
+                   >
+                     <div className="flexed content-align">
+                       <div className="flexer bill-details">
+                         <span
+                           className={`${bill.votedBill.billProgress} 
+                          tooltipped`}
+                           data-position="top"
+                           data-delay="50"
+                           data-tooltip={`${bill.votedBill.billProgress}`}
+                         />
+                         <div
+                           className="bill-title"
+                         >{bill.votedBill.title}
+                         </div>
+                       </div>
+                       <div className="truncate">
+                         {bill.votedBill.description}
+                       </div>
+                     </div>
+                     <div className="vote-btn">
+                       <div
+                         className="upvote-count tooltipped"
+                         data-position="top"
+                         data-delay="50"
+                         data-tooltip="upvote count"
+                       >
+                         {bill.votedBill.upVoteCount}
+                       </div>
+                       <div
+                         className="downvote-count tooltipped"
+                         data-position="top"
+                         data-delay="50"
+                         data-tooltip="downvote count"
+                       >
+                         {bill.votedBill.downVoteCount}
+                       </div>
+                     </div>
+                   </Link>
                 )) : (<h3>Sadly nothing to show :)</h3>)}
                 <ReactPaginate
                   previousLabel="previous"

@@ -16,7 +16,10 @@ const middleware = applyMiddleware(logger, thunk);
 const configureStore = (state = {}) => createStore(
   rootReducer,
   state,
-  compose(middleware, window.devToolsExtension ? window.devToolsExtension() : f => f)
+  compose(
+    middleware,
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+  )
 );
 
 const store = configureStore();

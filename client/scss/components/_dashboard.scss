@@ -17,7 +17,8 @@
   align-items: center;
     .search-icon {
       cursor: pointer;
-      font-size: 3rem;
+      font-size: 2rem;
+      margin-top: 15px;
       &:hover {
         color: $color-brand-blue;
       }
@@ -33,7 +34,7 @@
 }
 .username-format {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 500;
   display: flex;
   align-items: center;
   margin: 0;
@@ -150,7 +151,7 @@
 
 .bill-title {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .upvote-count, .downvote-count{

@@ -16,10 +16,13 @@ const signupSuperAdminFail = user =>
   ({ type: types.SIGN_UP_ADMIN_ERROR, user });
 
 /**
- * @function userSignupRequest
+ * @function SuperAdminSignupRequest
+ *
  * @param { object } userData
+ *
  * @returns {object} dispatches an action
- * @description It makes an api call to register a new user
+ *
+ * @description It makes an api call to register the super admin
  */
 export const SuperAdminSignupRequest = userData => dispatch =>
   axios.post('/api/v1/admin/signup', userData)
@@ -42,8 +45,11 @@ const signupUserFail = user => ({ type: types.SIGN_UP_USER_ERROR, user });
 
 /**
  * @function userSignupRequest
+ *
  * @param { object } userData
+ *
  * @returns {object} dispatches an action
+ *
  * @description It makes an api call to register a new user
  */
 export const userSignupRequest = userData => dispatch =>
@@ -67,9 +73,12 @@ const userLoginFailed = user => ({ type: types.LOGIN_USER_ERROR, user });
 
 /**
    * @function userLoginRequest
+   *
    * @param { object } userData
+   *
    * @returns {object} dispatches an action
-   * @description It makes an api call to log i a registered user
+   *
+   * @description It makes an api call to log in a registered user
    */
 export const userLoginRequest = userData => dispatch =>
   axios.post('/api/v1/user/signin', userData)
@@ -94,8 +103,11 @@ const logoutSuccess = user => ({
 
 /**
  * @function logout
+ *
  * @returns {object} dispatches an action
- * @description It logs out the user and deletes token from local storage
+ *
+ * @description It logs out the user and deletes
+ * token from local storage when called
  */
 export const logout = () => (dispatch) => {
   localStorage.removeItem('jwtToken');
@@ -112,10 +124,13 @@ const getAllUsersFailure = users =>
   ({ type: types.GET_ALL_USERS_ERROR, users });
 
 /**
-     * @function updateUserDetails
-     * @returns {object} dispatches an action
-     * @description It logs out the user and deletes token from local storage
+     * @function getAllUsers
+     *
      * @param {number} page form data
+     *
+     * @returns {object} dispatches an action
+     *
+     * @description It super admin get all users
      */
 export const getAllUsers = page => dispatch =>
   axios.get(`/api/v1/admin/users?page=${page}`)
@@ -134,13 +149,14 @@ const getAUserFailure = user =>
   ({ type: types.GET_A_USER_ERROR, user });
 
 /**
-     * @function updateUserDetails
+     * @function getAUser
+     *
+     * @param {object} userId form data
      *
      * @returns {object} dispatches an action
      *
-     * @description It logs out the user and deletes token from local storage
+     * @description It makes an api call to get one user
      *
-     * @param {object} userId form data
      */
 export const getAUser = userId => dispatch =>
   axios.get(`/api/v1/user/${userId}`)
@@ -158,13 +174,14 @@ const updateUserFailure = user =>
   ({ type: types.UPDATE_A_USER_ERROR, user });
 
 /**
-     * @function updateUserDetails
+     * @function updateUser
+     *
+     * @param {object} userData form data
      *
      * @returns {object} dispatches an action
      *
-     * @description It logs out the user and deletes token from local storage
+     * @description It allows a user update his/her profile
      *
-     * @param {object} userData form data
      */
 export const updateUser = userData => dispatch =>
   axios.put('/api/v1/user/updateprofile', userData)
@@ -183,11 +200,7 @@ const addPermissionFailure = user =>
   ({ type: types.ADD_PERMISSION_ERROR, user });
 
 /**
-     * @function updateUserDetails
-     *
-     * @returns {object} dispatches an action
-     *
-     * @description It logs out the user and deletes token from local storage
+     * @function addPermission
      *
      * @param {object} userId
      *
@@ -195,6 +208,10 @@ const addPermissionFailure = user =>
      *
      * @param {boolean} isActive
      *
+     * @returns {object} dispatches an action
+     *
+     * @description It allows a super-admin add
+     * admin permission to user when called
      */
 export const addPermission = (userId, permission, isActive) => dispatch =>
   axios.post('/api/v1/admin/addpermission', { userId, permission, isActive })

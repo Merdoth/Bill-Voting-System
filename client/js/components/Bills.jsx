@@ -9,16 +9,20 @@ import SideBar from './SideBar';
 
 
 /**
+ * @description this class returns a Bills component
  *
- *
- * @class AdminDashboard
  * @extends {Component}
+ *
+ * @returns { undefined }
  */
-class Bills extends Component {
+export class Bills extends Component {
   /**
-  * Creates Instance of UpdateProfilePage
+  * Creates Instance of Bills
   * @param {Object} props
-  * @memberOf UpdateProfilePage
+  *
+  * @memberof Bills
+  *
+  * @returns { undefined }
   */
   constructor(props) {
     super(props);
@@ -28,37 +32,53 @@ class Bills extends Component {
     };
     this.handlePageClick = this.handlePageClick.bind(this);
   }
+
   /**
  *
+ * @memberof BillDetails
  *
- * @memberof Dashboard
- * @returns {void}
+ * @returns {undefined}
  */
   componentDidMount() {
     this.props.getAllBills(this.state.page);
     $(document).ready(() => {
       $('.button-collapse').sideNav();
       $('.collapsible').collapsible('open');
-      $('.tooltipped').tooltip({ delay: 50 });
+      $('.tooltipped').tooltip();
     });
   }
 
   /**
-  * @method
-  * @memberOf Class CommentPage
-  * @param {*} nextProps updated props
-  * @return {*} sets state to currrent prop
+  *
+  * @memberof Bills
+  *
+  * @param {Object} nextProps updated props
+  *
+  * @return {undefined} sets state to currrent prop
   */
   componentWillReceiveProps(nextProps) {
     this.setState({
       allBills: nextProps.allBills
     });
   }
-  
+
+  /**
+ *
+ * @memberof BillDetails
+ *
+ * @returns {undefined}
+ */
+  componentDidUpdate() {
+    $(document).ready(() => {
+      $('.tooltipped').tooltip({ delay: 50 });
+    });
+  }
   /**
   * @method handlePageClick
-  * @param {*} event
-  * @return {DOM} returns a new page of result
+  *
+  * @param {event} event
+  *
+  * @return {undefined}
   *
   */
   handlePageClick(event) {
@@ -68,9 +88,9 @@ class Bills extends Component {
   }
   /**
    *
-   *
    * @returns { undefined }
-   * @memberof AdminDashboard
+   *
+   * @memberof Bills
    */
   render() {
     const { userName } = this.props.user.token;
@@ -89,7 +109,9 @@ class Bills extends Component {
               </a>
             </div>
             <span className="float-header-with-flex">
-              <Link to={'/search'}><i className="material-icons medium search-icon">search</i></Link>
+              <Link to="/search">
+                <i className="material-icons medium search-icon">search</i>
+              </Link>
             </span>
             <span>
               <h5 className="username-format">

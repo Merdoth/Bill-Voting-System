@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import shortId from 'shortid';
@@ -24,16 +25,20 @@ import SideBar from './SideBar';
 
 
 /**
+ * @description this class returns a BillDetails component
  *
- *
- * @class AdminDashboard
  * @extends {Component}
+ *
+ * @returns { undefined }
  */
-class BillDetails extends Component {
+export class BillDetails extends Component {
   /**
-  * Creates Instance of UpdateProfilePage
+  * Creates Instance of BillDetails
   * @param {Object} props
-  * @memberOf UpdateProfilePage
+  *
+  * @memberof BillDetails
+  *
+  * @returns { undefined }
   */
   constructor(props) {
     super(props);
@@ -46,11 +51,12 @@ class BillDetails extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+
   /**
  *
+ * @memberof BillDetails
  *
- * @memberof Dashboard
- * @returns {void}
+ * @returns {undefined}
  */
   componentDidMount() {
     const { billId } = this.props.match.params;
@@ -65,7 +71,9 @@ class BillDetails extends Component {
   }
   /**
    * @method onChange
+   *
    * @param {Event} event
+   *
    * @return {Object} updates State
    */
   onChange(event) {
@@ -74,7 +82,9 @@ class BillDetails extends Component {
 
   /**
   * @method onSubmit
+  *
   * @param {Event} event
+  *
   * @return {Object} new State
   */
   onSubmit(event) {
@@ -88,7 +98,8 @@ class BillDetails extends Component {
 
   /**
    *
-   * @param {any} event
+   * @param {event} event
+   *
    * @param { number } billId
    *
    * @return { undefined }
@@ -98,12 +109,29 @@ class BillDetails extends Component {
   handleDelete(event, billId) {
     event.preventDefault();
     billId = this.props.currentBill._id;
-    this.props.deleteBill(billId);
+    swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to view this bill again!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          this.props.deleteBill(billId);
+          swal('Poof! Your imaginary file has been deleted!', {
+            icon: 'success',
+          });
+        } else {
+          swal('User was not deleted!');
+        }
+      });
   }
 
   /**
  *
- * @param {any} event
+ * @param {event} event
+ *
  * @param { number } billId
  *
  * @return { undefined }
@@ -119,7 +147,8 @@ class BillDetails extends Component {
 
   /**
  *
- * @param {any} event
+ * @param {event} event
+ *
  * @param { number } billId
  *
  * @return { undefined }
@@ -135,9 +164,9 @@ class BillDetails extends Component {
 
   /**
    *
-   *
    * @returns { undefined }
-   * @memberof AdminDashboard
+   *
+   * @memberof BillDetails
    */
   render() {
     const { userName } = this.props.user.token;
@@ -145,12 +174,14 @@ class BillDetails extends Component {
     const { title } = bill;
     const shareUrl = 'https://bill-voting-system.herokuapp.com';
     let adminBtn;
-    if (this.props.user.token.permission === 1 || this.props.user.token.permission === 2) {
+    if (this.props.user.token.permission === 1 ||
+       this.props.user.token.permission === 2) {
       adminBtn = 'display';
     } else {
       adminBtn = 'dont-display';
     }
-    const voteStatus = this.props.currentBill.billProgress === 'House Passed' ? 'disable-vote' : 'allow-vote';
+    const voteStatus = this.props.currentBill.billProgress ===
+    'House Passed' ? 'disable-vote' : 'allow-vote';
     return (
       <div className="dashboard-container">
         <SideBar permission={this.props.user.token.permission} />
@@ -256,16 +287,32 @@ class BillDetails extends Component {
                       </div>
                     </div>
                     <div className="bill-desc-footer flexer">
-                      <span className={voteStatus} onClick={this.handleUpvote}>upvote {bill.upVoteCount}</span>
-                      <span className={voteStatus} onClick={this.handleDownVote}>donwvote {bill.downVoteCount}</span>
+                      <span className={voteStatus} onClick={this.handleUpvote}>
+                      upvote {bill.upVoteCount}
+                      </span>
+                      <span
+                        className={voteStatus}
+                        onClick={this.handleDownVote}
+                      >
+                      downvote {bill.downVoteCount}
+                      </span>
 
                       <Link to={`/bills/${bill._id}/edit`}>
-                        <span className={adminBtn} username={userName} bill={bill}>
+                        <span
+                          className={adminBtn}
+                          username={userName}
+                          bill={bill}
+                        >
                           edit
                         </span>
                       </Link>
 
-                      <span className={adminBtn} onClick={this.handleDelete}>delete</span>
+                      <span
+                        className={adminBtn}
+                        onClick={this.handleDelete}
+                      >
+                      delete
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -295,7 +342,8 @@ class BillDetails extends Component {
                           <span className="created-time">Created&nbsp;
                             {moment(opinion.created_at).fromNow()}
                           </span>
-                          <div className="opinion-text"><span>{opinion.opinion}</span>
+                          <div className="opinion-text">
+                            <span>{opinion.opinion}</span>
                           </div>
                         </div>
                     ))}
@@ -328,7 +376,6 @@ const mapStateToProps = (state) => {
   const { user } = state.setCurrentUser;
   const currentBill = state.bill.billFound;
   const { opinions } = state.opinion || [];
-  // const opinionAuthor = state.users.users.find(author => author._id === opinions.opinionBy) || {};
   return {
     currentBill, user, opinions
   };

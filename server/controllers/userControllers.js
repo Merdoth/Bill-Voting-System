@@ -9,12 +9,12 @@ import pagination from '../utils/pagination';
 import validators from '../middlewares/validators';
 
 /**
-   * @description sign up a new user
+   * @description allows a new user sign up
    *
    * @param {Object} req user request object
    * @param {Object} res server response object
    *
-   * @return {undefined}
+   * @return {object} json
    */
 exports.signUp = (req, res) => {
   const { errors, isValid } = validators.validateSignUpInput(req.body);
@@ -81,12 +81,12 @@ exports.signUp = (req, res) => {
 };
 
 /**
-   * @description sign in a registered user
+   * @description  allows a registered user sign in
    *
    * @param {Object} req user request object
    * @param {Object} res server response object
    *
-   * @return {undefined}
+   * @return {object} json
    */
 exports.signIn = (req, res) => {
   const { errors, isValid } = validators.validateSignInInput(req.body);
@@ -125,12 +125,12 @@ exports.signIn = (req, res) => {
 };
 
 /**
- * @description allows user update profile
+ * @description allows user update his/her profile
  *
  * @param {object} req - response object
  * @param {object} res - request object
  *
- * @return { undefined }
+ * @return { object } json
  */
 
 exports.updateUserProfile = (req, res) => {
@@ -153,14 +153,14 @@ exports.updateUserProfile = (req, res) => {
     .exec((error, user) => {
       if (error) {
         if (error.codeName === 'DuplicateKey' &&
-        error.message.includes(req.body.email)) {
+          error.message.includes(req.body.email)) {
           return res.status(409).send({
             message: 'This email address is already in use by another account.',
             success: false
           });
         }
         if (error.codeName === 'DuplicateKey' &&
-        error.message.includes(req.body.userName)) {
+          error.message.includes(req.body.userName)) {
           return res.status(409).send({
             message: 'This username is already in use by another account.',
             success: false
@@ -185,7 +185,7 @@ exports.updateUserProfile = (req, res) => {
  * @param {object} voteDetails - voteDetails object
  * @param {object} billFound - billFound object
  *
- * @return {undefined}
+ * @return {object} json
  */
 const addVote = (req, res, voteDetails, billFound) => {
   const { userId, billId, status } = voteDetails;
@@ -229,14 +229,14 @@ const addVote = (req, res, voteDetails, billFound) => {
 };
 
 /**
- * @description allows user remove upvote
+ * @description allows user remove a vote
  *
  * @param {object} req - response object
  * @param {object} res - request object
  * @param {object} voteDetails - voteDetails object
  * @param {object} billFound - billFound object
  *
- * @return {undefined}
+ * @return {object} json
  */
 const removeVote = (req, res, voteDetails, billFound) => {
   const { userId, billId, status } = voteDetails;
@@ -284,15 +284,15 @@ const removeVote = (req, res, voteDetails, billFound) => {
  * @param {object} voteDetails - voteDetails object
  * @param {object} billFound - billFound object
  *
- * @return {undefined}
+ * @return {object} json
  */
 const toggleVote = (req, res, voteDetails, billFound) => {
-  const { billId, status } = voteDetails;
+  const { billId, userId, status } = voteDetails;
   if (status === 'upvote') {
     Bill.findByIdAndUpdate({ _id: billId }, {
       $set: {
-        upVoteCount: billFound.upVoteCount + 1,
         downVoteCount: billFound.downVoteCount - 1,
+        upVoteCount: billFound.upVoteCount + 1,
       },
     }, { new: true })
       .exec()
@@ -304,7 +304,7 @@ const toggleVote = (req, res, voteDetails, billFound) => {
           });
         }
         if (updatedVoteCount) {
-          Vote.findOneAndUpdate({ votedBill: billId }, {
+          Vote.findOneAndUpdate({ votedBill: billId, votedBy: userId }, {
             $set: {
               status
             },
@@ -341,7 +341,10 @@ const toggleVote = (req, res, voteDetails, billFound) => {
           });
         }
         if (updatedVoteCount) {
-          Vote.findOneAndUpdate({ votedBill: billId }, {
+          Vote.findOneAndUpdate({
+            votedBill: billId,
+            votedBy: userId
+          }, {
             $set: {
               status
             },
@@ -371,7 +374,7 @@ const toggleVote = (req, res, voteDetails, billFound) => {
  * @param {object} req - response object
  * @param {object} res - request object
  *
- * @return {undefined}
+ * @return {object} json
  */
 exports.upVoteBill = (req, res) => {
   const userId = req.decoded.id;
@@ -405,7 +408,7 @@ exports.upVoteBill = (req, res) => {
               return removeVote(req, res, voteDetails, billFound);
             } else if (result && result.status === 'downvote') {
               const voteDetails = {
-                userId, billId, status
+                userId, billId, status,
               };
               return toggleVote(req, res, voteDetails, billFound);
             }
@@ -435,7 +438,7 @@ exports.upVoteBill = (req, res) => {
  * @param {object} req - response object
  * @param {object} res - request object
  *
- * @return {undefined}
+ * @return {object} json
  */
 exports.downVoteBill = (req, res) => {
   const userId = req.decoded.id;
@@ -499,7 +502,7 @@ exports.downVoteBill = (req, res) => {
    * @param { Object } req - Request object
    * @param { Object } res - Response object
    *
-   * @returns { undefined }
+   * @returns { object } json
    */
 exports.addOpinion = (req, res) => {
   const { errors, isValid } = validators.validateOpinion(req.body);
@@ -558,7 +561,7 @@ exports.addOpinion = (req, res) => {
    * @param { Object } req - Request object
    * @param { Object } res - Response object
    *
-   * @returns { undefined }
+   * @returns { object } json
    */
 exports.fetchOpinion = (req, res) => {
   Opinion.find({
@@ -588,7 +591,7 @@ exports.fetchOpinion = (req, res) => {
    * @param { Object } req - Request object
    * @param { Object } res - Response object
    *
-   * @returns { undefined }
+   * @returns { object } json
    */
 exports.fetchUserVotedBill = (req, res) => {
   const userId = req.decoded.id;
@@ -632,7 +635,7 @@ exports.fetchUserVotedBill = (req, res) => {
    * @param { Object } req - Request object
    * @param { Object } res - Response object
    *
-   * @returns { undefined }
+   * @returns { object } json
    */
 exports.getAllBills = (req, res) => {
   let options = {
@@ -673,7 +676,7 @@ exports.getAllBills = (req, res) => {
    * @param { Object } req - Request object
    * @param { Object } res - Response object
    *
-   * @returns { undefined }
+   * @returns { object } json
    */
 exports.searchBills = (req, res) => {
   if (!req.body.searchTerm) {
@@ -717,7 +720,7 @@ exports.searchBills = (req, res) => {
    * @param { Object } req - Request object
    * @param { Object } res - Response object
    *
-   * @returns { undefined }
+   * @returns { object } json
    */
 exports.getABill = (req, res) => {
   const { billId } = req.params;
@@ -751,7 +754,7 @@ exports.getABill = (req, res) => {
    * @param { Object } req - Request object
    * @param { Object } res - Response object
    *
-   * @returns { undefined }
+   * @returns { object } json
    */
 exports.getAUser = (req, res) => {
   const { userId } = req.params;

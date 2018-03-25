@@ -6,13 +6,21 @@ import { createBillRequest } from '../actions';
 
 
 /**
- * @class SignupForm
+ * @description this class returns a CreateBill component
+ *
+ * @extends {Component}
+ *
+ * @returns { undefined }
  */
 export class CreateBill extends Component {
   /**
-   * @constructor
-   * @param {State} props
-   */
+  * Creates Instance of CreateBill
+  * @param {Object} props
+  *
+  * @memberof CreateBill
+  *
+  * @returns { undefined }
+  */
   constructor(props) {
     super(props);
     this.state = {
@@ -25,25 +33,31 @@ export class CreateBill extends Component {
   }
 
   /**
+   * @method onChange
    *
    * @param {Event} event
-   * @return {state} sets state of button
+   *
+   * @return {Oject} updates state
    */
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
 
   /**
+   * @method onSubmit
    *
    * @param {Event} event
-   * @return {state} updates state
+   *
+   * @return {state} new state
    */
   onSubmit(event) {
     event.preventDefault();
     this.props.createBillRequest(this.state);
   }
   /**
-   * @return {Object} Returns DOM element
+   * @return {undefined} Returns DOM element
+   *
+   * @method CreateBill
    */
   render() {
     const { userName } = this.props.user.token;
@@ -92,7 +106,11 @@ export class CreateBill extends Component {
                           value={this.state.title}
                           onChange={this.onChange}
                         />
-                        <label htmlFor="title" className="control-label">Title :</label>
+                        <label
+                          htmlFor="title"
+                          className="control-label"
+                        >Title :
+                        </label>
                       </div>
                     </div>
                     <div className="row">
@@ -108,11 +126,20 @@ export class CreateBill extends Component {
                           value={this.state.description}
                           onChange={this.onChange}
                         />
-                        <label htmlFor="description" className="control-label">Description :</label>
+                        <label
+                          htmlFor="description"
+                          className="control-label"
+                        >Description :
+                        </label>
                       </div>
                     </div>
                     <div className="row form-cta">
-                      <button type="submit" className="btn shadow-effect" href="#">Create</button>
+                      <button
+                        type="submit"
+                        className="btn shadow-effect"
+                        href="#"
+                      >Create
+                      </button>
                     </div>
                   </form>
                 </div>

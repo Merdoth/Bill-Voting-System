@@ -10,7 +10,7 @@ import generateToken from '../utils/generateToken';
    * @param {Object} req admin request object
    * @param {Object} res server response object
    *
-   * @return {undefined}
+   * @return {Object} json
    */
 exports.adminSignUp = (req, res) => {
   if (req.body.userName !== 'super-admin') {
@@ -70,7 +70,7 @@ exports.adminSignUp = (req, res) => {
    * @param {Object} req user request object
    * @param {Object} res server response object
    *
-   * @return {undefined}
+   * @return {object} json
    */
 exports.createBill = (req, res) => {
   const userId = req.decoded.id;
@@ -124,7 +124,7 @@ exports.createBill = (req, res) => {
    * @param {Object} req user request object
    * @param {Object} res server response object
    *
-   * @return {undefined}
+   * @return {object} json
    */
 exports.editBill = (req, res) => {
   const userId = req.decoded.id;
@@ -147,7 +147,7 @@ exports.editBill = (req, res) => {
         { _id: req.params.billId },
         {
           $set: {
-            title: req.body.title,
+            title: req.body.title.toUpperCase(),
             description: req.body.description,
             billProgress: req.body.billProgress,
           },
@@ -182,7 +182,7 @@ exports.editBill = (req, res) => {
    * @param {Object} req user request object
    * @param {Object} res server response object
    *
-   * @return {undefined}
+   * @return {object} json
    */
 exports.deleteBill = (req, res) => {
   const userId = req.decoded.id;
@@ -221,10 +221,6 @@ exports.deleteBill = (req, res) => {
             message: 'Bill successfully deleted!'
           });
         });
-        // return res.status(200).send({
-        //   success: true,
-        //   message: 'Bill successfully deleted!'
-        // });
       });
     })
     .catch((error) => {
@@ -234,12 +230,12 @@ exports.deleteBill = (req, res) => {
 };
 
 /**
-   * @description allows admin update user permission
+   * @description allows super-admin update user permission
    *
    * @param { Object } req user request object
    * @param { Object } res servers response
    *
-   * @return { undefined }
+   * @return { object } json
    */
 exports.addPermission = (req, res) => {
   const adminId = req.decoded.id;
@@ -297,15 +293,16 @@ exports.addPermission = (req, res) => {
    * @param { Object } req user request object
    * @param { Object } res servers response
    *
-   * @return { undefined }
+   * @return { object } json
    */
 exports.getAllUsers = (req, res) => {
+  const query = { userName: { $not: /super-admin/ } };
   const options = {
     select: '-password',
     page: Number(req.query.page) || 1,
     limit: Number(req.query.limit) || 6
   };
-  User.paginate({}, options)
+  User.paginate(query, options)
     .then((users) => {
       if (!users) {
         res.status(404).send({

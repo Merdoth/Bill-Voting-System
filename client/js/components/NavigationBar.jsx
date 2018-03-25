@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * @description This is a navigation component
+ * @description this returns a navigation component
+ *
  * @returns { undefined }
  */
 const NavigationBar = () => (

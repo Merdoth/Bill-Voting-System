@@ -4,15 +4,17 @@ import { Link } from 'react-router-dom';
 
 
 /**
+ * @description this class returns a Home component
  *
- * @desc the functional component returns the footer if the page
- * @returns { void }
+ * @extends {Component}
+ *
+ * @returns { undefined }
  */
 export class Home extends Component {
   /**
    *
-   *
    * @returns { undefined }
+   *
    * @memberof Home
    */
   render() {
@@ -30,11 +32,13 @@ export class Home extends Component {
             <div className="flexed home-body">
               <div className="home-date">{date.toString()}</div>
               <p>Making better decision for tomorrows leaders</p>
-              <span className="quote">We grants people the opportunity to vote for or
+              <span
+                className="quote"
+              >We grant people the opportunity to vote for or
                 against bills that affect their lives and existence. We give
-                voice to the citizenry and participation in legislation
+                voice to the citizenry and participants in legislation.
               </span>
-              <Link to="/register">
+              <Link to="/signin">
                 <span className="link-signin">
                   Vote Now
                   <i className="material-icons">

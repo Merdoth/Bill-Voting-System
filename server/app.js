@@ -11,8 +11,6 @@ import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import routes from './routes';
 import devConfig from '../webpack.config.babel';
-import prodConfig from '../webpack.config.prod.babel';
-
 
 dotenv.config();
 
@@ -44,6 +42,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
 app.use(express.static(__dirname + './../public'));
+app.use('/api-docs', express.static(path.join(__dirname, './../api-docs')));
 
 if (process.env.NODE_ENV === 'development') {
   app.use(webpackDevMiddleware(compiler, {

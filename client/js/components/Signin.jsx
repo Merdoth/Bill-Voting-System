@@ -7,17 +7,20 @@ import Footer from './Footer';
 import { userLoginRequest } from '../actions';
 
 /**
- * @method Login
- * @param {*} props
- * @returns {DOM} DOM Element
- * @description renders the login page
+ * @description this class returns a Signin component
+ *
+ * @extends {Component}
+ *
+ * @returns { undefined }
  */
 export class Signin extends Component {
-  /**
-  * @constructor
-  * @description Creates Instance of LoginForm
+ /**
+  * Creates Instance of Signin
   * @param {Object} props
-  * @memberOf LoginForm
+  *
+  * @memberof Signin
+  *
+  * @returns { undefined }
   */
   constructor(props) {
     super(props);
@@ -33,7 +36,9 @@ export class Signin extends Component {
 
   /**
    * @method onChange
+   *
    * @param {Event} event
+   *
    * @return {Object} updates State
    */
   onChange(event) {
@@ -42,7 +47,9 @@ export class Signin extends Component {
 
   /**
    * @method onSubmit
+   *
    * @param {Event} event
+   *
    * @return {Object} new State
    */
   onSubmit(event) {
@@ -52,6 +59,7 @@ export class Signin extends Component {
 
   /**
    * @memberof Signin
+   *
    * @returns { undefined }
    */
   render() {
@@ -127,7 +135,7 @@ export class Signin extends Component {
               <div className="disclaimer-right">
                 <img src="/img/norton.png" alt="" width="100" height="50" />
                 <span>
-                  A username and password is required to use this service.
+                  A email and password is required to use this service.
                   If you have difficulty logging in please
                   contact your admin for support.
                 </span>

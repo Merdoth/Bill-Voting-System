@@ -5,26 +5,28 @@ import { logout, getAUser, updateUser } from '../actions';
 import SideBar from './SideBar';
 
 /**
+ * @description this class returns a UpdateUser component
  *
- *
- * @export
- * @class EditBill
  * @extends {Component}
+ *
+ * @returns { undefined }
  */
 export class UpdateUser extends Component {
   /**
-    * @constructor
-    * @description Creates Instance of LoginForm
-    * @param {Object} props
-    * @memberOf LoginForm
-    */
+  * Creates Instance of UpdateUser
+  * @param {Object} props
+  *
+  * @memberof UpdateUser
+  *
+  * @returns { undefined }
+  */
   constructor(props) {
     super(props);
     this.state = {
       fullName: '',
       email: '',
       userName: '',
-      loggedIn: false,
+      isLoading: false,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -47,8 +49,9 @@ export class UpdateUser extends Component {
   }
   /**
 *
-* @param {*} nextProps updated props
-* @returns {DOM} DOM object
+* @param {Object} nextProps updated props
+*
+* @returns {undefined} sets state to currrent prop
 */
   componentWillReceiveProps(nextProps) {
     if (nextProps.userFound) {
@@ -61,7 +64,9 @@ export class UpdateUser extends Component {
   }
   /**
     * @method onChange
+    *
     * @param {Event} event
+    *
     * @return {Object} updates State
     */
   onChange(event) {
@@ -70,7 +75,9 @@ export class UpdateUser extends Component {
 
   /**
    * @method onSubmit
+   *
    * @param {Event} event
+   *
    * @return {Object} new State
    */
   onSubmit(event) {
@@ -80,9 +87,9 @@ export class UpdateUser extends Component {
 
   /**
  *
- *
  * @returns { undefined }
- * @memberof EditBill
+ *
+ * @memberof UpdateUser
  */
   render() {
     const { userName } = this.props.user.token;
@@ -129,7 +136,11 @@ export class UpdateUser extends Component {
                           value={this.state.fullName}
                           onChange={this.onChange}
                         />
-                        <label htmlFor="firstname" className="control-label">Fullname :</label>
+                        <label
+                          htmlFor="firstname"
+                          className="control-label"
+                        >Fullname :
+                        </label>
                       </div>
                     </div>
                     <div className="row">
@@ -143,7 +154,11 @@ export class UpdateUser extends Component {
                           value={this.state.userName}
                           onChange={this.onChange}
                         />
-                        <label htmlFor="lastname" className="control-label">Username :</label>
+                        <label
+                          htmlFor="lastname"
+                          className="control-label"
+                        >Username :
+                        </label>
                       </div>
                     </div>
                     <div className="row">
@@ -157,11 +172,20 @@ export class UpdateUser extends Component {
                           value={this.state.email}
                           onChange={this.onChange}
                         />
-                        <label htmlFor="userId" className="control-label">Email :</label>
+                        <label
+                          htmlFor="userId"
+                          className="control-label"
+                        >Email :
+                        </label>
                       </div>
                     </div>
                     <div className="row form-cta">
-                      <button type="submit" className="btn shadow-effect" href="#">Update</button>
+                      <button
+                        type="submit"
+                        className="btn shadow-effect"
+                        href="#"
+                      >Update
+                      </button>
                     </div>
                   </form>
                 </div>
@@ -185,4 +209,7 @@ const mapStateToProps = state => ({
   userFound: state.user.userFound
 });
 
-export default connect(mapStateToProps, { logout, getAUser, updateUser })(UpdateUser);
+export default connect(
+  mapStateToProps,
+  { logout, getAUser, updateUser }
+)(UpdateUser);

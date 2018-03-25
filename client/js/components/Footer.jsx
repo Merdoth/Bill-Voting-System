@@ -1,8 +1,8 @@
 import React from 'react';
 /**
+ * @description this returns a Footer component
  *
- * @desc the functional component returns the footer if the page
- * @returns { void }
+ * @returns { undefined }
  */
 const Footer = () => {
   return (
