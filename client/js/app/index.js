@@ -12,7 +12,7 @@ import rootReducer from '../reducers';
 import '../../scss/main.scss';
 
 const logger = createLogger();
-const middleware = applyMiddleware(logger, thunk);
+const middleware = applyMiddleware(thunk);
 const configureStore = (state = {}) => createStore(
   rootReducer,
   state,

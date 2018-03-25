@@ -25,7 +25,6 @@ export default {
   plugins: [
     new webpack.DefinePlugin(GLOBALS),
     new webpack.optimize.UglifyJsPlugin(),
-    // new ExtractTextPlugin('styles.css'),
     extractSass,
     new HtmlWebpackPlugin({
       filename: path.join(__dirname, 'dist/index.html'),

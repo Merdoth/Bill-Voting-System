@@ -121,7 +121,7 @@ const upvoteBillFail = bill => ({ type: types.UPVOTE_BILL_ERROR, bill });
 * @description It updates bill upvote when called
 */
 export const upvoteBill = (billId, status) => dispatch =>
-  axios.post(`/api/v1//bill/upvotes/${billId}`, { status })
+  axios.post(`/api/v1/bill/upvotes/${billId}`, { status })
     .then((response) => {
       const bill = response.data.votedBill || response.data.updatedVoteCount;
       dispatch(upvoteBillSuccess(bill));
@@ -148,7 +148,7 @@ const downvoteBillFail = bill => ({ type: types.DOWNVOTE_BILL_ERROR, bill });
 * @description It updates bill downvote when called
 */
 export const downvoteBill = (billId, status) => dispatch =>
-  axios.post(`/api/v1//bill/downvotes/${billId}`, { status })
+  axios.post(`/api/v1/bill/downvotes/${billId}`, { status })
     .then((response) => {
       const bill = response.data.votedBill || response.data.updatedVoteCount;
       dispatch(downvoteBillSuccess(bill));
