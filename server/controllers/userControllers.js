@@ -660,7 +660,7 @@ exports.getAllBills = (req, res) => {
       res.status(200).send({
         allBills: bills.docs,
         pageInfo,
-        message: 'bill fetched successfully!'
+        message: 'Bills fetched successfully!'
       });
     }).catch((error) => {
       res.status(500).send({
@@ -704,7 +704,7 @@ exports.searchBills = (req, res) => {
           }));
       } else {
         return res.status(404).send({
-          message: 'bill not found',
+          message: 'Bill not found',
         });
       }
     })

@@ -51,11 +51,6 @@ export const getAllBills = page =>
       dispatch(getBillsFailed(response));
     });
 
-
-const createBillSuccess = bill => ({ type: types.CREATE_BILL_SUCCESS, bill });
-
-const createBillFail = bill => ({ type: types.CREATE_BILL_ERROR, bill });
-
 /**
  * @function createBillRequest
  *
@@ -65,21 +60,14 @@ const createBillFail = bill => ({ type: types.CREATE_BILL_ERROR, bill });
  *
  * @description It creates a new bill when called
  */
-export const createBillRequest = billData => dispatch =>
+export const createBillRequest = billData =>
   axios.post('/api/v1//admin/bills', billData)
     .then((response) => {
-      dispatch(createBillSuccess(response));
       Materialize.toast(response.data.message, 3000, 'green');
       history.push('/bills');
     }).catch((err) => {
-      dispatch(createBillFail(err));
       Materialize.toast(err.response.data.message, 3000, 'red');
     });
-
-
-const updateBillSuccess = bill => ({ type: types.UPDATE_BILL_SUCCESS, bill });
-
-const updateBillFail = bill => ({ type: types.UPDATE_BILL_ERROR, bill });
 
 /**
  * @function updateBill
@@ -91,14 +79,12 @@ const updateBillFail = bill => ({ type: types.UPDATE_BILL_ERROR, bill });
  *
  * @description It updates a bill when called
  */
-export const updateBill = (billId, billData) => dispatch =>
+export const updateBill = (billId, billData) =>
   axios.put(`/api/v1/admin/bills/${billId}`, billData)
     .then((response) => {
-      dispatch(updateBillSuccess(response));
       Materialize.toast(response.data.message, 3000, 'green');
       history.push('/bills');
     }).catch((err) => {
-      dispatch(updateBillFail(err));
       Materialize.toast(err.response.data.message, 3000, 'red');
     });
 

@@ -559,4 +559,186 @@ describe('Admin Controllers', () => {
         });
     });
   });
+
+  describe('User Vote Bill', () => {
+    it('should successfully add an upvote and return 201', (done) => {
+      const status = 'upvote';
+      chai.request(app)
+        .post(`/api/v1/bill/upvotes/${billId}`, userControllers.upVoteBill)
+        .set('Accept', 'application/json')
+        .set('x-access-token', jwtToken1)
+        .send({
+          status
+        })
+        .end((error, res) => {
+          if (res) {
+            expect(res).to.have.status(201);
+            res.body.should.have.property('message')
+              .equal(`Your ${status} was added successfully`);
+          }
+          done();
+        });
+    });
+
+    it('should successfully remove an upvote and return 200', (done) => {
+      const status = 'upvote';
+      chai.request(app)
+        .post(`/api/v1/bill/upvotes/${billId}`, userControllers.upVoteBill)
+        .set('Accept', 'application/json')
+        .set('x-access-token', jwtToken1)
+        .send({
+          status
+        })
+        .end((error, res) => {
+          if (res) {
+            expect(res).to.have.status(200);
+            res.body.should.have.property('message')
+              .equal(`Your ${status} has been remove`);
+          }
+          done();
+        });
+    });
+
+    it('should successfully add a downvote and return 201', (done) => {
+      const status = 'upvote';
+      chai.request(app)
+        .post(`/api/v1/bill/downvotes/${billId}`, userControllers.downVoteBill)
+        .set('Accept', 'application/json')
+        .set('x-access-token', jwtToken1)
+        .send({
+          status
+        })
+        .end((error, res) => {
+          if (res) {
+            expect(res).to.have.status(201);
+            res.body.should.have.property('message')
+              .equal(`Your ${status} was added successfully`);
+          }
+          done();
+        });
+    });
+
+    it('should successfully add a downvote and return 201', (done) => {
+      const status = 'downvote';
+      chai.request(app)
+        .post(`/api/v1/bill/downvotes/${billId}`, userControllers.downVoteBill)
+        .set('Accept', 'application/json')
+        .set('x-access-token', jwtToken)
+        .send({
+          status
+        })
+        .end((error, res) => {
+          if (res) {
+            expect(res).to.have.status(201);
+            res.body.should.have.property('message')
+              .equal(`Your ${status} was added successfully`);
+          }
+          done();
+        });
+    });
+
+    it('should successfully add an upvote and return 201', (done) => {
+      const status = 'upvote';
+      chai.request(app)
+        .post(`/api/v1/bill/upvotes/${billId}`, userControllers.upVoteBill)
+        .set('Accept', 'application/json')
+        .set('x-access-token', jwtToken)
+        .send({
+          status
+        })
+        .end((error, res) => {
+          if (res) {
+            expect(res).to.have.status(201);
+            res.body.should.have.property('message')
+              .equal(`Your ${status} was added successfully`);
+          }
+          done();
+        });
+    });
+  });
+
+  describe('User Get Voted Bills', () => {
+    it('should successfully get all user voted bills and return 200', (done) => {
+      chai.request(app)
+        .get('/api/v1/user/votedbills', userControllers.fetchUserVotedBill)
+        .set('Accept', 'application/json')
+        .set('x-access-token', jwtToken)
+        .end((error, res) => {
+          if (res) {
+            expect(res).to.have.status(200);
+            res.body.should.have.property('message')
+              .equal('User voted bill was fetched successfully!');
+          }
+          done();
+        });
+    });
+  });
+
+  describe('User Get A Bill And Bills', () => {
+    it('should successfully get a bill and return 200', (done) => {
+      chai.request(app)
+        .get(`/api/v1/bills/${billId}`, userControllers.getABill)
+        .set('Accept', 'application/json')
+        .set('x-access-token', jwtToken)
+        .end((error, res) => {
+          if (res) {
+            expect(res).to.have.status(200);
+            res.body.should.have.property('message')
+              .equal('Bill successfully fetched');
+          }
+          done();
+        });
+    });
+
+    it('should successfully get all bills and return 200', (done) => {
+      chai.request(app)
+        .get('/api/v1/bills', userControllers.getAllBills)
+        .set('Accept', 'application/json')
+        .set('x-access-token', jwtToken)
+        .end((error, res) => {
+          if (res) {
+            expect(res).to.have.status(200);
+            res.body.should.have.property('message')
+              .equal('Bills fetched successfully!');
+          }
+          done();
+        });
+    });
+  });
+  describe('Get All Users', () => {
+    it('should successfully get a user and return 200', (done) => {
+      chai.request(app)
+        .get('/api/v1/admin/users', adminControllers.getAllUsers)
+        .set('Accept', 'application/json')
+        .set('x-access-token', jwtToken)
+        .end((error, res) => {
+          if (res) {
+            expect(res).to.have.status(200);
+            res.body.should.have.property('message')
+              .equal('Users successfully fetched');
+          }
+          done();
+        });
+    });
+  });
+
+  describe('Users search bills', () => {
+    it(`should throw an error if user passes 
+    no search term and return 400`, (done) => {
+      chai.request(app)
+        .post('/api/v1/bills/search', userControllers.searchBills)
+        .set('Accept', 'application/json')
+        .set('x-access-token', jwtToken)
+        .send({
+        })
+        .end((error, res) => {
+          if (res) {
+            expect(res).to.have.status(400);
+            res.body.should.have.property('message')
+              .equal('please add search term');
+          }
+          done();
+        });
+    });
+  });
 });
