@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Bills Component snapshot it should render the right amount of elements 1`] = `
+<div
+  className="dashboard-container"
+>
+  <Connect(SideBar) />
+  <main>
+    <div
+      className="welcome-caption"
+    >
+      <div
+        className="mobile-hambuger"
+      >
+        <a
+          className="button-collapse hide-on-large-only "
+          data-activates="slide-out"
+          href="#"
+        >
+          <i
+            className="material-icons"
+          >
+            menu
+          </i>
+        </a>
+      </div>
+      <span
+        className="float-header-with-flex"
+      >
+        <Link
+          replace={false}
+          to="/search"
+        >
+          <i
+            className="material-icons medium search-icon"
+          >
+            search
+          </i>
+        </Link>
+      </span>
+      <span>
+        <h5
+          className="username-format"
+        >
+          <i
+            className="material-icons username-icon"
+          >
+            account_circle
+          </i>
+          Welcome, 
+        </h5>
+      </span>
+    </div>
+    <div
+      className="flexer flexer-row"
+    >
+      <div
+        className="flexed bill-list"
+      >
+        <div
+          className="bill-header"
+        >
+          <h3>
+            Bills
+          </h3>
+        </div>
+        <div
+          className="bill-body"
+        >
+          <h3>
+            Sadly nothing to show :)
+          </h3>
+          <PaginationBoxView
+            activeClassName="active"
+            breakLabel="..."
+            containerClassName="pagination"
+            disableInitialCallback={false}
+            disabledClassName="disabled"
+            marginPagesDisplayed={1}
+            nextClassName="next"
+            nextLabel="next"
+            onPageChange={[Function]}
+            pageCount={0}
+            pageRangeDisplayed={5}
+            previousClassName="previous"
+            previousLabel="previous"
+            subContainerClassName="pages pagination"
+          />
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+`;

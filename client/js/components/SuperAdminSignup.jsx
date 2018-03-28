@@ -85,7 +85,7 @@ export class SuperAdminSignup extends Component {
           </span>
           <div>
             <div className="row">
-              <form className="col s12" onSubmit={this.onSubmit}>
+              <form className="col s12 superAdminSign" onSubmit={this.onSubmit}>
                 <div className="row">
                   <div className="input-field col s12 m12">
                     <input

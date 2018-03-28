@@ -51,6 +51,7 @@ export const getAllBills = page =>
       dispatch(getBillsFailed(response));
     });
 
+
 /**
  * @function createBillRequest
  *
@@ -61,7 +62,7 @@ export const getAllBills = page =>
  * @description It creates a new bill when called
  */
 export const createBillRequest = billData =>
-  axios.post('/api/v1//admin/bills', billData)
+  axios.post('/api/v1/admin/bills', billData)
     .then((response) => {
       Materialize.toast(response.data.message, 3000, 'green');
       history.push('/bills');

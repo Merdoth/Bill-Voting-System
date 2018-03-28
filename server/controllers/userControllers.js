@@ -17,12 +17,13 @@ import validators from '../middlewares/validators';
    * @return {object} json
    */
 exports.signUp = (req, res) => {
+  const email = req.body.email.trim().toLowerCase();
   const { errors, isValid } = validators.validateSignUpInput(req.body);
   if (!isValid) {
     return res.status(400).send({ error: errors });
   }
   User.findOne({
-    email: req.body.email,
+    email
   })
     .exec()
     .then((emailFound) => {
@@ -44,7 +45,7 @@ exports.signUp = (req, res) => {
               });
             } else {
               const {
-                email, fullName, password, userName
+                fullName, password, userName
               }
                 = req.body;
               const user = new User({
@@ -522,7 +523,7 @@ exports.addOpinion = (req, res) => {
         });
       }
       if (billFound) {
-        if (billFound.billProgress !== 'House Passed') {
+        if (billFound.billProgress !== 'House passed') {
           const newDetail = new Opinion({
             opinion,
             opinionBy: userId,

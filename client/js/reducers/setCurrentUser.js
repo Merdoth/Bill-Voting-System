@@ -2,7 +2,7 @@
 import isEmpty from 'lodash/isEmpty';
 import * as types from '../app/actionTypes';
 
-const initialState = {
+export const initialState = {
   isAuthenticated: false,
   user: {}
 };

@@ -1,7 +1,7 @@
 import * as types from '../app/actionTypes';
 
-const initialState = {
-  username: '',
+export const initialState = {
+  userName: '',
   password: '',
   isLoggedIn: false
 };
@@ -10,10 +10,10 @@ const signin = (state = initialState, action) => {
   switch (action.type) {
     case types.LOGIN_USER_SUCCESS:
       return {
-        ...state, action
+        ...state, ...action.user
       };
 
-    case types.SIGN_UP_ADMIN_ERROR:
+    case types.LOGIN_USER_ERROR:
       return {};
 
     default:

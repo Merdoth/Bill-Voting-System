@@ -72,7 +72,7 @@ export class Signin extends Component {
             <i className="material-icons">person</i>
           </span>
           <div>
-            <form className="row" onSubmit={this.onSubmit}>
+            <form className="row signin" onSubmit={this.onSubmit}>
               <div className="col s12">
                 <div className="input-field">
                   <label

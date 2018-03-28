@@ -134,7 +134,7 @@ export class EditBill extends Component {
               </div>
               <div className="account-summary-section">
                 <div>
-                  <form className="col s12" onSubmit={this.onSubmit}>
+                  <form className="col s12 update" onSubmit={this.onSubmit}>
                     <div className="row">
                       <div className="input-field col s12 m12">
                         <input
@@ -220,11 +220,15 @@ EditBill.propTypes = {
 };
 const mapStateToProps = (state, ownProps) => {
   const { billId } = ownProps.match.params;
-  const currentBill = state.bills.allBills.find(bill => bill._id === billId) || {};
+  const currentBill = state.bills.allBills
+    .find(bill => bill._id === billId) || {};
   const { user } = state.setCurrentUser;
   return {
     currentBill, user
   };
 };
 
-export default connect(mapStateToProps, { logout, getAllBills, updateBill })(EditBill);
+export default connect(
+  mapStateToProps,
+  { logout, getAllBills, updateBill }
+)(EditBill);

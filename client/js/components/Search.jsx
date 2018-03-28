@@ -16,7 +16,7 @@ import { searchBill } from '../actions';
  * @returns { undefined }
  */
 export class Search extends Component {
- /**
+  /**
   * Creates Instance of Search
   * @param {Object} props
   *
@@ -103,6 +103,7 @@ export class Search extends Component {
                 >Search:
                 </label>
                 <input
+                  id="search"
                   type="text"
                   name="searchTerm"
                   value={this.state.searchTerm}

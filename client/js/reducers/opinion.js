@@ -1,6 +1,6 @@
 import * as types from '../app/actionTypes';
 
-const initialState = {
+export const initialState = {
   opinions: []
 };
 
@@ -13,10 +13,6 @@ const opinion = (state = initialState, action) => {
     case types.ADD_OPINION_SUCCESS:
       return {
         ...state, opinions: [...state.opinions, action.opinions]
-      };
-    case types.DOWNVOTE_BILL_SUCCESS:
-      return {
-        ...state, billFound: { ...action.bill }
       };
     case types.GET_OPINION_ERROR:
     case types.ADD_OPINION_ERROR:

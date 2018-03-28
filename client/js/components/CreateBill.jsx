@@ -92,7 +92,7 @@ export class CreateBill extends Component {
               </div>
               <div className="account-summary-section">
                 <div>
-                  <form className="col s12" onSubmit={this.onSubmit}>
+                  <form className="col s12 create" onSubmit={this.onSubmit}>
                     <div className="row">
                       <div className="input-field col s12 m12">
                         <input

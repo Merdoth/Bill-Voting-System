@@ -1,6 +1,6 @@
 import * as types from '../app/actionTypes';
 
-const initialState = {
+export const initialState = {
 };
 
 const search = (state = initialState, action) => {

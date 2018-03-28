@@ -124,20 +124,20 @@ export class UpdateUser extends Component {
               </div>
               <div className="account-summary-section">
                 <div>
-                  <form className="col s12" onSubmit={this.onSubmit}>
+                  <form className="col s12 update" onSubmit={this.onSubmit}>
                     <div className="row">
                       <div className="input-field col s12 m12">
                         <input
                           className="form-control"
                           type="text"
                           name="fullName"
-                          id="firstname"
+                          id="fullName"
                           required
                           value={this.state.fullName}
                           onChange={this.onChange}
                         />
                         <label
-                          htmlFor="firstname"
+                          htmlFor="fullName"
                           className="control-label"
                         >Fullname :
                         </label>
@@ -155,7 +155,7 @@ export class UpdateUser extends Component {
                           onChange={this.onChange}
                         />
                         <label
-                          htmlFor="lastname"
+                          htmlFor="userName"
                           className="control-label"
                         >Username :
                         </label>
@@ -173,7 +173,7 @@ export class UpdateUser extends Component {
                           onChange={this.onChange}
                         />
                         <label
-                          htmlFor="userId"
+                          htmlFor="email"
                           className="control-label"
                         >Email :
                         </label>

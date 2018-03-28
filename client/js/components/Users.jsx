@@ -56,9 +56,8 @@ export class Users extends Component {
  *
  */
   onChange(event) {
-    const isActive = event.target.checked;
-    const adminPermission = isActive === true ? 2 : 3;
-    const id = event.target.name;
+    const { checked: isActive, id } = event.target;
+    const adminPermission = isActive ? 2 : 3;
     this.props.addPermission(id, adminPermission, isActive);
   }
 
@@ -121,8 +120,12 @@ export class Users extends Component {
                   <div className="summary-section">
                     {this.props.users.length > 0 ?
                     this.props.users.map(user => (
-                      <div className="summary-list" key={shortId.generate()}>
-                        <span key={shortId.generate()}> {user.fullName}</span>
+                      <div
+                        className="summary-list"
+                        key={user._id}
+                      >
+                        <span > {user.fullName}
+                        </span>
                         <div className="switch">
                           <label>
                             Off

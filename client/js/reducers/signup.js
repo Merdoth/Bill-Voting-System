@@ -2,7 +2,7 @@
 import * as types from '../app/actionTypes';
 
 
-const initialState = {
+export const initialState = {
   fullName: '',
   userName: '',
   email: '',
@@ -14,7 +14,7 @@ const signup = (state = initialState, action) => {
   switch (action.type) {
     case types.SIGN_UP_USER_SUCCESS:
       return {
-        ...state, action
+        ...state, ...action.user
       };
 
     case types.SIGN_UP_USER_ERROR:
