@@ -86,7 +86,7 @@ export class Signup extends Component {
           </span>
           <div>
             <div className="row">
-              <form className="col s12" onSubmit={this.onSubmit}>
+              <form className="col s12 signup" onSubmit={this.onSubmit}>
                 <div className="row">
                   <div className="input-field col s12 m12">
                     <input

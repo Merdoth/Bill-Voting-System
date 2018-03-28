@@ -1,10 +1,10 @@
 import * as types from '../app/actionTypes';
 
-const initialState = {
+export const initialState = {
   billFound: {}
 };
 
-const bills = (state = initialState, action) => {
+const bill = (state = initialState, action) => {
   switch (action.type) {
     case types.GET_BILL_SUCCESS:
       return {
@@ -28,4 +28,4 @@ const bills = (state = initialState, action) => {
   }
 };
 
-export default bills;
+export default bill;

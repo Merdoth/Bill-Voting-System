@@ -1,6 +1,6 @@
 import * as types from '../app/actionTypes';
 
-const initialState = {
+export const initialState = {
   userFound: {}
 };
 
@@ -12,7 +12,7 @@ const user = (state = initialState, action) => {
       };
     case types.UPDATE_A_USER_SUCCESS:
       return {
-        ...state, userFound: {...action.user }
+        ...state, userFound: { ...action.user }
       };
     case types.UPDATE_A_USER_ERROR:
     case types.GET_A_USER_ERROR:

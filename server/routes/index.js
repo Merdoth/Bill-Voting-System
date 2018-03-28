@@ -17,7 +17,8 @@ router.put(
 );
 router.post(
   '/admin/bills',
-  validators.validateToken, adminController.createBill
+  validators.validateToken, validators.validateBillInput,
+  adminController.createBill
 );
 router.post(
   '/admin/addpermission',

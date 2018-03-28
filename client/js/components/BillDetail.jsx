@@ -119,11 +119,11 @@ export class BillDetails extends Component {
       .then((willDelete) => {
         if (willDelete) {
           this.props.deleteBill(billId);
-          swal('Poof! Your imaginary file has been deleted!', {
+          swal('Poof! Your bill has been deleted!', {
             icon: 'success',
           });
         } else {
-          swal('User was not deleted!');
+          swal('Bill was not deleted!');
         }
       });
   }
@@ -287,10 +287,15 @@ export class BillDetails extends Component {
                       </div>
                     </div>
                     <div className="bill-desc-footer flexer">
-                      <span className={voteStatus} onClick={this.handleUpvote}>
+                      <span
+                        id="upvote"
+                        className={voteStatus}
+                        onClick={this.handleUpvote}
+                      >
                       upvote {bill.upVoteCount}
                       </span>
                       <span
+                        id="downvote"
                         className={voteStatus}
                         onClick={this.handleDownVote}
                       >
@@ -308,6 +313,7 @@ export class BillDetails extends Component {
                       </Link>
 
                       <span
+                        id="delete"
                         className={adminBtn}
                         onClick={this.handleDelete}
                       >
@@ -318,7 +324,11 @@ export class BillDetails extends Component {
                 </div>
                 <div className="flexed bill-opinion">
                   <div>
-                    <form className="row" onSubmit={this.onSubmit}>
+                    <form
+                      id="opinion-form"
+                      className="row"
+                      onSubmit={this.onSubmit}
+                    >
                       <div className="row opinion-input">
                         <div className="input-field col s10">
                           <input

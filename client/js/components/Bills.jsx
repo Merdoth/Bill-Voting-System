@@ -185,7 +185,8 @@ export class Bills extends Component {
 Bills.propTypes = {
   user: PropTypes.object.isRequired,
   getAllBills: PropTypes.func.isRequired,
-  allBills: PropTypes.array.isRequired
+  allBills: PropTypes.array.isRequired,
+  currentPage: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({

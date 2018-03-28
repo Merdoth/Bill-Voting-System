@@ -93,6 +93,38 @@ const mockData = {
         __v: 0
       }
     ],
-  }
+  },
+
+  user: {
+    userData: {
+      fullName: 'Sarah Gladys',
+      userName: 'Sagig',
+      email: 'Sarah.giglady@gmail.com',
+      password: 'biology1',
+    }
+  },
+
+  users: {
+    user1: {
+      _id: '5ab426f31d305b4eaf5b5d9b',
+      updated_at: '2018-03-22T22:10:38.604Z',
+      created_at: '2018-03-22T21:58:12.000Z',
+      fullName: 'Louis nwamadi',
+      userName: 'Louisdante9',
+      permission: 2,
+      email: 'louisdante9@gmail.com',
+    },
+    user2: {
+      _id: '5ab8da83f10a5e001481c94f',
+      updated_at: '2018-03-26T11:33:23.850Z',
+      created_at: '2018-03-26T11:33:23.850Z',
+      fullName: 'Sarah gladys',
+      userName: 'Sagigsg',
+      permission: 3,
+      email: 'sarah.gig@gmail.com',
+    },
+  },
+  token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6eyJpZCI6IjVhYjhkYjk0ZjEwYTVlMDAxNDgxYzk1MSIsInVzZXJOYW1lIjoiU2FnaWciLCJwZXJtaXNzaW9uIjozLCJlbWFpbCI6InNhcmFoLmdpZ2xhZHlAZ21haWwuY29tIn0sImlhdCI6MTUyMjA2NDI3NiwiZXhwIjoxNTIyMTUwNjc2fQ.o1_HWPa8FcDzEGjBWtauVR8igvsztrkqmg2Po2P6E98'
+
 };
 export default mockData;

@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateBill Component snapshot it should render the right amount of elements 1`] = `
+<div
+  className="dashboard-container"
+>
+  <Connect(SideBar) />
+  <main>
+    <div
+      className="welcome-caption"
+    >
+      <div
+        className="mobile-hambuger"
+      >
+        <a
+          className="button-collapse hide-on-large-only "
+          data-activates="slide-out"
+          href="#"
+        >
+          <i
+            className="material-icons"
+          >
+            menu
+          </i>
+        </a>
+      </div>
+      <span
+        className="float-header-with-flex"
+      />
+      <span>
+        <h5
+          className="username-format"
+        >
+          <i
+            className="material-icons username-icon"
+          >
+            account_circle
+          </i>
+          Welcome, 
+        </h5>
+      </span>
+    </div>
+    <div
+      className="container"
+    >
+      <div
+        className="edit-wrapper"
+      >
+        <div>
+          <h1>
+            Create a bill
+          </h1>
+        </div>
+        <div
+          className="account-summary-section"
+        >
+          <div>
+            <form
+              className="col s12 create"
+              onSubmit={[Function]}
+            >
+              <div
+                className="row"
+              >
+                <div
+                  className="input-field col s12 m12"
+                >
+                  <input
+                    className="form-control"
+                    id="title"
+                    name="title"
+                    onChange={[Function]}
+                    pattern=".{5,50}"
+                    required={true}
+                    title="5 characters minimum"
+                    type="text"
+                    value=""
+                  />
+                  <label
+                    className="control-label"
+                    htmlFor="title"
+                  >
+                    Title :
+                  </label>
+                </div>
+              </div>
+              <div
+                className="row"
+              >
+                <div
+                  className="input-field col s12 m12"
+                >
+                  <input
+                    className="form-control"
+                    id="description"
+                    name="description"
+                    onChange={[Function]}
+                    pattern=".{5,300}"
+                    required={true}
+                    title="5 characters minimum"
+                    type="text"
+                    value=""
+                  />
+                  <label
+                    className="control-label"
+                    htmlFor="description"
+                  >
+                    Description :
+                  </label>
+                </div>
+              </div>
+              <div
+                className="row form-cta"
+              >
+                <button
+                  className="btn shadow-effect"
+                  href="#"
+                  type="submit"
+                >
+                  Create
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+`;

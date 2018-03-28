@@ -27,16 +27,16 @@ const signupSuperAdminFail = user =>
 export const SuperAdminSignupRequest = userData => dispatch =>
   axios.post('/api/v1/admin/signup', userData)
     .then((response) => {
-      dispatch(signupSuperAdminSuccess(response));
+      dispatch(signupSuperAdminSuccess(response.data));
       const { token } = response.data;
       localStorage.setItem('jwtToken', token);
       setAuthToken(token);
       dispatch(setCurrentUser(jwt.decode(token)));
-      Materialize.toast(response.data.message, 3000, 'rounded green');
+      Materialize.toast(response.data.message, 3000, 'green');
       history.push('/bills');
     }).catch((err) => {
       dispatch(signupSuperAdminFail(err));
-      Materialize.toast(err.response.data.message, 3000, 'rounded red');
+      Materialize.toast(err.response.data.message, 3000, 'red');
     });
 
 const signupUserSuccess = user => ({ type: types.SIGN_UP_USER_SUCCESS, user });
@@ -55,7 +55,7 @@ const signupUserFail = user => ({ type: types.SIGN_UP_USER_ERROR, user });
 export const userSignupRequest = userData => dispatch =>
   axios.post('/api/v1/user/signup', userData)
     .then((response) => {
-      dispatch(signupUserSuccess(response));
+      dispatch(signupUserSuccess(response.data));
       const { token } = response.data;
       localStorage.setItem('jwtToken', token);
       setAuthToken(token);
@@ -83,7 +83,7 @@ const userLoginFailed = user => ({ type: types.LOGIN_USER_ERROR, user });
 export const userLoginRequest = userData => dispatch =>
   axios.post('/api/v1/user/signin', userData)
     .then((response) => {
-      dispatch(userLoginSuccess(response));
+      dispatch(userLoginSuccess(response.data));
       const { token } = response.data;
       localStorage.setItem('jwtToken', token);
       setAuthToken(token);

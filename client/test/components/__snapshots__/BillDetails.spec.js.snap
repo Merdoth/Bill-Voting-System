@@ -1,0 +1,242 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BillDetails Component snapshot it should render the right amount of elements 1`] = `
+<div
+  className="dashboard-container"
+>
+  <Connect(SideBar) />
+  <main
+    className="row s12"
+  >
+    <div
+      className="welcome-caption"
+    >
+      <div
+        className="mobile-hambuger"
+      >
+        <a
+          className="button-collapse hide-on-large-only "
+          data-activates="slide-out"
+          href="#"
+        >
+          <i
+            className="material-icons"
+          >
+            menu
+          </i>
+        </a>
+      </div>
+      <span
+        className="float-header-with-flex"
+      />
+      <span>
+        <h5
+          className="username-format"
+        >
+          <i
+            className="material-icons username-icon"
+          >
+            account_circle
+          </i>
+          Welcome, 
+        </h5>
+      </span>
+    </div>
+    <div
+      className="flexer flexer-row row s12"
+    >
+      <div
+        className="flexed"
+      >
+        <div
+          className="flexer flexer-col"
+        >
+          <div
+            className="bill-desc row s12"
+          >
+            <div
+              className="bill-desc-wrapper flexer flexer-col"
+            >
+              <div
+                className="bill-desc-notifications flexer"
+              >
+                <div
+                  className="flexed flexer bill-status"
+                >
+                  <span
+                    className="billProgress"
+                  />
+                </div>
+                <div
+                  className="bill-created"
+                >
+                  <span
+                    className="created-time"
+                  >
+                    Created  
+                    a few seconds ago
+                  </span>
+                </div>
+              </div>
+              <div
+                className="bill-desc-body flexed"
+              >
+                <h2 />
+                <div
+                  className="flexer"
+                >
+                  <div
+                    className=""
+                  >
+                    <div
+                      className="social-content"
+                    >
+                      <CreatedButton
+                        className="share-button"
+                        url="https://bill-voting-system.herokuapp.com"
+                        windowHeight={400}
+                        windowWidth={550}
+                      >
+                        <Icon
+                          className=""
+                          iconBgStyle={Object {}}
+                          logoFillColor="white"
+                          round={true}
+                          size={32}
+                        />
+                      </CreatedButton>
+                      <CreatedButton
+                        className="share-button"
+                        url="https://bill-voting-system.herokuapp.com"
+                        windowHeight={400}
+                        windowWidth={550}
+                      >
+                        <Icon
+                          className=""
+                          iconBgStyle={Object {}}
+                          logoFillColor="white"
+                          round={true}
+                          size={32}
+                        />
+                      </CreatedButton>
+                      <CreatedButton
+                        className="share-button"
+                        url="https://bill-voting-system.herokuapp.com"
+                        windowHeight={600}
+                        windowWidth={750}
+                      >
+                        <Icon
+                          className=""
+                          iconBgStyle={Object {}}
+                          logoFillColor="white"
+                          round={true}
+                          size={32}
+                        />
+                      </CreatedButton>
+                      <CreatedButton
+                        body="body"
+                        className="share-button"
+                        onClick={[Function]}
+                        openWindow={false}
+                        url="https://bill-voting-system.herokuapp.com"
+                      >
+                        <Icon
+                          className=""
+                          iconBgStyle={Object {}}
+                          logoFillColor="white"
+                          round={true}
+                          size={32}
+                        />
+                      </CreatedButton>
+                    </div>
+                  </div>
+                  <div
+                    className="flexed"
+                  >
+                    <p />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="bill-desc-footer flexer"
+              >
+                <span
+                  className="allow-vote"
+                  id="upvote"
+                  onClick={[Function]}
+                >
+                  upvote 
+                </span>
+                <span
+                  className="allow-vote"
+                  id="downvote"
+                  onClick={[Function]}
+                >
+                  downvote 
+                </span>
+                <Link
+                  replace={false}
+                  to="/bills/undefined/edit"
+                >
+                  <span
+                    bill={Object {}}
+                    className="dont-display"
+                  >
+                    edit
+                  </span>
+                </Link>
+                <span
+                  className="dont-display"
+                  id="delete"
+                  onClick={[Function]}
+                >
+                  delete
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            className="flexed bill-opinion"
+          >
+            <div>
+              <form
+                className="row"
+                id="opinion-form"
+                onSubmit={[Function]}
+              >
+                <div
+                  className="row opinion-input"
+                >
+                  <div
+                    className="input-field col s10"
+                  >
+                    <input
+                      className="form-control"
+                      id="icon_prefix"
+                      name="opinion"
+                      onChange={[Function]}
+                      required={true}
+                      type="text"
+                      value=""
+                    />
+                    <label
+                      htmlFor="icon_prefix"
+                    >
+                      Opinion
+                    </label>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div
+              className="opinions"
+            >
+              <div />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+`;

@@ -1,21 +1,21 @@
 import * as types from '../app/actionTypes';
 
-const initialState = {
-  users: []
+export const initialState = {
+  usersFound: []
 };
 
 const users = (state = initialState, action) => {
   switch (action.type) {
     case types.GET_ALL_USERS_SUCCESS:
       return {
-        ...state, ...action.users
+        ...state, ...action.usersFound
       };
     case types.ADD_PERMISSION_SUCCESS:
-      const users = state.users;
-      const filteredUsers = users.filter(({ _id }) => _id !== action.user._id);
+      const usersFound = state.usersFound;
+      const filteredUsers = usersFound.filter(({ _id }) => _id !== action.user._id);
 
       return {
-        ...state, users: [action.user, ...filteredUsers]
+        ...state, usersFound: [action.user, ...filteredUsers]
       };
     case types.ADD_PERMISSION_ERROR:
     case types.GET_ALL_USERS_ERROR:

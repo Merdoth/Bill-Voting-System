@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search Component snapshot it should render the right amount of elements 1`] = `
+<div
+  className="dashboard-container"
+>
+  <Connect(SideBar) />
+  <main>
+    <div
+      className="welcome-caption"
+    >
+      <div
+        className="mobile-hambuger"
+      >
+        <a
+          className="button-collapse hide-on-large-only "
+          data-activates="slide-out"
+          href="#"
+        >
+          <i
+            className="material-icons"
+          >
+            menu
+          </i>
+        </a>
+      </div>
+      <span
+        className="float-header-with-flex"
+      >
+        <div
+          className="input-field s6 search"
+        >
+          <label
+            className="control-label"
+            htmlFor="search"
+          >
+            Search:
+          </label>
+          <input
+            className="form-control"
+            id="search"
+            name="searchTerm"
+            onChange={[Function]}
+            required={true}
+            type="text"
+            value=""
+          />
+        </div>
+      </span>
+      <span>
+        <h5
+          className="username-format"
+        >
+          <i
+            className="material-icons username-icon"
+          >
+            account_circle
+          </i>
+          Welcome, 
+        </h5>
+      </span>
+    </div>
+    <div
+      className="flexer flexer-row"
+    >
+      <div
+        className="flexed bill-list"
+      >
+        <div
+          className="bill-header"
+        >
+          <h3>
+            Result
+          </h3>
+        </div>
+        <div
+          className="bill-body"
+        >
+          <h3>
+            Sadly nothing to show :)
+          </h3>
+          <PaginationBoxView
+            activeClassName="active"
+            breakLabel="..."
+            containerClassName="pagination"
+            disableInitialCallback={false}
+            disabledClassName="disabled"
+            marginPagesDisplayed={1}
+            nextClassName="next"
+            nextLabel="next"
+            onPageChange={[Function]}
+            pageCount={0}
+            pageRangeDisplayed={5}
+            previousClassName="previous"
+            previousLabel="previous"
+            subContainerClassName="pages pagination"
+          />
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+`;

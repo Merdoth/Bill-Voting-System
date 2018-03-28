@@ -1,0 +1,132 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SigninForm Component snapshot it should render the right amount of elements 1`] = `
+<div
+  className="login"
+>
+  <NavigationBar />
+  <div
+    className="container auth-form"
+  >
+    <span
+      className="login-header"
+    >
+      <h3>
+        Sign In
+      </h3>
+      <i
+        className="material-icons"
+      >
+        person
+      </i>
+    </span>
+    <div>
+      <form
+        className="row signin"
+        onSubmit={[Function]}
+      >
+        <div
+          className="col s12"
+        >
+          <div
+            className="input-field"
+          >
+            <label
+              className="control-label"
+              htmlFor="email"
+            >
+              Email:
+            </label>
+            <input
+              autoComplete="off"
+              className="form-control login"
+              name="email"
+              onChange={[Function]}
+              required={true}
+              type="email"
+              value=""
+            />
+          </div>
+          <div
+            className="input-field"
+          >
+            <label
+              className="control-label"
+              htmlFor="password"
+            >
+              Password:
+            </label>
+            <input
+              autoComplete="off"
+              className="form-control"
+              name="password"
+              onChange={[Function]}
+              pattern=".{8,50}"
+              required={true}
+              title="8 characters minimum"
+              type="password"
+              value=""
+            />
+          </div>
+          <div
+            className="form-cta"
+          >
+            <button
+              className="btn shadow-effect"
+              type="submit"
+            >
+              Log in
+            </button>
+          </div>
+        </div>
+      </form>
+      <div
+        className="row"
+      >
+        <div
+          className="col s12"
+        >
+          <p
+            className="authlinks"
+          >
+            <Link
+              replace={false}
+              to="/register"
+            >
+              or create an account
+            </Link>
+          </p>
+        </div>
+      </div>
+      <div
+        className="disclaimer row"
+      >
+        <div>
+          <span>
+            <img
+              alt=""
+              height="100"
+              src="/img/votebox.png"
+              width="100"
+            />
+          </span>
+        </div>
+        <div
+          className="disclaimer-right"
+        >
+          <img
+            alt=""
+            height="50"
+            src="/img/norton.png"
+            width="100"
+          />
+          <span>
+            A email and password is required to use this service. If you have difficulty logging in please contact your admin for support.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <Footer />
+</div>
+`;

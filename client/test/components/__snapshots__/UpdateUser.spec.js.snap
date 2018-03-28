@@ -1,0 +1,297 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UpdateUser Component snapshot it should render the right amount of elements 1`] = `
+<div
+  className="dashboard-container"
+>
+  <Connect(SideBar) />
+  <main>
+    <div
+      className="welcome-caption"
+    >
+      <div
+        className="mobile-hambuger"
+      >
+        <a
+          className="button-collapse hide-on-large-only "
+          data-activates="slide-out"
+          href="#"
+        >
+          <i
+            className="material-icons"
+          >
+            menu
+          </i>
+        </a>
+      </div>
+      <span
+        className="float-header-with-flex"
+      />
+      <span>
+        <h5
+          className="username-format"
+        >
+          <i
+            className="material-icons username-icon"
+          >
+            account_circle
+          </i>
+          Welcome, 
+        </h5>
+      </span>
+    </div>
+    <div
+      className="container"
+    >
+      <div
+        className="edit-wrapper"
+      >
+        <div>
+          <h2>
+            Update Profile
+          </h2>
+        </div>
+        <div
+          className="account-summary-section"
+        >
+          <div>
+            <form
+              className="col s12 update"
+              onSubmit={[Function]}
+            >
+              <div
+                className="row"
+              >
+                <div
+                  className="input-field col s12 m12"
+                >
+                  <input
+                    className="form-control"
+                    id="fullName"
+                    name="fullName"
+                    onChange={[Function]}
+                    required={true}
+                    type="text"
+                    value=""
+                  />
+                  <label
+                    className="control-label"
+                    htmlFor="fullName"
+                  >
+                    Fullname :
+                  </label>
+                </div>
+              </div>
+              <div
+                className="row"
+              >
+                <div
+                  className="input-field col s12 m12"
+                >
+                  <input
+                    className="form-control"
+                    id="userName"
+                    name="userName"
+                    onChange={[Function]}
+                    required={true}
+                    type="text"
+                    value=""
+                  />
+                  <label
+                    className="control-label"
+                    htmlFor="userName"
+                  >
+                    Username :
+                  </label>
+                </div>
+              </div>
+              <div
+                className="row"
+              >
+                <div
+                  className="input-field col s12 m12"
+                >
+                  <input
+                    className="form-control"
+                    id="email"
+                    name="email"
+                    onChange={[Function]}
+                    required={true}
+                    type="email"
+                    value=""
+                  />
+                  <label
+                    className="control-label"
+                    htmlFor="email"
+                  >
+                    Email :
+                  </label>
+                </div>
+              </div>
+              <div
+                className="row form-cta"
+              >
+                <button
+                  className="btn shadow-effect"
+                  href="#"
+                  type="submit"
+                >
+                  Update
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+`;
+
+exports[`UpdateUser Component snapshot should return user 1`] = `
+<div
+  className="dashboard-container"
+>
+  <Connect(SideBar) />
+  <main>
+    <div
+      className="welcome-caption"
+    >
+      <div
+        className="mobile-hambuger"
+      >
+        <a
+          className="button-collapse hide-on-large-only "
+          data-activates="slide-out"
+          href="#"
+        >
+          <i
+            className="material-icons"
+          >
+            menu
+          </i>
+        </a>
+      </div>
+      <span
+        className="float-header-with-flex"
+      />
+      <span>
+        <h5
+          className="username-format"
+        >
+          <i
+            className="material-icons username-icon"
+          >
+            account_circle
+          </i>
+          Welcome, 
+        </h5>
+      </span>
+    </div>
+    <div
+      className="container"
+    >
+      <div
+        className="edit-wrapper"
+      >
+        <div>
+          <h2>
+            Update Profile
+          </h2>
+        </div>
+        <div
+          className="account-summary-section"
+        >
+          <div>
+            <form
+              className="col s12 update"
+              onSubmit={[Function]}
+            >
+              <div
+                className="row"
+              >
+                <div
+                  className="input-field col s12 m12"
+                >
+                  <input
+                    className="form-control"
+                    id="fullName"
+                    name="fullName"
+                    onChange={[Function]}
+                    required={true}
+                    type="text"
+                    value="Samuel Uyali"
+                  />
+                  <label
+                    className="control-label"
+                    htmlFor="fullName"
+                  >
+                    Fullname :
+                  </label>
+                </div>
+              </div>
+              <div
+                className="row"
+              >
+                <div
+                  className="input-field col s12 m12"
+                >
+                  <input
+                    className="form-control"
+                    id="userName"
+                    name="userName"
+                    onChange={[Function]}
+                    required={true}
+                    type="text"
+                    value="Samuel"
+                  />
+                  <label
+                    className="control-label"
+                    htmlFor="userName"
+                  >
+                    Username :
+                  </label>
+                </div>
+              </div>
+              <div
+                className="row"
+              >
+                <div
+                  className="input-field col s12 m12"
+                >
+                  <input
+                    className="form-control"
+                    id="email"
+                    name="email"
+                    onChange={[Function]}
+                    required={true}
+                    type="email"
+                    value="samuel.uyali@gmail.com"
+                  />
+                  <label
+                    className="control-label"
+                    htmlFor="email"
+                  >
+                    Email :
+                  </label>
+                </div>
+              </div>
+              <div
+                className="row form-cta"
+              >
+                <button
+                  className="btn shadow-effect"
+                  href="#"
+                  type="submit"
+                >
+                  Update
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+`;

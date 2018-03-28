@@ -1,14 +1,14 @@
-const localStorage = {};
+const store = {};
 
-global.localStorage = {
+const localStorage = {
   getItem(key) {
-    return localStorage[key];
+    return store[key];
   },
   setItem(key, value) {
-    return Object.assign(localStorage, { [key]: value });
+    return Object.assign(store, { [key]: value });
   },
   removeItem(key) {
-    return delete localStorage[key]; //eslint-disable-line
+    return delete store[key]; //eslint-disable-line
   }
 };
 

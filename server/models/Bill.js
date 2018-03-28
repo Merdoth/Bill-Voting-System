@@ -19,7 +19,7 @@ const billSchema = new mongoose.Schema(
       type: String,
       required: true,
       default: 'Not enacted',
-      enum: ['Not enacted', 'Senate Voted', 'House Passed'],
+      enum: ['Not enacted', 'Senate Voted', 'House passed'],
     },
   },
   {

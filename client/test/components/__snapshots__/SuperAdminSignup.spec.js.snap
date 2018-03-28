@@ -1,0 +1,190 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SuperAdminSignup Component snapshot it should render the right amount of elements 1`] = `
+<div
+  className="login"
+>
+  <NavigationBar />
+  <div
+    className="container signup-form "
+  >
+    <span
+      className="login-header"
+    >
+      <h3>
+        Create an account
+      </h3>
+      <i
+        className="material-icons"
+      >
+        person
+      </i>
+    </span>
+    <div>
+      <div
+        className="row"
+      >
+        <form
+          className="col s12 superAdminSign"
+          onSubmit={[Function]}
+        >
+          <div
+            className="row"
+          >
+            <div
+              className="input-field col s12 m12"
+            >
+              <input
+                className="form-control"
+                id="firstname"
+                name="fullName"
+                onChange={[Function]}
+                pattern=".{8,50}"
+                required={true}
+                title="8 characters minimum"
+                type="text"
+                value=""
+              />
+              <label
+                className="control-label"
+                htmlFor="firstname"
+              >
+                Fullname :
+              </label>
+            </div>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="input-field col s12 m12"
+            >
+              <input
+                className="form-control"
+                disabled={true}
+                id="userName"
+                name="userName"
+                onChange={[Function]}
+                required={true}
+                type="text"
+                value="super-admin"
+              />
+              <label
+                className="control-label"
+                htmlFor="lastname"
+              >
+                Username :
+              </label>
+            </div>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="input-field col s12 m12"
+            >
+              <input
+                className="form-control"
+                id="email"
+                name="email"
+                onChange={[Function]}
+                required={true}
+                type="email"
+                value=""
+              />
+              <label
+                className="control-label"
+                htmlFor="userId"
+              >
+                Email :
+              </label>
+            </div>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="input-field col s12 m12"
+            >
+              <input
+                className="form-control"
+                id="password"
+                name="password"
+                onChange={[Function]}
+                pattern=".{8,50}"
+                required={true}
+                title="8 characters minimum"
+                type="password"
+                value=""
+              />
+              <label
+                className="control-label"
+                htmlFor="userId"
+              >
+                Password :
+              </label>
+            </div>
+          </div>
+          <div
+            className="row form-cta"
+          >
+            <button
+              className="btn shadow-effect"
+              href="#"
+              type="submit"
+            >
+              Signup
+            </button>
+          </div>
+        </form>
+        <div
+          className="row"
+        >
+          <div
+            className="col s12"
+          >
+            <p
+              className="authlinks"
+            >
+              <Link
+                replace={false}
+                to="/"
+              >
+                or Log in
+              </Link>
+            </p>
+          </div>
+        </div>
+        <div
+          className="disclaimer row"
+        >
+          <div>
+            <span>
+              <img
+                alt=""
+                height="100"
+                src="/img/votebox.png"
+                width="100"
+              />
+            </span>
+          </div>
+          <div
+            className="disclaimer-right"
+          >
+            <img
+              alt=""
+              height="50"
+              src="/img/norton.png"
+              width="100"
+            />
+            <span>
+              Services is provided through a secured connection. If you have difficulty creating a user please contact your site administrator.
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <Footer />
+</div>
+`;
