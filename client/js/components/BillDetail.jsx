@@ -181,7 +181,7 @@ export class BillDetails extends Component {
       adminBtn = 'dont-display';
     }
     const voteStatus = this.props.currentBill.billProgress ===
-    'House Passed' ? 'disable-vote' : 'allow-vote';
+    'House passed' ? 'disable-vote' : 'allow-vote';
     return (
       <div className="dashboard-container">
         <SideBar permission={this.props.user.token.permission} />
