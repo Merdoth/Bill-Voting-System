@@ -160,14 +160,15 @@ exports.updateUserProfile = (req, res) => {
             success: false
           });
         }
-        if (error.codeName === 'DuplicateKey' &&
-          error.message.includes(req.body.userName)) {
+        if (error.codeName === 'DuplicateKey') {
           return res.status(409).send({
             message: 'This username is already in use by another account.',
             success: false
           });
         }
-        return res.status(500).send(error);
+        return res.status(500).send({
+          message: 'Internal server error', error
+        });
       }
       if (user) {
         return res.status(200).send({
@@ -217,7 +218,8 @@ const addVote = (req, res, voteDetails, billFound) => {
     }, { new: true }, (err, votedBill) => {
       if (err) {
         return res.status(400).send({
-          message: error,
+          success: false,
+          message: 'ID does not exist',
         });
       }
       return res.status(201).send({
@@ -383,21 +385,22 @@ exports.upVoteBill = (req, res) => {
   const { billId } = req.params;
 
   Bill.findById({ _id: billId })
-    .exec()
-    .then((billFound) => {
-      if (!billFound) {
+    .exec((error, billFound) => {
+      if (error) {
         return res.status(404).send({
+          success: false,
           message: `Sorry, no bill with id ${billId} `,
         });
       }
-      if (billFound.billProgress !== 'House Passed') {
+      if (billFound.billProgress !== 'House passed') {
         Vote.findOne({
           votedBill: billId,
           votedBy: userId
         }, (err, result) => {
           if (err) {
-            return res.status(400).send({
-              message: 'An error occured while updating',
+            return res.status(404).send({
+              success: false,
+              message: 'Id does not exist',
             });
           }
 
@@ -422,11 +425,13 @@ exports.upVoteBill = (req, res) => {
         });
       } else {
         res.status(403).send({
+          success: false,
           message: 'Sorry, voting for this bill is closed',
         });
       }
     }).catch((error) => {
       res.status(500).send({
+        success: false,
         message: 'Internal server Error',
         error: error.message
       });
@@ -447,20 +452,21 @@ exports.downVoteBill = (req, res) => {
   const { billId } = req.params;
 
   Bill.findById(billId)
-    .exec()
-    .then((billFound) => {
-      if (!billFound) {
+    .exec((error, billFound) => {
+      if (error) {
         return res.status(404).send({
+          success: false,
           message: `Sorry, no bill with id ${billId} `,
         });
       }
-      if (billFound.billProgress !== 'House Passed') {
+      if (billFound.billProgress !== 'House passed') {
         Vote.findOne({
           votedBill: billId,
           votedBy: userId
         }, (err, result) => {
           if (err) {
-            return res.status(400).send({
+            return res.status(404).send({
+              success: false,
               message: `Sorry, no bill with id ${billId} `,
             });
           }
@@ -486,6 +492,7 @@ exports.downVoteBill = (req, res) => {
         });
       } else {
         res.status(403).send({
+          success: false,
           message: 'Sorry, voting for this bill is closed',
         });
       }
@@ -515,10 +522,10 @@ exports.addOpinion = (req, res) => {
   const { billId } = req.params;
 
   Bill.findById({ _id: billId })
-    .exec()
-    .then((billFound) => {
-      if (!billFound) {
+    .exec((err, billFound) => {
+      if (err) {
         return res.status(404).send({
+          success: false,
           message: `Sorry, no bill with id ${billId}`,
         });
       }
@@ -544,6 +551,7 @@ exports.addOpinion = (req, res) => {
           });
         } else {
           res.status(403).send({
+            success: false,
             message: 'Sorry, posting opinions for this bill is closed',
           });
         }
@@ -567,7 +575,13 @@ exports.addOpinion = (req, res) => {
 exports.fetchOpinion = (req, res) => {
   Opinion.find({
     opinionBill: req.params.billId
-  }).then((opinions) => {
+  }).exec((err, opinions) => {
+    if (err) {
+      return res.status(404).send({
+        success: false,
+        message: `Sorry, no bill with id ${req.params.billId}`,
+      });
+    }
     if (!opinions) {
       return res.status(404).send({
         success: false,
@@ -576,6 +590,7 @@ exports.fetchOpinion = (req, res) => {
     }
     res.status(200).send({
       opinions,
+      status: true,
       message: 'Opinion successfully fetched!'
     });
   }).catch((error) => {
@@ -619,6 +634,7 @@ exports.fetchUserVotedBill = (req, res) => {
       res.status(200).send({
         userVotes: userVotes.docs,
         pageInfo,
+        status: true,
         message: 'User voted bill was fetched successfully!'
       });
     }).catch((error) => {
@@ -661,6 +677,7 @@ exports.getAllBills = (req, res) => {
       res.status(200).send({
         allBills: bills.docs,
         pageInfo,
+        status: true,
         message: 'Bills fetched successfully!'
       });
     }).catch((error) => {
@@ -682,6 +699,7 @@ exports.getAllBills = (req, res) => {
 exports.searchBills = (req, res) => {
   if (!req.body.searchTerm) {
     res.status(400).send({
+      status: false,
       message: 'please add search term'
     });
   }
@@ -705,6 +723,7 @@ exports.searchBills = (req, res) => {
           }));
       } else {
         return res.status(404).send({
+          status: false,
           message: 'Bill not found',
         });
       }
@@ -728,8 +747,13 @@ exports.getABill = (req, res) => {
   Bill.findOne({
     _id: billId
   })
-    .exec()
-    .then((billFound) => {
+    .exec((err, billFound) => {
+      if (err) {
+        return res.status(404).send({
+          success: false,
+          message: `Sorry, no bill with id ${billId}`,
+        });
+      }
       if (!billFound || billFound.length < 1) {
         return res.status(404).send({
           success: false,
@@ -762,8 +786,13 @@ exports.getAUser = (req, res) => {
   User.findOne({
     _id: userId
   })
-    .exec()
-    .then((userFound) => {
+    .exec((err, userFound) => {
+      if (err) {
+        return res.status(404).send({
+          success: false,
+          message: `Sorry, no bill with id ${billId}`,
+        });
+      }
       if (!userFound || userFound.length < 1) {
         return res.status(404).send({
           success: false,
@@ -782,4 +811,3 @@ exports.getAUser = (req, res) => {
       });
     });
 };
-

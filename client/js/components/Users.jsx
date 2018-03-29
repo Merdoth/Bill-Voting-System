@@ -172,9 +172,9 @@ Users.propTypes = {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.setCurrentUser.isAuthenticated,
-  users: state.users.users || [],
+  users: state.usersReducer.users || [],
   user: state.setCurrentUser.user,
-  currentPage: state.users.pageInfo || {}
+  currentPage: state.usersReducer.pageInfo || {}
 });
 export default connect(
   mapStateToProps,

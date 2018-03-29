@@ -5,7 +5,7 @@ import signin from './signIn';
 import bills from './bills';
 import bill from './bill';
 import opinion from './opinion';
-import users from './users';
+import usersReducer from './usersReducer';
 import user from './user';
 import search from './search';
 import userVotedBill from './userVotedBill';
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
   bill,
   adminSignup,
   opinion,
-  users,
+  usersReducer,
   user,
   search,
   userVotedBill

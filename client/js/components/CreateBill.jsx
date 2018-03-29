@@ -100,9 +100,9 @@ export class CreateBill extends Component {
                           type="text"
                           name="title"
                           id="title"
-                          pattern=".{5,50}"
+                          pattern=".{5,100}"
                           required
-                          title="5 characters minimum"
+                          title="5 characters minimum and 100 maximum"
                           value={this.state.title}
                           onChange={this.onChange}
                         />
@@ -120,9 +120,9 @@ export class CreateBill extends Component {
                           name="description"
                           id="description"
                           type="text"
-                          pattern=".{5,300}"
+                          pattern=".{8,1000}"
                           required
-                          title="5 characters minimum"
+                          title="8 characters minimum and 1000 maximum"
                           value={this.state.description}
                           onChange={this.onChange}
                         />

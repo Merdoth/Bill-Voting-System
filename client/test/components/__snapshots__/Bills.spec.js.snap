@@ -33,6 +33,7 @@ exports[`Bills Component snapshot it should render the right amount of elements 
         >
           <i
             className="material-icons medium search-icon"
+            id="search"
           >
             search
           </i>
@@ -44,6 +45,7 @@ exports[`Bills Component snapshot it should render the right amount of elements 
         >
           <i
             className="material-icons username-icon"
+            id="user-img"
           >
             account_circle
           </i>

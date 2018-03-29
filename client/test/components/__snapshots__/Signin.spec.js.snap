@@ -16,6 +16,7 @@ exports[`SigninForm Component snapshot it should render the right amount of elem
       </h3>
       <i
         className="material-icons"
+        id="sign-icon"
       >
         person
       </i>
@@ -73,6 +74,7 @@ exports[`SigninForm Component snapshot it should render the right amount of elem
           >
             <button
               className="btn shadow-effect"
+              id="signIn-button"
               type="submit"
             >
               Log in
@@ -90,6 +92,7 @@ exports[`SigninForm Component snapshot it should render the right amount of elem
             className="authlinks"
           >
             <Link
+              id="signUp-link"
               replace={false}
               to="/register"
             >

@@ -2,7 +2,7 @@ import expect from 'expect';
 import signup, { initialState } from '../../js/reducers/signup';
 
 
-describe('Set Search Reducer', () => {
+describe('Set Signup Reducer', () => {
   it('should handle SIGN_UP_USER_SUCCESS action', () => {
     const user = {
       fullName: 'Sarah Gi',

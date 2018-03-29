@@ -3,7 +3,7 @@ import mongoosePaginate from 'mongoose-paginate';
 
 const billSchema = new mongoose.Schema(
   {
-    title: { type: String, required: true },
+    title: { type: String, required: true, unique: true },
     description: { type: String, required: true },
     upVoteCount: {
       type: Number,
@@ -19,7 +19,7 @@ const billSchema = new mongoose.Schema(
       type: String,
       required: true,
       default: 'Not enacted',
-      enum: ['Not enacted', 'Senate Voted', 'House passed'],
+      enum: ['Not enacted', 'Senate voted', 'House passed'],
     },
   },
   {

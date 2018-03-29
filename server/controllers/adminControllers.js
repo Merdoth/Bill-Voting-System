@@ -94,23 +94,34 @@ exports.createBill = (req, res) => {
           to perform the requested operation`
         });
       }
-      const billDetails = {
-        title: title.toUpperCase(), description
-      };
-      const newBill = new Bill(billDetails);
-      newBill.save((error, createdBill) => {
-        if (error) {
-          return res.status(409).send({
-            message: 'bill already exists!',
-            success: false
+      Bill.findOne({
+        title: title.toUpperCase()
+      }).exec()
+        .then((billFound) => {
+          if (billFound) {
+            return res.status(409).send({
+              message: 'bill already exists!',
+              success: false
+            });
+          }
+          const billDetails = {
+            title: title.toUpperCase(), description
+          };
+          const newBill = new Bill(billDetails);
+          newBill.save((error, createdBill) => {
+            if (error) {
+              return res.status(409).send({
+                message: 'bill already exists!',
+                success: false
+              });
+            }
+            return res.status(201).send({
+              success: true,
+              message: 'bill successfully created',
+              createdBill
+            });
           });
-        }
-        return res.status(201).send({
-          success: true,
-          message: 'bill successfully created',
-          createdBill
         });
-      });
     })
     .catch((error) => {
       res.status(500)
@@ -166,6 +177,7 @@ exports.editBill = (req, res) => {
               .send({
                 message: 'Bill has been successfully updated!',
                 editedBill,
+                success: true
               });
           }
         });
@@ -202,18 +214,18 @@ exports.deleteBill = (req, res) => {
            to perform the requested operation`
         });
       }
-      Bill.findByIdAndRemove(billId, (err) => {
-        if (err) {
-          return res.status(500).send({
+      Bill.findOneAndRemove({ _id: billId }, (err, result) => {
+        if (!result) {
+          return res.status(400).send({
             success: false,
-            message: 'Internal server error',
+            message: 'BillId does not exist',
           });
         }
         Vote.remove({ votedBill: billId }, (err) => {
           if (err) {
-            return res.status(500).send({
+            return res.status(400).send({
               success: false,
-              message: 'Internal server error',
+              message: 'BillId does not exist',
             });
           }
           return res.status(200).send({
@@ -271,9 +283,16 @@ exports.addPermission = (req, res) => {
         },
         { new: true },
       ).exec((error, updatedUser) => {
+        if (error) {
+          return res.status(400).send({
+            success: false,
+            message: 'ID does not exist',
+          });
+        }
         if (updatedUser) {
           return res.status(200)
             .send({
+              success: true,
               message: 'user permission has been successfully updated!',
               updatedUser,
             });
@@ -307,6 +326,7 @@ exports.getAllUsers = (req, res) => {
       if (!users) {
         res.status(404).send({
           message: 'Users not found',
+          success: false
         });
       }
       const pageInfo = {
@@ -317,7 +337,8 @@ exports.getAllUsers = (req, res) => {
       res.status(200).send({
         users: users.docs,
         pageInfo,
-        message: 'Users successfully fetched'
+        message: 'Users successfully fetched',
+        success: true
       });
     })
     .catch((error) => {

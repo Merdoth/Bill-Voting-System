@@ -40,6 +40,7 @@ exports[`SideBar Component snapshot it should render the right amount of element
               activeClassName="active"
               ariaCurrent="true"
               exact={true}
+              id="user-profile"
               to="/profile"
             >
               Profile 
@@ -64,6 +65,7 @@ exports[`SideBar Component snapshot it should render the right amount of element
               activeClassName="active"
               ariaCurrent="true"
               exact={true}
+              id="user-votedBills"
               to="/bills/voted"
             >
               Voted Bills 

@@ -167,15 +167,15 @@ describe('User action creators', () => {
 
   describe('UserActions action creators', () => {
     it('should dispatch GET_ALL_USERS_SUCCESS', () => {
-      const { users } = mockData;
+      const { usersFound } = mockData;
       moxios.stubRequest('/api/v1/admin/users?page=1', {
         status: 200,
         response:
-          users
+          usersFound
       });
       const expectedActions = [{
         type: types.GET_ALL_USERS_SUCCESS,
-        users
+        usersFound
       }];
       const store = mockStore({});
 
@@ -185,14 +185,14 @@ describe('User action creators', () => {
         });
     });
     it('should dispatch GET_ALL_USERS_ERROR', (done) => {
-      const users = new Error('Request failed with status code 404');
+      const usersFound = new Error('Request failed with status code 404');
       moxios.stubRequest('/api/v1/admin/users?page=1', {
         status: 404,
-        response: users
+        response: usersFound
       });
       const expectedActions = [{
         type: types.GET_ALL_USERS_ERROR,
-        users,
+        usersFound,
       }];
       const store = mockStore({});
 

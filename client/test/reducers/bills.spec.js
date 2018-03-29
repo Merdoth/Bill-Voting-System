@@ -2,7 +2,7 @@ import expect from 'expect';
 import bills, { initialState } from '../../js/reducers/bills';
 
 
-describe('Set Bill Reducer', () => {
+describe('Set Bills Reducer', () => {
   it('should handle GET_BILL_SUCCESS action', () => {
     const allBills = [];
 

@@ -1,40 +1,38 @@
 import expect from 'expect';
-import users, { initialState } from '../../js/reducers/users';
+import usersReducer, { initialState } from '../../js/reducers/usersReducer';
 
 
-describe('Set Search Reducer', () => {
+describe('Set Users Reducer', () => {
   it('should handle GET_ALL_USERS_SUCCESS action', () => {
-    const usersFound = [];
+    const usersFound = { users: [] };
 
-    expect(users(undefined, {
+    expect(usersReducer(undefined, {
       type: 'GET_ALL_USERS_SUCCESS',
       usersFound
-    })).toEqual({ usersFound });
+    })).toEqual(usersFound);
   });
 
   it('should handle GET_ALL_USERS_ERROR action', () => {
-    expect(users(undefined, {
+    expect(usersReducer(undefined, {
       type: 'GET_ALL_USERS_ERROR'
     })).toEqual({});
   });
 
   it('should handle ADD_PERMISSION_SUCCESS action', () => {
-    const usersFound = [
-      undefined
-    ];
+    const users = [undefined];
 
-    expect(users(undefined, {
+    expect(usersReducer(undefined, {
       type: 'ADD_PERMISSION_SUCCESS',
-      usersFound
-    })).toEqual({ usersFound });
+      users
+    })).toEqual({ users });
   });
 
   it('should handle ADD_PERMISSION_ERROR action', () => {
-    expect(users(undefined, {
+    expect(usersReducer(undefined, {
       type: 'ADD_PERMISSION_ERROR'
     })).toEqual({});
   });
   it('should return original state if action type is not matched', () => {
-    expect(users(undefined, {})).toEqual(initialState);
+    expect(usersReducer(undefined, {})).toEqual(initialState);
   });
 });
