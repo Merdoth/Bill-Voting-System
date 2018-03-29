@@ -3,7 +3,6 @@ import thunk from 'redux-thunk';
 import jwt from 'jsonwebtoken';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { createLogger } from 'redux-logger';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { setCurrentUser } from '../actions';
 import setAuthToken from '../utils/setAuthToken';
@@ -11,8 +10,7 @@ import App from './App';
 import rootReducer from '../reducers';
 import '../../scss/main.scss';
 
-const logger = createLogger();
-const middleware = applyMiddleware(logger, thunk);
+const middleware = applyMiddleware(thunk);
 const configureStore = (state = {}) => createStore(
   rootReducer,
   state,

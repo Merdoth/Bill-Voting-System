@@ -81,13 +81,13 @@ exports[`BillDetails Component snapshot it should render the right amount of ele
               <div
                 className="bill-desc-body flexed"
               >
-                <h2 />
+                <h2
+                  id="desc-title"
+                />
                 <div
                   className="flexer"
                 >
-                  <div
-                    className=""
-                  >
+                  <div>
                     <div
                       className="social-content"
                     >
@@ -153,7 +153,9 @@ exports[`BillDetails Component snapshot it should render the right amount of ele
                   <div
                     className="flexed"
                   >
-                    <p />
+                    <p
+                      id="desc-desc"
+                    />
                   </div>
                 </div>
               </div>
@@ -221,6 +223,7 @@ exports[`BillDetails Component snapshot it should render the right amount of ele
                     />
                     <label
                       htmlFor="icon_prefix"
+                      id="opinion-id"
                     >
                       Opinion
                     </label>

@@ -189,7 +189,7 @@ export class EditBill extends Component {
                         <option value="Not enacted" defaultValue>
                         Not enacted
                         </option>
-                        <option value="Senate Voted">Senate Voted</option>
+                        <option value="Senate voted">Senate Voted</option>
                         <option value="House passed">House Passed</option>
                       </select>
                     </div>

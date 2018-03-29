@@ -67,7 +67,9 @@ exports[`UserVotedBills Component snapshot it should render the right amount of 
         <div
           className="bill-body"
         >
-          <h3>
+          <h3
+            id="no-votedBills"
+          >
             Sadly nothing to show :)
           </h3>
           <PaginationBoxView

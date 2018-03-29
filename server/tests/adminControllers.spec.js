@@ -17,7 +17,6 @@ describe('Admin Controllers', () => {
   let jwtToken1;
   let billId;
   let billId1;
-  let billId2 = '5aa4ffbfb2d16e6594369fce';
   before((done) => {
     mongoose.createConnection(process.env.MONGODB_TEST_URL, () => {
       mongoose.connection.db.dropDatabase(() => {
@@ -249,7 +248,7 @@ describe('Admin Controllers', () => {
         });
     });
     it('should successfully create another bill and return 201', (done) => {
-      const title = 'All the lies in Nigeria';
+      const title = 'All the lies in Nigeria That the govenment told';
       const description = 'Thiefing senators';
       const billProgress = 'Not enacted';
       chai.request(app)
@@ -499,26 +498,6 @@ describe('Admin Controllers', () => {
             res.status.should.status(400);
             res.body.error.should.have.property('opinionError')
               .equal('Opinion must be at least 3 characters long');
-          }
-          done();
-        });
-    });
-    it(`should throw an error if user
-    passes billId that does not exist
-    and return 404`, (done) => {
-      const opinion = 'No be today our leaders start the lie';
-      chai.request(app)
-        .post(`/api/v1/bill/${billId2}/opinions`, userControllers.addOpinion)
-        .set('Accept', 'application/json')
-        .set('x-access-token', jwtToken1)
-        .send({
-          opinion
-        })
-        .end((error, res) => {
-          if (res) {
-            expect(res).to.have.status(404);
-            res.body.should.have.property('message')
-              .equal(`Sorry, no bill with id ${billId2}`);
           }
           done();
         });

@@ -134,6 +134,7 @@ exports[`UpdateUser Component snapshot it should render the right amount of elem
                 <button
                   className="btn shadow-effect"
                   href="#"
+                  id="update"
                   type="submit"
                 >
                   Update
@@ -282,6 +283,7 @@ exports[`UpdateUser Component snapshot should return user 1`] = `
                 <button
                   className="btn shadow-effect"
                   href="#"
+                  id="update"
                   type="submit"
                 >
                   Update

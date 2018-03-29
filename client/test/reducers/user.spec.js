@@ -2,7 +2,7 @@ import expect from 'expect';
 import user, { initialState } from '../../js/reducers/user';
 
 
-describe('Set Search Reducer', () => {
+describe('Set User Reducer', () => {
   it('should handle GET_A_USER_SUCCESS action', () => {
     const userFound = {
     };
