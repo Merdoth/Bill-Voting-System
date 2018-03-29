@@ -22,7 +22,7 @@ describe('CreateBill Component snapshot', () => {
 });
 
 describe('onSubmit()', () => {
-  it('should add recipes to the state', () => {
+  it('should add new bill', () => {
     const event = {
       preventDefault: jest.fn(),
     };

@@ -57,13 +57,13 @@ export class SideBar extends React.Component {
           <div className="side-nav-section channels">
             <ul className="side-nav-list">
               <li className="side-nav-item">
-                <NavLink exact to="/profile">Profile </NavLink>
+                <NavLink id="user-profile" exact to="/profile">Profile </NavLink>
               </li>
               <li className="side-nav-item">
                 <NavLink exact to="/bills">Bills </NavLink>
               </li>
               <li className="side-nav-item">
-                <NavLink exact to="/bills/voted">Voted Bills </NavLink>
+                <NavLink id="user-votedBills" exact to="/bills/voted">Voted Bills </NavLink>
               </li>
             </ul>
             <div id="logout" className="side-nav-logout-btn" onClick={this.logout}>

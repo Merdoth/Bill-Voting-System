@@ -225,9 +225,9 @@ export class BillDetails extends Component {
                     </div>
 
                     <div className="bill-desc-body flexed">
-                      <h2>{title}</h2>
+                      <h2 id="desc-title">{title}</h2>
                       <div className="flexer">
-                        <div className="">
+                        <div>
                           <div className="social-content">
                             <FacebookShareButton
                               url={shareUrl}
@@ -280,7 +280,7 @@ export class BillDetails extends Component {
                         </div>
                         <div className="flexed">
 
-                          <p>
+                          <p id="desc-desc">
                             {bill.description}
                           </p>
                         </div>
@@ -340,7 +340,11 @@ export class BillDetails extends Component {
                             value={this.state.opinion}
                             onChange={this.onChange}
                           />
-                          <label htmlFor="icon_prefix">Opinion</label>
+                          <label
+                            id="opinion-id"
+                            htmlFor="icon_prefix"
+                          >Opinion
+                          </label>
                         </div>
                       </div>
                     </form>

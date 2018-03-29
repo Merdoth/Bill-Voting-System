@@ -181,6 +181,7 @@ export class UpdateUser extends Component {
                     </div>
                     <div className="row form-cta">
                       <button
+                        id="update"
                         type="submit"
                         className="btn shadow-effect"
                         href="#"

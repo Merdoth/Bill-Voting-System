@@ -7,5 +7,6 @@ node_modules/*
 .nyc_output
 coverage
 dist
+selenium-debug.log
 e2ereports/*
 *.log

@@ -14,7 +14,7 @@ import { userLoginRequest } from '../actions';
  * @returns { undefined }
  */
 export class Signin extends Component {
- /**
+  /**
   * Creates Instance of Signin
   * @param {Object} props
   *
@@ -69,7 +69,7 @@ export class Signin extends Component {
         <div className="container auth-form">
           <span className="login-header">
             <h3>Sign In</h3>
-            <i className="material-icons">person</i>
+            <i id="sign-icon"className="material-icons">person</i>
           </span>
           <div>
             <form className="row signin" onSubmit={this.onSubmit}>
@@ -110,6 +110,7 @@ export class Signin extends Component {
                 </div>
                 <div className="form-cta">
                   <button
+                    id="signIn-button"
                     type="submit"
                     className="btn shadow-effect"
                   >Log in
@@ -120,7 +121,10 @@ export class Signin extends Component {
             <div className="row">
               <div className="col s12">
                 <p className="authlinks">
-                  <Link to="/register">
+                  <Link
+                    id="signUp-link"
+                    to="/register"
+                  >
                   or create an account
                   </Link>
                 </p>
