@@ -44,7 +44,7 @@ app.use(expressValidator());
 app.use(express.static(__dirname + './../public'));
 app.use('/api-docs', express.static(path.join(__dirname, './../api-docs')));
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
   app.use(webpackDevMiddleware(compiler, {
     publicPath: devConfig.output.publicPath,
     open: false

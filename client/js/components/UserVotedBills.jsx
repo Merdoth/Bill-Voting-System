@@ -160,7 +160,7 @@ export class UserVotedBills extends Component {
                        </div>
                      </div>
                    </Link>
-                )) : (<h3>Sadly nothing to show :)</h3>)}
+                )) : (<h3 id="no-votedBills">Sadly nothing to show :)</h3>)}
                 <ReactPaginate
                   previousLabel="previous"
                   nextLabel="next"

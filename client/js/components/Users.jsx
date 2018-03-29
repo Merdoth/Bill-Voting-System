@@ -3,7 +3,6 @@ import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactPaginate from 'react-paginate';
-import shortId from 'shortid';
 import { getAllUsers, addPermission } from '../actions';
 import SideBar from './SideBar';
 

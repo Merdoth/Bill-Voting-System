@@ -31,17 +31,17 @@ export class Home extends Component {
             </div>
             <div className="flexed home-body">
               <div className="home-date">{date.toString()}</div>
-              <p>Making better decision for tomorrows leaders</p>
+              <p id="home-desc">Making better decision for tomorrows leaders</p>
               <span
                 className="quote"
               >We grant people the opportunity to vote for or
                 against bills that affect their lives and existence. We give
                 voice to the citizenry and participants in legislation.
               </span>
-              <Link to="/signin">
-                <span className="link-signin">
+              <Link id="sign-link" to="/signin">
+                <span id="home-vote-link"className="link-signin">
                   Vote Now
-                  <i className="material-icons">
+                  <i id="home-icon" className="material-icons">
                     chevron_right
                   </i>
                 </span>

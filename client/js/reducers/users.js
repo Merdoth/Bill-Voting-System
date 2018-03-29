@@ -12,10 +12,10 @@ const users = (state = initialState, action) => {
       };
     case types.ADD_PERMISSION_SUCCESS:
       const usersFound = state.usersFound;
-      const filteredUsers = usersFound.filter(({ _id }) => _id !== action.user._id);
+      const filteredUsers = usersFound.filter(({ _id }) => _id !== action.usersFound._id);
 
       return {
-        ...state, usersFound: [action.user, ...filteredUsers]
+        ...state, usersFound: [action.usersFound, ...filteredUsers]
       };
     case types.ADD_PERMISSION_ERROR:
     case types.GET_ALL_USERS_ERROR:

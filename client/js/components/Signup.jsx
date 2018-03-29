@@ -82,7 +82,7 @@ export class Signup extends Component {
         <div className="container signup-form ">
           <span className="login-header">
             <h3>Create an account</h3>
-            <i className="material-icons">person</i>
+            <i id="sign-icon" className="material-icons">person</i>
           </span>
           <div>
             <div className="row">
@@ -163,6 +163,7 @@ export class Signup extends Component {
                 </div>
                 <div className="row form-cta">
                   <button
+                    id="dashboard-btn"
                     type="submit"
                     className="btn shadow-effect"
                     href="#"
@@ -192,7 +193,7 @@ export class Signup extends Component {
                 </div>
                 <div className="disclaimer-right">
                   <img src="/img/norton.png" alt="" width="100" height="50" />
-                  <span>
+                  <span id="disclaimer">
                     Services is provided through a
                     secured connection.
                     If you have difficulty creating a user please

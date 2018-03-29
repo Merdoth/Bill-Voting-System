@@ -117,11 +117,11 @@ export const logout = () => (dispatch) => {
   history.push('/');
 };
 
-const getAllUsersSuccess = users =>
-  ({ type: types.GET_ALL_USERS_SUCCESS, users });
+const getAllUsersSuccess = usersFound =>
+  ({ type: types.GET_ALL_USERS_SUCCESS, usersFound });
 
-const getAllUsersFailure = users =>
-  ({ type: types.GET_ALL_USERS_ERROR, users });
+const getAllUsersFailure = usersFound =>
+  ({ type: types.GET_ALL_USERS_ERROR, usersFound });
 
 /**
      * @function getAllUsers
@@ -193,11 +193,11 @@ export const updateUser = userData => dispatch =>
       dispatch(updateUserFailure(response));
     });
 
-const addPermissionSuccess = user =>
-  ({ type: types.ADD_PERMISSION_SUCCESS, user });
+const addPermissionSuccess = usersFound =>
+  ({ type: types.ADD_PERMISSION_SUCCESS, usersFound });
 
-const addPermissionFailure = user =>
-  ({ type: types.ADD_PERMISSION_ERROR, user });
+const addPermissionFailure = usersFound =>
+  ({ type: types.ADD_PERMISSION_ERROR, usersFound });
 
 /**
      * @function addPermission

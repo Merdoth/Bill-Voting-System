@@ -110,12 +110,19 @@ export class Bills extends Component {
             </div>
             <span className="float-header-with-flex">
               <Link to="/search">
-                <i className="material-icons medium search-icon">search</i>
+                <i
+                  id="search"
+                  className="material-icons medium search-icon"
+                >search
+                </i>
               </Link>
             </span>
             <span>
               <h5 className="username-format">
-                <i className="material-icons username-icon">
+                <i
+                  id="user-img"
+                  className="material-icons username-icon"
+                >
                   account_circle
                 </i>
                 Welcome, {userName}
@@ -129,7 +136,12 @@ export class Bills extends Component {
               </div>
               <div className="bill-body">
                 {this.props.allBills.length > 0 ? this.props.allBills.map(bill => (
-                  <Link to={`/bills/${bill._id}`} className="flexer bill-content" key={shortId.generate()}>
+                  <Link
+                    id="main-bill-detail"
+                    to={`/bills/${bill._id}`}
+                    className="flexer bill-content"
+                    key={shortId.generate()}
+                  >
                     <div className="flexed content-align">
                       <div className="flexer bill-details">
                         <span
