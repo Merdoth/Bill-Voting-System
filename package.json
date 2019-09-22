@@ -4,7 +4,7 @@
   "description": "This application is giving voice to the voiceless and opinion to the opinionless",
   "main": "index.js",
   "dependencies": {
-    "axios": "^0.17.1",
+    "axios": "^0.18.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
